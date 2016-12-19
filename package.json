@@ -1,0 +1,28 @@
+{
+  "name": "sammler-jobs-service",
+  "version": "0.0.1",
+  "description": "Job service for sammler.",
+  "main": "src/index.js",
+  "repository": "https://github.com/sammler/sammler-jobs-service",
+  "author": "Stefan Walther",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "lodash": "^4.17.2",
+    "mongoose": "^4.7.3",
+    "mongoose-timestamp": "^0.6.0",
+    "winston": "^2.3.0",
+    "winston-logstash": "^0.3.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.12.2",
+    "eslint-config-xo-space": "^0.15.0",
+    "eslint-plugin-mocha": "^4.7.0",
+    "isparta": "^4.0.0",
+    "mocha": "^3.2.0",
+    "supertest": "^2.0.1",
+    "xo": "^0.17.1"
+  }
+}
