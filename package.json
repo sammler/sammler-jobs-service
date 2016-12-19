@@ -6,6 +6,9 @@
   "repository": "https://github.com/sammler/sammler-jobs-service",
   "author": "Stefan Walther",
   "license": "MIT",
+  "scripts": {
+    "docs": "verb"
+  },
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
@@ -24,5 +27,29 @@
     "mocha": "^3.2.0",
     "supertest": "^2.0.1",
     "xo": "^0.17.1"
+  },
+  "engines": {
+    "node": ">=7.1.0"
+  },
+  "verb": {
+    "run": true,
+    "toc": false,
+    "layout": "empty",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "related": {
+      "list": []
+    },
+    "lint": {
+      "reflinks": true
+    },
+    "reflinks": [
+      "verb",
+      "verb-readme-generator"
+    ]
   }
 }
