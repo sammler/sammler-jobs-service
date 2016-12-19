@@ -1,4 +1,6 @@
 
+Very simple, opinionated and re-usable service to log jobs to MongoDB.
+
 The jobs-service is responsible for
 
 - Exposing a `/jobs` endpoint to get all current and archived jobs.

@@ -4,7 +4,7 @@ const defaultConfig = {
   port: 3002
 };
 
-describe('app-server.js', () => {
+describe('UNIT => app-server.js', () => {
   it('contains the required methods', () => {
     const appServer = new AppServer(defaultConfig);
     expect(appServer).to.have.a.property('start');

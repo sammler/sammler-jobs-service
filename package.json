@@ -8,6 +8,7 @@
   "repository": "https://github.com/sammler/sammler-jobs-service",
   "scripts": {
     "docs": "verb",
+    "dc-dev-up": "docker-compose --f=./dc-dev.yml up --build",
     "start": "node src/index.js",
     "lint:src": "eslint src",
     "lint:src:fix": "eslint src --fix",
@@ -18,6 +19,7 @@
     "test:unit": "mocha './test/unit/**/*.spec.js' --require './test/mocha.conf.js'"
   },
   "dependencies": {
+    "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "lodash": "^4.17.2",

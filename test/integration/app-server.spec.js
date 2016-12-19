@@ -1,6 +1,6 @@
 const AppServer = require('./../../src/app-server');
 
-describe('app-server', () => {
+describe('INTEGRATION => app-server', () => {
   let appServer = null;
   const defaultConfig = {
     port: 3003
@@ -13,7 +13,7 @@ describe('app-server', () => {
     return appServer.stop();
   });
 
-  it('has some registered routes', () => {
+  it('test', () => {
     expect(true).to.be.true;
   });
 });

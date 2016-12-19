@@ -1,24 +1,21 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const _ = require('lodash');
+const mongoose = require('mongoose');
+const bluebird = require('bluebird');
+const Context = require('./config/context');
+
 const logger = require('./helper/logger');
 const routeConfig = require('./route-config');
 
 class AppServer {
   constructor(config) {
     this.config = config || {};
+
     this.server = null;
     this.logger = logger;
+    this.context = Context.instance();
     this._initApp();
-  }
-
-  _validateConfig() {
-    const validationErrors = [];
-    if (!this.config.port) {
-      validationErrors.push('No port defined.');
-    }
-
-    return validationErrors;
   }
 
   _initApp() {
@@ -29,8 +26,20 @@ class AppServer {
       console.log(`${req.path}\n`);
       next();
     });
-
     routeConfig.init(this.app);
+  }
+
+  _dbConnect() {
+
+  }
+
+  _validateConfig() {
+    const validationErrors = [];
+    if (!this.config.port) {
+      validationErrors.push('No port defined.');
+    }
+
+    return validationErrors;
   }
 
   start() {
@@ -54,6 +63,7 @@ class AppServer {
   stop() {
     return new Promise(resolve => {
       this.server.close(() => {
+        mongoose.disconnect();
         this.logger.debug('Server stopped');
         resolve();
       });

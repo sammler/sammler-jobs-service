@@ -3,7 +3,7 @@ const AppServer = require('./../../src/app-server');
 
 const defaultConfig = require('./../test-lib/default-config');
 
-describe('GET `health-check`', () => {
+describe('INTEGRATION => GET `health-check`', () => {
   let server;
   const appServer = new AppServer(defaultConfig);
   beforeEach(() => {
@@ -28,3 +28,5 @@ describe('GET `health-check`', () => {
       });
   });
 });
+
+

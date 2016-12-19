@@ -5,7 +5,7 @@ const jobsRoutes = require('./modules/jobs/jobs.routes');
 function init(app) {
   app.use('/health-check', healthCheckRoutes());
   app.use('/job', jobRoutes());
-  app.use('/jobs', jobsRoutes());
+  // app.use('/jobs', jobsRoutes());
 }
 
 module.exports = {
