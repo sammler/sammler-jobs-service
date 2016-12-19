@@ -1,4 +1,4 @@
-const supertest = require('supertest-as-promised');
+const superTest = require('supertest-as-promised');
 const AppServer = require('./../../src/app-server');
 
 const defaultConfig = require('./../test-lib/default-config');
@@ -9,7 +9,7 @@ describe('GET `health-check`', () => {
   beforeEach(() => {
     return appServer.start()
       .then(() => {
-        server = supertest(appServer.server);
+        server = superTest(appServer.server);
       });
   });
 
@@ -21,7 +21,7 @@ describe('GET `health-check`', () => {
     return server
       .get('/health-check')
       .expect(200)
-      .then((res) => {
+      .then(res => {
         expect(res).to.exist;
         expect(res).to.have.a.property('body');
         expect(res.body).to.have.a.property('ts');

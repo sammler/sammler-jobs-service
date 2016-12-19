@@ -1,12 +1,11 @@
 const AppServer = require('./../../src/app-server');
 
 describe('app-server', () => {
-
   let appServer = null;
   const defaultConfig = {
     port: 3003
   };
-  beforeEach(( ) => {
+  beforeEach(() => {
     appServer = new AppServer(defaultConfig);
     return appServer.start();
   });
