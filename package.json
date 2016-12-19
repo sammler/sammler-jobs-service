@@ -2,12 +2,20 @@
   "name": "sammler-jobs-service",
   "version": "0.0.1",
   "description": "Job service for sammler.",
+  "license": "MIT",
+  "author": "Stefan Walther",
   "main": "src/index.js",
   "repository": "https://github.com/sammler/sammler-jobs-service",
-  "author": "Stefan Walther",
-  "license": "MIT",
   "scripts": {
-    "docs": "verb"
+    "docs": "verb",
+    "start": "node src/index.js",
+    "lint:src": "eslint src",
+    "lint:src:fix": "eslint src --fix",
+    "lint:test": "eslint test",
+    "lint:test:fix": "eslint test --fix",
+    "test": "yarn run lint:src && yarn run lint:test && yarn run test:integration",
+    "test:integration": "mocha './test/integration/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
+    "test:unit": "mocha './test/unit/**/*.spec.js' --require './test/mocha.conf.js'"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
@@ -26,6 +34,7 @@
     "isparta": "^4.0.0",
     "mocha": "^3.2.0",
     "supertest": "^2.0.1",
+    "supertest-as-promised": "^4.0.2",
     "xo": "^0.17.1"
   },
   "engines": {

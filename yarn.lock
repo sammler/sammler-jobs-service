@@ -251,6 +251,10 @@ bluebird@2.10.2:
   version "2.10.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.10.2.tgz#024a5517295308857f14f91f1106fc3b555f446b"
 
+bluebird@^3.3.1:
+  version "3.4.6"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.6.tgz#01da8d821d87813d158967e743d5fe6c62cf8c0f"
+
 body-parser@^1.15.2:
   version "1.15.2"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.15.2.tgz#d7578cf4f1d11d5f6ea804cef35dc7a7ff6dae67"
@@ -2491,6 +2495,13 @@ superagent@^2.0.0:
     mime "^1.3.4"
     qs "^6.1.0"
     readable-stream "^2.0.5"
+
+supertest-as-promised@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/supertest-as-promised/-/supertest-as-promised-4.0.2.tgz#0464f2bd256568d4a59bce84269c0548f6879f1a"
+  dependencies:
+    bluebird "^3.3.1"
+    methods "^1.1.1"
 
 supertest@^2.0.1:
   version "2.0.1"
