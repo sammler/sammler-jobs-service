@@ -6,6 +6,10 @@ class Context {
   constructor() {
     this.db = null;
     mongoose.Promise = bluebird;
+
+    if (!this.db) {
+      this.dbConnect();
+    }
   }
 
   static instance() {

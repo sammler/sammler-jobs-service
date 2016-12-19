@@ -14,12 +14,10 @@ const schema = new Schema({
   },
   status: {
     type: String,
-    enum: ['running', 'timeout']
+    enum: ['aborted', 'waiting', 'running', 'timeout']
   }
 
 }, {
-  noId: true,
-  noVirtualId: true,
   collection: MongooseConfig.COLLECTION_PREFIX + MongooseConfig.COLLECTION_JOBS,
   strict: true
 });

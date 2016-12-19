@@ -7,14 +7,24 @@ class JobsBL {
    */
   static createOrUpdate( doc ) {
 
-    let options = {
+    const options = {
       new: true,
       upsert: true,
       setDefaultsOnInsert: true
     };
 
     return JobsModel
-      .findByIdAndUpdate( doc._id, doc, options)
+      .findByIdAndUpdate(doc._id, doc, options)
+      .exec();
+  }
+
+  /**
+   * Returns the total amount of jobs (regardless their status).
+   * @returns {Promise}
+   */
+  static count() {
+    return JobsModel
+      .count()
       .exec();
   }
 

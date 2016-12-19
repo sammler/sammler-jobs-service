@@ -1,5 +1,10 @@
 
-Very simple, opinionated and re-usable service to log jobs to MongoDB.
+Very simple, opinionated and re-usable service to log jobs to MongoDB:
+
+- Save the state of jobs to MongoDB
+- Update their status
+- Retrieve the current state of a job
+- Get the history of jobs
 
 The jobs-service is responsible for
 

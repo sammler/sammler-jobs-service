@@ -9,11 +9,13 @@ class JobController {
 
   static post(req, res) {
     JobsBL.createOrUpdate(req.body)
-      .then( (result) => {
+      .then(result => {
         res.status(200).send(result);
+      })
+      .catch( (err) => {
+        res.status(500).send(err);
       });
   }
-
 }
 
 module.exports = JobController;

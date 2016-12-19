@@ -5,7 +5,7 @@ const logger = new Winston.Logger({
     new Winston.transports.Console({
       level: 'debug',
       handleExceptions: true,
-      json: true,
+      json: false,
       colorize: true
     })
   ],
