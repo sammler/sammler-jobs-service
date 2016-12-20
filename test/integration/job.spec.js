@@ -6,14 +6,14 @@ const defaultConfig = require('./../test-lib/default-config');
 describe.only('INTEGRATION => POST `job`', () => {
   let server;
   const appServer = new AppServer(defaultConfig);
-  beforeEach(() => {
+  before(() => {
     return appServer.start()
       .then(() => {
         server = superTest(appServer.server);
       });
   });
 
-  afterEach(() => {
+  after(() => {
     return appServer.stop();
   });
 
@@ -43,5 +43,26 @@ describe.only('INTEGRATION => POST `job`', () => {
           });
       });
   });
+
+  xit('creates multiple jobs', () => {
+    expect(false).to.be.true;
+  });
+
+  xit('removes a job', () => {
+    expect(false).to.be.true;
+  });
+
+  xit('refuses creating a new job if required params are missing', () => {
+    expect(false).to.be.true;
+  });
+
+  xit('updates an existing job', () => {
+    expect(false).to.be.true;
+  });
+
+  xit('creates sub-jobs', () => {
+    expect(false).to.be.true;
+  });
+
 });
 

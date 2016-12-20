@@ -13,7 +13,7 @@ describe('INTEGRATION => app-server', () => {
     return appServer.stop();
   });
 
-  it('test', () => {
-    expect(true).to.be.true;
-  });
+  xit('exposes the open-api spec', () => {
+
+  })
 });
