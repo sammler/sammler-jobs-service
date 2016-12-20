@@ -1,11 +1,11 @@
 {
-  "name": "sammler-jobs-service",
+  "name": "mongodb-jobs-service",
   "version": "0.0.1",
   "description": "Job service for sammler.",
   "license": "MIT",
   "author": "Stefan Walther",
   "main": "src/index.js",
-  "repository": "https://github.com/sammler/sammler-jobs-service",
+  "repository": "https://github.com/sammler/mongodb-jobs-service",
   "scripts": {
     "docs": "verb",
     "dc-dev-up": "docker-compose --f=./dc-dev.yml up --build",
