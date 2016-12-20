@@ -1,20 +1,41 @@
 const JobsModel = require('./jobs.model').Model;
+const _ = require('lodash');
+const Promise = require('bluebird');
+const mongoose = require('mongoose');
 
 class JobsBL {
 
   /**
    * Creates a new job.
    */
-  static createOrUpdate( doc ) {
+  static save(docs) {
 
+    if (!_.isArray(docs)) {
+      return JobsBL.saveSingle(docs);
+    }
+    return Promise.map(docs, item => JobsBL.save(item));
+  }
+
+  static saveSingle(doc) {
     const options = {
       new: true,
       upsert: true,
       setDefaultsOnInsert: true
     };
 
+    if (!doc._id) {
+      doc._id = new mongoose.mongo.ObjectID();
+    }
+    let docModel = new JobsModel();
+    docModel = _.merge(docModel, doc);
+
+    const valErrors = docModel.validateSync();
+    if (valErrors) {
+      throw new Error(valErrors);
+    }
+
     return JobsModel
-      .findByIdAndUpdate(doc._id, doc, options)
+      .findByIdAndUpdate(docModel._id, docModel, options)
       .exec();
   }
 
@@ -52,6 +73,12 @@ class JobsBL {
   static getJobsFinished() {
     return JobsModel
       .find({})
+      .exec();
+  }
+
+  static removeAll() {
+    return JobsModel
+      .remove({})
       .exec();
   }
 

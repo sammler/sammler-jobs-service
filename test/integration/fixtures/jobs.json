@@ -1,0 +1,19 @@
+[
+  {
+    "name": "job-waiting",
+    "status": "waiting"
+  },
+  {
+    "name": "job-running",
+    "status": "running"
+  },
+  {
+    "name": "job-aborted",
+    "status": "aborted"
+  },
+  {
+    "name": "job-timeout",
+    "status": "timeout"
+  }
+  
+]

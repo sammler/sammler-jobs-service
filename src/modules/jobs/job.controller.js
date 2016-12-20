@@ -1,4 +1,5 @@
 const JobsBL = require('./jobs.bl');
+const HttpStatus = require('http-status-codes');
 
 class JobController {
 
@@ -8,9 +9,9 @@ class JobController {
   }
 
   static post(req, res) {
-    JobsBL.createOrUpdate(req.body)
+    JobsBL.save(req.body)
       .then(result => {
-        res.status(200).send(result);
+        res.status(HttpStatus.CREATED).send(result);
       })
       .catch(err => {
         res.status(500).send(err);

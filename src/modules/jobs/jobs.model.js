@@ -7,14 +7,14 @@ const Schema = mongoose.Schema;
 /* eslint-disable camelcase */
 const schema = new Schema({
 
-  _id: Schema.Types.ObjectId,
   name: {
     type: String,
     required: true
   },
   status: {
     type: String,
-    enum: ['aborted', 'waiting', 'running', 'timeout']
+    enum: ['aborted', 'idle', 'running', 'timeout'],
+    default: 'idle'
   }
 
 }, {

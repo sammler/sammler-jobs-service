@@ -9,6 +9,7 @@
   "scripts": {
     "docs": "verb",
     "dc-dev-up": "docker-compose --f=./dc-dev.yml up --build",
+    "dc-dev-down": "docker-compose --f=./dc-dev.yml down",
     "start": "node src/index.js",
     "lint:src": "eslint src",
     "lint:src:fix": "eslint src --fix",
@@ -22,6 +23,7 @@
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "http-status-codes": "^1.0.6",
     "lodash": "^4.17.2",
     "mongoose": "^4.7.3",
     "mongoose-timestamp": "^0.6.0",

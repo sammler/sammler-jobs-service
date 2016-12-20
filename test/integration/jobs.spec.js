@@ -3,8 +3,7 @@ const AppServer = require('./../../src/app-server');
 
 const defaultConfig = require('./../test-lib/default-config');
 
-describe.only('INTEGRATION => jobs', () => {
-
+describe('INTEGRATION => jobs', () => {
   let server;
   const appServer = new AppServer(defaultConfig);
   before(() => {
@@ -20,8 +19,12 @@ describe.only('INTEGRATION => jobs', () => {
 
   it('GET `jobs`=> returns all jobs', () => {
     return server
-      .get('/jobs')
-      .expect(200);
+      .get('/v1/jobs')
+      .expect(200)
+      .then(result => {
+        expect(result).to.exist;
+        expect(result).to.be.an.array;
+      });
   });
 
   xit('returns running jobs', () => {

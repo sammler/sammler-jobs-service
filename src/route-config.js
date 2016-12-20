@@ -1,11 +1,22 @@
-const healthCheckRoutes = require('./modules/health-check/health-check.routes');
-const jobRoutes = require('./modules/jobs/job.routes');
-const jobsRoutes = require('./modules/jobs/jobs.routes');
+const express = require('express');
+const HealthCheckController = require('./modules/health-check/health-check.controller');
+const JobController = require('./modules/jobs/job.controller');
+const JobsController = require('./modules/jobs/jobs.controller');
 
 function init(app) {
-  app.use('/health-check', healthCheckRoutes());
-  app.use('/job', jobRoutes());
-  app.use('/jobs', jobsRoutes());
+  const router = express.Router(); // eslint-disable-line new-cap
+  const version = 'v1';
+
+  router.get('/health-check', HealthCheckController.get);
+
+  router.get(`/${version}/job`, JobController.get);
+  router.post(`/${version}/job`, JobController.post);
+
+  router.get(`/${version}/jobs`, JobsController.get);
+  router.post(`/${version}/jobs`, JobsController.post);
+  router.post(`${version}/jobs/count`, JobsController.count);
+
+  app.use('/', router);
 }
 
 module.exports = {

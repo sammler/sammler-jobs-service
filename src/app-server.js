@@ -2,7 +2,6 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const _ = require('lodash');
 const mongoose = require('mongoose');
-const bluebird = require('bluebird');
 const Context = require('./config/context');
 
 const logger = require('./helper/logger');
@@ -22,15 +21,11 @@ class AppServer {
     this.app = express();
     this.app.use(bodyParser.json());
 
-    this.app.get('/*', (req, res, next) => {
-      console.log(`${req.path}\n`);
-      next();
-    });
+    // this.app.get('/*', (req, res, next) => {
+    //   console.log(`${req.path}\n`);
+    //   next();
+    // });
     routeConfig.init(this.app);
-  }
-
-  _dbConnect() {
-
   }
 
   _validateConfig() {
@@ -63,7 +58,7 @@ class AppServer {
   stop() {
     return new Promise(resolve => {
       this.server.close(() => {
-        mongoose.disconnect();
+        // mongoose.disconnect();
         this.logger.debug('Server stopped');
         resolve();
       });
