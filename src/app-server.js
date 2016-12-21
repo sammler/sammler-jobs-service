@@ -1,7 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const _ = require('lodash');
-const mongoose = require('mongoose');
 const Context = require('./config/context');
 
 const logger = require('./helper/logger');
@@ -58,6 +57,7 @@ class AppServer {
   stop() {
     return new Promise(resolve => {
       this.server.close(() => {
+        // Todo: clean the connection to the DB properly
         // mongoose.disconnect();
         this.logger.debug('Server stopped');
         resolve();
