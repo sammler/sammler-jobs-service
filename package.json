@@ -1,5 +1,5 @@
 {
-  "name": "mongodb-jobs-service",
+  "name": "sammler-jobs-service",
   "version": "0.0.1",
   "description": "Job service for sammler.",
   "license": "MIT",
