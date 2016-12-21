@@ -9,7 +9,6 @@ class JobsBL {
    * Creates a new job.
    */
   static save(docs) {
-
     if (!_.isArray(docs)) {
       return JobsBL.saveSingle(docs);
     }

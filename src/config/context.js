@@ -24,12 +24,12 @@ class Context {
     const options = {};
     mongoose.Promise = bluebird;
 
-    mongoose.connection.on('connected', () =>  {
+    mongoose.connection.on('connected', () => {
       console.log('Mongoose default connection open to ' + uri);
     });
 
     // If the connection throws an error
-    mongoose.connection.on('error',err => {
+    mongoose.connection.on('error', err => {
       console.log('Mongoose default connection error: ' + err);
     });
 
@@ -40,7 +40,7 @@ class Context {
 
     // If the Node process ends, close the Mongoose connection
     process.on('SIGINT', () => {
-      mongoose.connection.close(function () {
+      mongoose.connection.close(() => {
         console.log('Mongoose default connection disconnected through app termination');
         process.exit(0);
       });

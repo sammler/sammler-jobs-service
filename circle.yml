@@ -1,4 +1,6 @@
 machine:
+  node:
+    version: 7.1.0
   environment:
     YARN_VERSION: 0.17.9
 dependencies:

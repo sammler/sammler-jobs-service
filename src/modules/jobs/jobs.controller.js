@@ -6,7 +6,7 @@ class JobsController {
   static get(req, res) {
     return JobsBL.getJobs()
       .then(result => {
-        res.status(HttpStatus.OK)
+        res.status(HttpStatus.OK);
         res.json(result);
       });
   }

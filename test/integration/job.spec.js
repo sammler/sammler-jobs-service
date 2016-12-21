@@ -24,7 +24,7 @@ describe('INTEGRATION => JOB', () => {
     return appServer.stop();
   });
 
-  it('POST `/job` creates a new job', ( ) => {
+  it('POST `/job` creates a new job', () => {
     const doc = {
       name: 'foo',
       status: 'running'
@@ -74,7 +74,6 @@ describe('INTEGRATION => JOB', () => {
   });
 
   it('POST `/jobs` creates multiple jobs', () => {
-
     const docs = [
       {
         name: 'foo',
@@ -113,6 +112,5 @@ describe('INTEGRATION => JOB', () => {
   xit('creates sub-jobs', () => {
     expect(false).to.be.true;
   });
-
 });
 

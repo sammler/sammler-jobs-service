@@ -34,5 +34,4 @@ describe('INTEGRATION => jobs', () => {
   xit('return aborted jobs', () => {
     expect(true).to.be.true;
   });
-
 });
