@@ -1,5 +1,5 @@
 
-_sammler_jobs_service_ can be configured by the following environment variables:
+_sammler-jobs-service_ can be configured by the following environment variables:
 
 - `API_PORT` - The port to run the REST API (defaults to `3003`).
 

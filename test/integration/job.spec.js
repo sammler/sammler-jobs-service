@@ -1,7 +1,7 @@
 const superTest = require('supertest-as-promised');
 const HttpStatus = require('http-status-codes');
-const AppServer = require('./../../src/app-server');
-const JobsBL = require('./../../src/modules/jobs/jobs.bl');
+const AppServer = require('./../../src/api/app-server');
+const JobsBL = require('./../../src/api/modules/jobs/jobs.bl');
 
 const defaultConfig = require('./../test-lib/default-config');
 
