@@ -2,7 +2,9 @@ machine:
   node:
     version: 7.1.0
   environment:
-    YARN_VERSION: 0.17.9
+    YARN_VERSION: 0.17.9#
+    PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+
 dependencies:
   pre:
       - |
@@ -14,6 +16,7 @@ dependencies:
   cache_directories:
     - ~/.yarn
     - ~/.cache/yarn
+
 test:
   override:
     - yarn test
