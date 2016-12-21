@@ -3,7 +3,7 @@ const AppServer = require('./../../src/app-server');
 
 const defaultConfig = require('./../test-lib/default-config');
 
-describe('INTEGRATION => jobs', () => {
+describe('INTEGRATION => JOBS', () => {
   let server;
   const appServer = new AppServer(defaultConfig);
   before(() => {
@@ -30,8 +30,18 @@ describe('INTEGRATION => jobs', () => {
   xit('returns running jobs', () => {
     expect(true).to.be.true;
   });
+  xit('returns idle jobs', () => {
+    expect(true).to.be.true;
+  });
 
   xit('return aborted jobs', () => {
+    expect(true).to.be.true;
+  });
+  xit('returns timeout jobs', () => {
+    expect(true).to.be.true;
+  });
+
+  xit('returns finished jobs', () => {
     expect(true).to.be.true;
   });
 });

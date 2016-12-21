@@ -14,6 +14,6 @@ describe('INTEGRATION => app-server', () => {
   });
 
   xit('exposes the open-api spec', () => {
-
+    expect(false).to.be.true;
   });
 });

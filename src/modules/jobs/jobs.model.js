@@ -13,7 +13,7 @@ const schema = new Schema({
   },
   status: {
     type: String,
-    enum: ['aborted', 'idle', 'running', 'timeout'],
+    enum: ['aborted', 'idle', 'running', 'timeout', 'finished'],
     default: 'idle'
   }
 

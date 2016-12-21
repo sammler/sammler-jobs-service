@@ -73,6 +73,18 @@ describe('INTEGRATION => JOB', () => {
       });
   });
 
+  xit('considers the date-key for a job', () => {
+    expect(true).to.be.false;
+  });
+
+  xit('updates jobs with the same date-key and _id', () => {
+    expect(true).to.be.false;
+  });
+
+  xit('properly patches the jobs properties', () => {
+    expect(true).to.be.false;
+  });
+
   it('POST `/jobs` creates multiple jobs', () => {
     const docs = [
       {
@@ -112,5 +124,12 @@ describe('INTEGRATION => JOB', () => {
   xit('creates sub-jobs', () => {
     expect(false).to.be.true;
   });
-});
 
+  xit('updates the status of a job ', () => {
+    expect(false).to.be.true;
+  });
+
+  xit('updates the status of a child-job', () => {
+    expect(false).to.be.true;
+  });
+});
