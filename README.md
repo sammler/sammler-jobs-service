@@ -11,7 +11,7 @@ Very simple, opinionated and re-usable service to log jobs to MongoDB in a micro
 - Get the history of jobs
 
 ## Configuration
-`mongodb-jobs-service` can be configured by the following environment variables:
+_sammler_jobs_service_ can be configured by the following environment variables:
 
 - `API_PORT` - The port to run the REST API (defaults to `3003`).
 
