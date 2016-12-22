@@ -3,8 +3,16 @@ const HttpStatus = require('http-status-codes');
 
 class JobsController {
 
-  static get(req, res) {
+  static getAll(req, res) {
     return JobsBL.getJobs()
+      .then(result => {
+        res.status(HttpStatus.OK);
+        res.json(result);
+      });
+  }
+
+  static getSingle(req, res) {
+    return JobsBL.getJobById(req.body._id)
       .then(result => {
         res.status(HttpStatus.OK);
         res.json(result);

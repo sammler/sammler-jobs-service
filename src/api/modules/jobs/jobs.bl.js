@@ -48,6 +48,12 @@ class JobsBL {
       .exec();
   }
 
+  static getJobById( id ) {
+    return JobsModel
+      .findById( id )
+      .exec();
+  }
+
   /**
    * Get all jobs.
    */

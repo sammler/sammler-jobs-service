@@ -9,10 +9,10 @@ function init(app) {
 
   router.get('/health-check', HealthCheckController.get);
 
-  router.get(`/${version}/job`, JobController.get);
   router.post(`/${version}/job`, JobController.post);
 
-  router.get(`/${version}/jobs`, JobsController.get);
+  router.get(`/${version}/jobs`, JobsController.getAll);
+  router.get(`/${version}/jobs/:_id`, JobsController.getSingle);
   router.post(`/${version}/jobs`, JobsController.post);
   router.post(`${version}/jobs/count`, JobsController.count);
 

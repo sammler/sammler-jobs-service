@@ -85,30 +85,6 @@ describe('INTEGRATION => JOB', () => {
     expect(true).to.be.false;
   });
 
-  it('POST `/jobs` creates multiple jobs', () => {
-    const docs = [
-      {
-        name: 'foo',
-        status: 'running'
-      },
-      {
-        name: 'bar',
-        status: 'running'
-      }
-    ];
-
-    return server
-      .post('/v1/jobs')
-      .send(docs)
-      .expect(HttpStatus.CREATED)
-      .then(result => {
-        expect(result.body).to.exist;
-        expect(result.body).to.be.an.array;
-        expect(result.body).to.be.of.length(2);
-        expect(result.body[0]).to.have.a.property('_id').to.exist;
-      });
-  });
-
   xit('removes a job', () => {
     expect(false).to.be.true;
   });
