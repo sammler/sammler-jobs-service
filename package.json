@@ -11,7 +11,7 @@
     "dc-dev-up": "docker-compose --f=./dc-dev.yml up --build",
     "dc-dev-down": "docker-compose --f=./dc-dev.yml down",
     "lint": "yarn run lint:src && yarn run lint:test",
-    "start": "node src/index.js",
+    "start": "node src/api/index.js",
     "lint:src": "eslint src",
     "lint:src:fix": "eslint src --fix",
     "lint:test": "eslint test",

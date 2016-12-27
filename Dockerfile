@@ -10,8 +10,7 @@ RUN mkdir -p $HOME/api
 
 WORKDIR $HOME
 
-COPY package.json .
-COPY yarn.lock .
+COPY package.json yarn.lock ./
 
 RUN yarn install
 
