@@ -20,7 +20,7 @@ class Context {
 
   // Todo: See: http://stackoverflow.com/questions/6676499/is-there-a-mongoose-connect-error-callback
   dbConnect() {
-    const uri = 'mongodb://localhost:27017/jobs';
+    const uri = process.env.SAMMLER_DB_URI_JOBS || 'mongodb://localhost:27017/jobs';
     const options = {};
     mongoose.Promise = bluebird;
 
