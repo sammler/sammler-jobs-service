@@ -1,5 +1,11 @@
 # project
 /dist
+/.cache
+/.config
+/.yarn
+/src/.cache
+/src/.config
+/src/.yarn
 
 # IDEs
 .vscode
