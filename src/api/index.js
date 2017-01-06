@@ -7,6 +7,8 @@ const config = {
 const appServer = new AppServer(config);
 appServer.start();
 
+
+
 // process.on ('SIGINT', () => {
 //   console.log('\nreceived sigint\n');
 //   appServer.stop();
