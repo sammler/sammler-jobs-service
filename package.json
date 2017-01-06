@@ -1,9 +1,17 @@
 {
   "name": "sammler-jobs-service",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "Job service for sammler.",
+  "keywords": [
+    "sammler"
+  ],
+  "homepage": "https://github.com/sammler/sammler-jobs-service",
   "license": "MIT",
-  "author": "Stefan Walther",
+  "author": {
+    "name": "Stefan Walther",
+    "url": "https://github.com/stefanwalther",
+    "twitter": "waltherstefan"
+  },
   "main": "src/index.js",
   "repository": "https://github.com/sammler/sammler-jobs-service",
   "scripts": {
@@ -45,7 +53,7 @@
     "xo": "^0.17.1"
   },
   "engines": {
-    "node": ">=7.1.0"
+    "node": ">=7.0"
   },
   "verb": {
     "run": true,
