@@ -5,7 +5,7 @@
   "license": "MIT",
   "author": "Stefan Walther",
   "main": "src/index.js",
-  "repository": "https://github.com/sammler/mongodb-jobs-service",
+  "repository": "https://github.com/sammler/sammler-jobs-service",
   "scripts": {
     "dc-dev-down": "docker-compose --f=./docker-compose.dev.yml down",
     "dc-dev-up": "docker-compose --f=./docker-compose.dev.yml up --build",
