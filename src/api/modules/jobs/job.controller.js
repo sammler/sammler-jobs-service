@@ -3,6 +3,7 @@ const HttpStatus = require('http-status-codes');
 
 class JobController {
 
+  // Todo: Hey, that's just a placeholder
   static get(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.send({ts: new Date().toJSON()});
@@ -14,7 +15,7 @@ class JobController {
         res.status(HttpStatus.CREATED).send(result);
       })
       .catch(err => {
-        res.status(500).send(err);
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
       });
   }
 }
