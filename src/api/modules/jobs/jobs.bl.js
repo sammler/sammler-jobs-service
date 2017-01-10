@@ -48,9 +48,9 @@ class JobsBL {
       .exec();
   }
 
-  static getJobById( id ) {
+  static getJobById(id) {
     return JobsModel
-      .findById( id )
+      .findById(id)
       .exec();
   }
 
