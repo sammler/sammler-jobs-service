@@ -2,7 +2,7 @@ version: "2"
 
 services:
 
-  db:
+  job-service-db:
     image: mongo
     ports:
       - "27017:27017"
@@ -19,5 +19,5 @@ services:
     volumes:
       - ./node_modules/sammler-jobs-service/:/home
     links:
-      - s5r-mongo
+      - job-service-db
     command: yarn run start:dev
