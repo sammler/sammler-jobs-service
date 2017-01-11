@@ -27,7 +27,7 @@
     "start": "node src/api/index.js",
     "start:dev": "nodemon -L --watch ./src/api --exec yarn run start",
     "test": "yarn run lint:src && yarn run lint:test && yarn run test:integration",
-    "test:integration": "mocha './test/integration/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
+    "test:integration": "mocha --env SAMMLER_DB_JOBS_URI=mongodb://localhost:57017/jobs './test/integration/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
     "test:unit": "mocha './test/unit/**/*.spec.js' --require './test/mocha.conf.js'"
   },
   "dependencies": {

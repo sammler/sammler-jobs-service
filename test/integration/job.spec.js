@@ -37,8 +37,27 @@ describe('INTEGRATION => JOB', () => {
       .then(res => {
         expect(res).to.exist;
         expect(res).to.have.a.property('body');
-        expect(res.body).to.have.a.property('_id');
+        expect(res.body).to.have.a.property('_id').to.not.be.empty;
       });
+  });
+
+  it('POST `/job` creates a new job and allows passing the Id', () => {
+    const doc = {
+      _id: 'bla',
+      name: 'foo',
+      status: 'running'
+    };
+
+    return server
+      .post('/v1/job')
+      .send(doc)
+      .expect(HttpStatus.CREATED)
+      .then(res => {
+        expect(res).to.exist;
+        expect(res).to.have.a.property('body');
+        expect(res.body).to.have.a.property('_id').to.be.equal(doc._id);
+      });
+
   });
 
   it('POST `/job` creates a new job with default status', () => {
