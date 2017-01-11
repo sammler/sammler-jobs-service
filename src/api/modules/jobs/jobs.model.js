@@ -29,6 +29,10 @@ const schema = new Schema({
 });
 /* eslint-enable camelcase */
 
+schema.virtual('job_id').get(function() {
+  return this._id;
+});
+
 schema.plugin(timeStamps, {createdAt: MongooseConfig.FIELD_CREATED_AT, updatedAt: MongooseConfig.FIELD_UPDATED_AT});
 
 /**
