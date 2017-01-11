@@ -604,6 +604,12 @@ escope@^3.6.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
+eslint-config-sammler@sammler/eslint-config-sammler:
+  version "0.0.1"
+  resolved "https://codeload.github.com/sammler/eslint-config-sammler/tar.gz/39f05f991a8a23aa89a36f6bac5e6ef01c29ec78"
+  dependencies:
+    eslint-config-xo-space "^0.15.0"
+
 eslint-config-xo-space@^0.15.0:
   version "0.15.0"
   resolved "https://registry.yarnpkg.com/eslint-config-xo-space/-/eslint-config-xo-space-0.15.0.tgz#1174a376c159afd03295d5a1ca9c488fb5379cd0"
