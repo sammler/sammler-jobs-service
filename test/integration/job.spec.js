@@ -43,7 +43,11 @@ describe('INTEGRATION => JOB', () => {
 
   it('POST `/job` creates a new job with default status', () => {
     const doc = {
-      name: 'foo'
+      name: 'foo',
+      details: {
+        foo: 'bar',
+        bar: 'baz'
+      }
     };
 
     return server
@@ -55,6 +59,7 @@ describe('INTEGRATION => JOB', () => {
         expect(res).to.have.a.property('body');
         expect(res.body).to.have.a.property('_id');
         expect(res.body).to.have.a.property('status').to.be.equal('idle');
+        expect(res.body).to.have.a.property('details').to.deep.equal(doc.details);
       });
   });
 

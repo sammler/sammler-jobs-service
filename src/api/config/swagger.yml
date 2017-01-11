@@ -97,3 +97,5 @@ definitions:
         type: string
       status:
         type: string
+      details:
+        type: object

@@ -5,7 +5,7 @@ services:
   job-service-db:
     image: mongo
     ports:
-      - "27017:27017"
+      - "27117:27017"
 
 #  jobs-service:
 #    build: .
