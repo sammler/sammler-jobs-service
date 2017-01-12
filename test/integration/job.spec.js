@@ -91,18 +91,7 @@ describe('INTEGRATION => JOB', () => {
     return server
       .post('/v1/job')
       .send(doc)
-      .expect(HttpStatus.INTERNAL_SERVER_ERROR)
-      .then(res => {
-        // Todo: Proper error handling here
-      });
-  });
-
-  xit('considers the date-key for a job', () => {
-    expect(true).to.be.false;
-  });
-
-  xit('updates jobs with the same date-key and _id', () => {
-    expect(true).to.be.false;
+      .expect(HttpStatus.INTERNAL_SERVER_ERROR);
   });
 
   xit('properly patches the jobs properties', () => {

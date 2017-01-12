@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const timeStamps = require('mongoose-timestamp');
+const mongooseMaterializedPlugin = require('mongoose-materialized');
+const mongooseTimestampsPlugin = require('mongoose-timestamp');
 
 const MongooseConfig = require('./../../config/mongoose-config');
 const Schema = mongoose.Schema;
@@ -33,7 +34,8 @@ schema.virtual('job_id').get(function() {
   return this._id;
 });
 
-schema.plugin(timeStamps, {createdAt: MongooseConfig.FIELD_CREATED_AT, updatedAt: MongooseConfig.FIELD_UPDATED_AT});
+schema.plugin(mongooseMaterializedPlugin);
+schema.plugin(mongooseTimestampsPlugin, {createdAt: MongooseConfig.FIELD_CREATED_AT, updatedAt: MongooseConfig.FIELD_UPDATED_AT});
 
 /**
  * Methods
