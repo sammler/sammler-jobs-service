@@ -6,18 +6,3 @@ services:
     image: mongo
     ports:
       - "57017:27017"
-
-#  jobs-service:
-#    build: .
-#    environment:
-#      - WAIT_COMMAND=[ $$(curl --write-out %{http_code} --silent --output /dev/null http://s5r-mongo:27017) = 200 ]
-#      - WAIT_START_CMD=yarn run start:dev
-#      - WAIT_SLEEP=2
-#      - WAIT_LOOPS=20
-#      - PORT=3003
-#      - SAMMLER_DB_JOBS_URI=mongodb://s5r-mongo:27017/jobs
-#    volumes:
-#      - ./node_modules/sammler-jobs-service/:/home
-#    links:
-#      - job-service-db
-#    command: yarn run start:dev
