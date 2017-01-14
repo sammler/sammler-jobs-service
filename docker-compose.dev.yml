@@ -5,4 +5,4 @@ services:
   job-service-db:
     image: mongo
     ports:
-      - "57017:27017"
+      - "27017:27017"

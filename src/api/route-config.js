@@ -12,9 +12,11 @@ function init(app) {
   router.post(`/${version}/job`, JobController.post);
 
   router.get(`/${version}/jobs`, JobsController.getAll);
-  router.get(`/${version}/jobs/:_id`, JobsController.getSingle);
+  router.get(`/${version}/jobs/:id`, JobsController.getSingle);
   router.post(`/${version}/jobs`, JobsController.post);
   router.post(`${version}/jobs/count`, JobsController.count);
+
+  router.patch(`/${version}/jobs/:id/status`, JobsController.patchStatus);
 
   app.use('/', router);
 }

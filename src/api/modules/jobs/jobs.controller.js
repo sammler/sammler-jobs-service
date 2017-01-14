@@ -12,7 +12,7 @@ class JobsController {
   }
 
   static getSingle(req, res) {
-    return JobsBL.getJobById(req.body._id)
+    return JobsBL.getJobById(req.params.id)
       .then(result => {
         res.status(HttpStatus.OK);
         res.json(result);
@@ -38,6 +38,22 @@ class JobsController {
       .then(result => {
         res.status(HttpStatus.CREATED);
         res.json(result);
+      })
+      .catch(err => {
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        res.json(err);
+      });
+  }
+
+  static patchStatus(req, res) {
+    return JobsBL.changeStatus(req.params.id, req.body.status)
+      .then(result => {
+        res.status(HttpStatus.OK);
+        res.json(result);
+      })
+      .catch(err => {
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        res.json(err);
       });
   }
 

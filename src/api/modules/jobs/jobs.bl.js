@@ -38,6 +38,15 @@ class JobsBL {
       .exec();
   }
 
+  static changeStatus(jobId, newStatus) {
+    return JobsModel
+      .update(
+        {_id: jobId},
+        {status: newStatus},
+        {runValidators: true}
+      );
+  }
+
   /**
    * Returns the total amount of jobs (regardless their status).
    * @returns {Promise}
