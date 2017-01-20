@@ -4,7 +4,7 @@ const HttpStatus = require('http-status-codes');
 class JobController {
 
   static post(req, res) {
-    JobsBL.save(req.body)
+    JobsBL.createSingle(req.body)
       .then(result => {
         res.status(HttpStatus.CREATED).send(result);
       })

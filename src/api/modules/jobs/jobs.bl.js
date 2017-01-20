@@ -10,32 +10,25 @@ class JobsBL {
    */
   static save(docs) {
     if (!_.isArray(docs)) {
-      return JobsBL.saveSingle(docs);
+      return JobsBL.createSingle(docs);
     }
-    return Promise.map(docs, item => JobsBL.save(item));
+    return Promise.map(docs, item => JobsBL.createSingle(item));
   }
 
-  static saveSingle(doc) {
-    const options = {
-      new: true,
-      upsert: true,
-      setDefaultsOnInsert: true
-    };
+  static createSingle(job) {
 
-    if (!doc._id) {
-      doc._id = new mongoose.mongo.ObjectID();
+    if (!job._id) {
+      job._id = new mongoose.mongo.ObjectID();
     }
     let docModel = new JobsModel();
-    docModel = _.merge(docModel, doc);
+    docModel = _.merge(docModel, job); // Todo: why are we doing that?
 
     const valErrors = docModel.validateSync();
     if (valErrors) {
       throw new Error(valErrors);
     }
 
-    return JobsModel
-      .findByIdAndUpdate(docModel._id, docModel, options)
-      .exec();
+    return docModel.save();
   }
 
   // Todo: Don't use update because of mongoose-materialized
@@ -91,6 +84,7 @@ class JobsBL {
       .exec();
   }
 
+  // Todo: Don't use update because of mongoose-materialized
   static remove(id) {
     // Todo: Add check there that no parents with children are deleted
     return JobsModel

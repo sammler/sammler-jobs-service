@@ -62,6 +62,15 @@ paths:
           description: Created
       tags:
         - Jobs
+  /jobs/:id:
+    get:
+      summary: Get a single job
+      description: Returns a single job
+      responses:
+        200:
+          description: OK
+      tags:
+        - Jobs
   /jobs/active:
     get:
       summary: TBD

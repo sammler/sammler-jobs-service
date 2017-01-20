@@ -94,6 +94,17 @@ describe('INTEGRATION => JOB', () => {
       .expect(HttpStatus.INTERNAL_SERVER_ERROR);
   });
 
+  it('POST `/job` throws an error if parent is not existing', () => {
+    const doc = {
+      name: 'foo',
+      parentId: 'xx'
+    };
+    return server
+      .post('/v1/job')
+      .send(doc)
+      .expect(HttpStatus.INTERNAL_SERVER_ERROR);
+  });
+
   it('DELETE `/job/:id` removes a job', () => {
     const doc = {
       name: 'foo'
@@ -101,18 +112,10 @@ describe('INTEGRATION => JOB', () => {
     return server
       .post('/v1/job')
       .send(doc)
-      .expect(HttpStatus.CREATED)
       .then(result => {
-        expect(result.body).to.have.a.property('_id').to.exist;
-        return Promise.resolve(result.body._id);
-      })
-      .then(id => {
         return server
-          .delete(`/v1/job/${id}`)
-          .expect(HttpStatus.OK)
-          .catch(err => {
-            expect(err).to.not.exist;
-          });
+          .delete(`/v1/job/${result.body._id}`)
+          .expect(HttpStatus.OK);
       });
   });
 

@@ -1,5 +1,5 @@
 
-Very simple, opinionated and re-usable service to log jobs to MongoDB in a microservices environment:
+Very simple, opinionated and re-usable service to log hierarchical jobs to MongoDB:
 
 - Save the state of jobs & sub-jobs to MongoDB
 - Update their status
