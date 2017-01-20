@@ -10,9 +10,11 @@ function init(app) {
   router.get('/health-check', HealthCheckController.get);
 
   router.post(`/${version}/job`, JobController.post);
+  router.delete(`/${version}/job/:id`, JobController.delete);
 
   router.get(`/${version}/jobs`, JobsController.getAll);
   router.get(`/${version}/jobs/:id`, JobsController.getSingle);
+  router.delete(`/${version}/jobs/:id`, JobController.delete);
   router.post(`/${version}/jobs`, JobsController.post);
   router.post(`${version}/jobs/count`, JobsController.count);
 

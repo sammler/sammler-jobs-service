@@ -17,7 +17,7 @@ const schema = new Schema({
   },
   status: {
     type: String,
-    enum: ['aborted', 'idle', 'running', 'timeout', 'finished'],
+    enum: ['aborted', 'idle', 'running', 'timeout', 'completed'],
     default: 'idle'
   },
   details: {

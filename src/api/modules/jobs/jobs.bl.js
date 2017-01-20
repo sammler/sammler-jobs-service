@@ -38,6 +38,7 @@ class JobsBL {
       .exec();
   }
 
+  // Todo: Don't use update because of mongoose-materialized
   static changeStatus(jobId, newStatus) {
     return JobsModel
       .update(
@@ -87,6 +88,13 @@ class JobsBL {
   static getJobsFinished() {
     return JobsModel
       .find({})
+      .exec();
+  }
+
+  static remove(id) {
+    // Todo: Add check there that no parents with children are deleted
+    return JobsModel
+      .remove(id)
       .exec();
   }
 

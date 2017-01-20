@@ -3,12 +3,6 @@ const HttpStatus = require('http-status-codes');
 
 class JobController {
 
-  // Todo: Hey, that's just a placeholder
-  static get(req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    res.send({ts: new Date().toJSON()});
-  }
-
   static post(req, res) {
     JobsBL.save(req.body)
       .then(result => {
@@ -17,6 +11,28 @@ class JobController {
       .catch(err => {
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
       });
+  }
+
+  static patch(req, res) {
+    JobsBL.update(req.params.id, req.body)
+      .then(result => {
+        res.status(HttpStatus.OK).send(result);
+      });
+
+  }
+
+  static delete(req, res) {
+    JobsBL.remove(req.params.id)
+      .then(result => {
+        res.status(HttpStatus.OK).send(result);
+      })
+      .catch(err => {
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+      });
+  }
+
+  static changeStatus(req, res) {
+
   }
 }
 

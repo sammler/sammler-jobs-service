@@ -99,3 +99,8 @@ definitions:
         type: string
       details:
         type: object
+      s5r_created_at:
+        type: date
+      s5r_updated_at:
+        type: date
+

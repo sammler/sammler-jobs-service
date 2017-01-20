@@ -94,8 +94,46 @@ describe('INTEGRATION => JOB', () => {
       .expect(HttpStatus.INTERNAL_SERVER_ERROR);
   });
 
-  xit('properly patches the jobs properties', () => {
-    expect(true).to.be.false;
+  it('DELETE `/job/:id` removes a job', () => {
+    const doc = {
+      name: 'foo'
+    };
+    return server
+      .post('/v1/job')
+      .send(doc)
+      .expect(HttpStatus.CREATED)
+      .then(result => {
+        expect(result.body).to.have.a.property('_id').to.exist;
+        return Promise.resolve(result.body._id);
+      })
+      .then(id => {
+        return server
+          .delete(`/v1/job/${id}`)
+          .expect(HttpStatus.OK)
+          .catch(err => {
+            expect(err).to.not.exist;
+          });
+      });
+  });
+
+  xit('DELETE `/job/:id` returns an error if there are children', () => {
+
+  });
+
+  xit('PATCH `/job` properly patches the jobs properties', () => {
+    // const doc = {
+    //   name: 'foo',
+    //   status: 'bar'
+    // };
+    //
+    // return server
+    //   .post('/v1/job')
+    //   .send(doc)
+    //   .then(result => {
+    //     expect(result.body).to.have.a.property('_id');
+    //     let id = result.body._id;
+    //   });
+
   });
 
   xit('removes a job', () => {
