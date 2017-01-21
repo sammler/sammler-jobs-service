@@ -2,8 +2,10 @@
 
 > Job service for sammler.
 
+[![CircleCI](https://img.shields.io/circleci/project/github/sammler/sammler-jobs-service.svg)](https://circleci.com/gh/sammler/sammler-jobs-service)
+
 ## Purpose
-Very simple, opinionated and re-usable service to log jobs to MongoDB in a microservices environment:
+Very simple, opinionated and re-usable service to log hierarchical jobs to MongoDB:
 
 - Save the state of jobs & sub-jobs to MongoDB
 - Update their status
@@ -20,7 +22,9 @@ _sammler-jobs-service_ can be configured by the following environment variables:
 
 ### Configuration for dependent services (in development mode)
 
-- `SAMMLER_DB_JOBS_URI` - URI for the MongoDB Jobs database. Defaults to `mongodb://localhost:27017/jobs`
+- `SAMMLER_DB_JOBS_URI` - URI for the MongoDB Jobs database. Defaults to `mongodb://localhost:27117/jobs`
+
+Note: MongoDB runs on port 27117 to prevent conflicts with running the entire _sammler_ development-environment at the same time.
 
 ## Author
 **Stefan Walther**
