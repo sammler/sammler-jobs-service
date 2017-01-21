@@ -5,7 +5,7 @@ let logger = null;
 if (process.env.NODE_ENV === 'test') {
   logger = new (Winston.Logger)({
     transports: [
-      new (Winston.transports.File)({filename: 'test-errors.log'})
+      new (Winston.transports.File)({filename: 'test.log'})
     ]
   });
 } else {
@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'test') {
     transports: [
       new Winston.transports.Console({
         level: 'debug',
-        handleExceptions: true,
+        handleExceptions: false,
         json: false,
         colorize: true
       })
@@ -22,5 +22,11 @@ if (process.env.NODE_ENV === 'test') {
   });
 
 }
+
+logger.log = function () {
+  const logArgs = arguments;
+  // args[1] = args[1] + '\r\n';
+  Winston.Logger.prototype.log.apply(this, logArgs);
+};
 
 module.exports = logger;

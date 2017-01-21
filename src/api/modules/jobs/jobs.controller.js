@@ -1,7 +1,6 @@
 const JobsBL = require('./jobs.bl');
 const HttpStatus = require('http-status-codes');
 
-
 function handleError(res, err) {
   res.status(HttpStatus.INTERNAL_SERVER_ERROR);
   res.json(err);
