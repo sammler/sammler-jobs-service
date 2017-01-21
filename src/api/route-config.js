@@ -15,6 +15,11 @@ function init(app) {
   router.get('/health-check', HealthCheckController.get);
 
   router.get(`/${version}/jobs`, JobsController.getAll);
+  router.get(`/${version}/jobs/aborted`, JobsController.getByStatus.bind(null, 'aborted'));
+  router.get(`/${version}/jobs/idle`, JobsController.getByStatus.bind(null, 'idle'));
+  router.get(`/${version}/jobs/running`, JobsController.getByStatus.bind(null, 'running'));
+  router.get(`/${version}/jobs/timeout`, JobsController.getByStatus.bind(null, 'timeout'));
+  router.get(`/${version}/jobs/completed`, JobsController.getByStatus.bind(null, 'completed'));
   router.get(`/${version}/jobs/:id`, JobsController.getSingle);
   router.delete(`/${version}/jobs/:id`, JobsController.delete);
   router.post(`/${version}/jobs`, JobsController.post);
