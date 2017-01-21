@@ -23,7 +23,7 @@ describe('INTEGRATION => JOBS', () => {
     return JobsBL.removeAll();
   });
 
-  it('POST `/jobs` creates a new job', () => {
+  it('POST `/jobs` creates a single job', () => {
     const doc = {
       name: 'foo',
       status: 'running'
@@ -37,6 +37,33 @@ describe('INTEGRATION => JOBS', () => {
         expect(res).to.exist;
         expect(res).to.have.a.property('body');
         expect(res.body).to.have.a.property('_id').to.not.be.empty;
+      });
+  });
+
+  it('POST `/jobs` creates multiple jobs', () => {
+    const docs = [
+      {
+        name: 'foo',
+        status: 'running'
+      },
+      {
+        name: 'bar',
+        status: 'running'
+      }
+    ];
+
+    return server
+      .post('/v1/jobs')
+      .send(docs)
+      .expect(HttpStatus.CREATED)
+      .then(result => {
+        expect(result.body).to.exist;
+        expect(result.body).to.be.an.array;
+        expect(result.body).to.be.of.length(2);
+        expect(result.body[0]).to.have.a.property('_id').to.exist;
+      })
+      .catch(err => {
+        expect(err).to.not.exist;
       });
   });
 
@@ -184,29 +211,7 @@ describe('INTEGRATION => JOBS', () => {
       });
   });
 
-  it('POST `/jobs` creates multiple jobs', () => {
-    const docs = [
-      {
-        name: 'foo',
-        status: 'running'
-      },
-      {
-        name: 'bar',
-        status: 'running'
-      }
-    ];
 
-    return server
-      .post('/v1/jobs')
-      .send(docs)
-      .expect(HttpStatus.CREATED)
-      .then(result => {
-        expect(result.body).to.exist;
-        expect(result.body).to.be.an.array;
-        expect(result.body).to.be.of.length(2);
-        expect(result.body[0]).to.have.a.property('_id').to.exist;
-      });
-  });
 
   it('PATCH /jobs/:id/status updates the status', () => {
     const docs = {
@@ -255,21 +260,4 @@ describe('INTEGRATION => JOBS', () => {
       });
   });
 
-  xit('returns running jobs', () => {
-    expect(true).to.be.true;
-  });
-  xit('returns idle jobs', () => {
-    expect(true).to.be.true;
-  });
-
-  xit('return aborted jobs', () => {
-    expect(true).to.be.true;
-  });
-  xit('returns timeout jobs', () => {
-    expect(true).to.be.true;
-  });
-
-  xit('returns finished jobs', () => {
-    expect(true).to.be.true;
-  });
 });

@@ -1,19 +1,63 @@
 [
   {
-    "name": "job-waiting",
-    "status": "waiting"
-  },
-  {
-    "name": "job-running",
-    "status": "running"
-  },
-  {
-    "name": "job-aborted",
+    "name": "job-aborted-1",
     "status": "aborted"
   },
   {
-    "name": "job-timeout",
+    "name": "job-aborted-2",
+    "status": "aborted"
+  },
+  {
+    "name": "job-aborted-3",
+    "status": "aborted"
+  },
+  {
+    "name": "job-idle-1",
+    "status": "idle"
+  },
+  {
+    "name": "job-idle-2",
+    "status": "idle"
+  },
+  {
+    "name": "job-running-1",
+    "status": "running"
+  },
+  {
+    "name": "job-timeout-1",
     "status": "timeout"
+  },
+  {
+    "name": "job-timeout-2",
+    "status": "timeout"
+  },
+  {
+    "name": "job-timeout-3",
+    "status": "timeout"
+  },
+  {
+    "name": "job-timeout-4",
+    "status": "timeout"
+  },
+  {
+    "name": "job-completed-1",
+    "status": "completed"
+  },
+  {
+    "name": "job-completed-2",
+    "status": "completed"
+  },
+  {
+    "name": "job-completed-3",
+    "status": "completed"
+  },
+  {
+    "name": "job-completed-4",
+    "status": "completed"
+  },
+  {
+    "name": "job-completed-5",
+    "status": "completed"
   }
   
 ]

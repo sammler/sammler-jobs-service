@@ -75,21 +75,9 @@ class JobsBL {
       .exec();
   }
 
-  static getJobsActive() {
+  static getJobsByStatus(statusFilter) {
     return JobsModel
-      .find({})
-      .exec();
-  }
-
-  static getJobsRunning() {
-    return JobsModel
-      .find({})
-      .exec();
-  }
-
-  static getJobsFinished() {
-    return JobsModel
-      .find({})
+      .find({status: statusFilter})
       .exec();
   }
 
