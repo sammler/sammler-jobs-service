@@ -23,30 +23,6 @@ class JobsController {
       });
   }
 
-  // static getRunning(req, res) {
-  //   return JobsBL.getJobsByStatus('running')
-  //     .then(result => {
-  //       res.status(HttpStatus.OK);
-  //       res.json(result);
-  //     })
-  //     .catch(err => {
-  //       res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-  //       res.json(err);
-  //     });
-  // }
-
-  static getActive(req, res) {
-    return JobsBL.getJobsByStatus('active')
-      .then(result => {
-        res.status(HttpStatus.OK);
-        res.json(result);
-      })
-      .catch(err => {
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-        res.json(err);
-      });
-  }
-
   static getSingle(req, res) {
     return JobsBL.getJobById(req.params.id)
       .then(result => {
