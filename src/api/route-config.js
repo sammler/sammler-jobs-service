@@ -1,4 +1,10 @@
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const swaggerUi = require('swagger-ui-express');
+const yaml = require('js-yaml');
+
+const pkg = require('./../../package.json');
 const HealthCheckController = require('./modules/health-check/health-check.controller');
 const JobsController = require('./modules/jobs/jobs.controller');
 
@@ -17,6 +23,11 @@ function init(app) {
   router.patch(`/${version}/jobs/:id/status`, JobsController.patchStatus);
 
   app.use('/', router);
+
+  const swaggerDoc = yaml.safeLoad(fs.readFileSync(path.join(__dirname, './config/api-docs.yml'), 'utf8'));
+  swaggerDoc.info.version = pkg.version;
+  app.use('/api-docs/', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+
 }
 
 module.exports = {

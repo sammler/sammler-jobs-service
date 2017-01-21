@@ -52,7 +52,7 @@ describe('INTEGRATION => JOBS', () => {
         expect(res.body).to.have.a.property('_id').to.be.equal(doc._id);
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       });
 
   });
