@@ -34,7 +34,7 @@ class JobsController {
    * @returns {*}
    */
   static post(req, res) {
-    return JobsBL.save(req.body)
+    return JobsBL.create(req.body)
       .then(result => {
         res.status(HttpStatus.CREATED);
         res.json(result);
@@ -54,6 +54,16 @@ class JobsController {
       .catch(err => {
         res.status(HttpStatus.INTERNAL_SERVER_ERROR);
         res.json(err);
+      });
+  }
+
+  static delete(req, res) {
+    return JobsBL.remove(req.params.id)
+      .then(result => {
+        res.status(HttpStatus.OK).send(result);
+      })
+      .catch(err => {
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
       });
   }
 

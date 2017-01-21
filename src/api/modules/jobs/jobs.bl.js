@@ -8,7 +8,7 @@ class JobsBL {
   /**
    * Creates a new job.
    */
-  static save(docs) {
+  static create(docs) {
     if (!_.isArray(docs)) {
       return JobsBL.createSingle(docs);
     }
@@ -31,8 +31,15 @@ class JobsBL {
     return docModel.save();
   }
 
-  // Todo: Don't use update because of mongoose-materialized
+  /**
+   * Change the job's status.
+   *
+   * @description We can ignore in this case that .update is not recommended for mongoose-materialize.
+   * @param jobId
+   * @param newStatus
+   */
   static changeStatus(jobId, newStatus) {
+
     return JobsModel
       .update(
         {_id: jobId},

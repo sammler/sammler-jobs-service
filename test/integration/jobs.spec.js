@@ -18,6 +18,131 @@ describe('INTEGRATION => JOBS', () => {
     return appServer.stop();
   });
 
+  it('POST `/jobs` creates a new job', () => {
+    const doc = {
+      name: 'foo',
+      status: 'running'
+    };
+
+    return server
+      .post('/v1/jobs')
+      .send(doc)
+      .expect(HttpStatus.CREATED)
+      .then(res => {
+        expect(res).to.exist;
+        expect(res).to.have.a.property('body');
+        expect(res.body).to.have.a.property('_id').to.not.be.empty;
+      });
+  });
+
+  it('POST `/jobs` creates a new job and allows passing the Id', () => {
+    const doc = {
+      _id: 'bla',
+      name: 'foo',
+      status: 'running'
+    };
+
+    return server
+      .post('/v1/jobs')
+      .send(doc)
+      .expect(HttpStatus.CREATED)
+      .then(res => {
+        expect(res).to.exist;
+        expect(res).to.have.a.property('body');
+        expect(res.body).to.have.a.property('_id').to.be.equal(doc._id);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+  });
+
+  it('POST `/job` creates a new job with default status', () => {
+    const doc = {
+      name: 'foo',
+      details: {
+        foo: 'bar',
+        bar: 'baz'
+      }
+    };
+
+    return server
+      .post('/v1/jobs')
+      .send(doc)
+      .expect(HttpStatus.CREATED)
+      .then(res => {
+        expect(res).to.exist;
+        expect(res).to.have.a.property('body');
+        expect(res.body).to.have.a.property('_id');
+        expect(res.body).to.have.a.property('status').to.be.equal('idle');
+        expect(res.body).to.have.a.property('details').to.deep.equal(doc.details);
+      });
+  });
+
+  it('POST `/job` throws an error in case of an unknown status', () => {
+    const doc = {
+      name: 'foo',
+      status: 'bar'
+    };
+
+    return server
+      .post('/v1/jobs')
+      .send(doc)
+      .expect(HttpStatus.INTERNAL_SERVER_ERROR);
+  });
+
+  it('POST `/job` throws an error if parent is not existing', () => {
+    const doc = {
+      name: 'foo',
+      parentId: 'xx'
+    };
+    return server
+      .post('/v1/jobs')
+      .send(doc)
+      .expect(HttpStatus.INTERNAL_SERVER_ERROR);
+  });
+
+  it('PATCH `/jobs` => changes the status', () => {
+    const doc = {
+      name: 'foo',
+      status: 'idle'
+    };
+    let id = null;
+    return server
+      .post('/v1/jobs')
+      .send(doc)
+      .expect(HttpStatus.CREATED)
+      .then(result => {
+        expect(result.body._id).to.exist;
+        id = result.body._id;
+        return server
+          .patch(`/v1/jobs/${result.body._id}`)
+          .send({status: 'running'})
+          .expect(HttpStatus.OK)
+          .then(() => {
+            return server
+              .get(`/v1/jobs/${id}`)
+              .then(result => {
+                expect(result.body).to.have.a.property('status').to.be.equal('running');
+              });
+          });
+      });
+  });
+
+  it('DELETE `/job/:id` removes a job', () => {
+    const doc = {
+      name: 'foo'
+    };
+    return server
+      .post('/v1/jobs')
+      .send(doc)
+      .then(result => {
+        return server
+          .delete(`/v1/jobs/${result.body._id}`)
+          .expect(HttpStatus.OK);
+      });
+  });
+
   it('GET `jobs`=> returns all jobs', () => {
     return server
       .get('/v1/jobs')
@@ -34,7 +159,7 @@ describe('INTEGRATION => JOBS', () => {
       name: 'My new job'
     };
     return server
-      .post('/v1/job')
+      .post('/v1/jobs')
       .send(newJob)
       .expect(HttpStatus.CREATED)
       .then(result => {
