@@ -1,6 +1,12 @@
 const JobsBL = require('./jobs.bl');
 const HttpStatus = require('http-status-codes');
 
+
+function handleError(res, err) {
+  res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+  res.json(err);
+}
+
 class JobsController {
 
   static getAll(req, res) {
@@ -8,7 +14,8 @@ class JobsController {
       .then(result => {
         res.status(HttpStatus.OK);
         res.json(result);
-      });
+      })
+      .catch(err => handleError(res, err));
   }
 
   static getByStatus(status, req, res) {
@@ -17,10 +24,7 @@ class JobsController {
         res.status(HttpStatus.OK);
         res.json(result);
       })
-      .catch(err => {
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-        res.json(err);
-      });
+      .catch(err => handleError.bind(null, res, err));
   }
 
   static getSingle(req, res) {
@@ -28,7 +32,8 @@ class JobsController {
       .then(result => {
         res.status(HttpStatus.OK);
         res.json(result);
-      });
+      })
+      .catch(err => handleError.bind(null, res, err));
   }
 
   static count(req, res) {
@@ -36,7 +41,8 @@ class JobsController {
       .then(result => {
         res.status(HttpStatus.CREATED);
         res.json({count: result});
-      });
+      })
+      .catch(err => handleError(res, err));
   }
 
   /**
@@ -51,10 +57,7 @@ class JobsController {
         res.status(HttpStatus.CREATED);
         res.json(result);
       })
-      .catch(err => {
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-        res.json(err);
-      });
+      .catch(err => handleError(res, err));
   }
 
   static patch(req, res) {
@@ -63,10 +66,7 @@ class JobsController {
         res.status(HttpStatus.OK);
         res.json(result);
       })
-      .catch(err => {
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-        res.json(err);
-      });
+      .catch(err => handleError(res, err));
   }
 
   static patchStatus(req, res) {
@@ -75,10 +75,7 @@ class JobsController {
         res.status(HttpStatus.OK);
         res.json(result);
       })
-      .catch(err => {
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-        res.json(err);
-      });
+      .catch(err => handleError(res, err));
   }
 
   static delete(req, res) {
@@ -86,11 +83,8 @@ class JobsController {
       .then(result => {
         res.status(HttpStatus.OK).send(result);
       })
-      .catch(err => {
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
-      });
+      .catch(err => handleError(res, err));
   }
-
 }
 
 module.exports = JobsController;
