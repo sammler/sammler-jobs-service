@@ -612,9 +612,9 @@ escope@^3.6.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint-config-sammler@sammler/eslint-config-sammler:
-  version "0.0.1"
-  resolved "https://codeload.github.com/sammler/eslint-config-sammler/tar.gz/39f05f991a8a23aa89a36f6bac5e6ef01c29ec78"
+eslint-config-sammler@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/eslint-config-sammler/-/eslint-config-sammler-0.0.2.tgz#be3a27088e14a62002a6514367f702a55c6332c5"
   dependencies:
     eslint-config-xo-space "^0.15.0"
 
