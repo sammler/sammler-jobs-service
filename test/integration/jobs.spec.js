@@ -235,7 +235,7 @@ describe('INTEGRATION => JOBS', () => {
       });
   });
 
-  it('PATCh /jobs/:id/status throws an error with an invalid new status', () => {
+  it('PATCH /jobs/:id/status throws an error with an invalid new status', () => {
     const docs = [{
       name: 'foo'
     }];
@@ -247,7 +247,11 @@ describe('INTEGRATION => JOBS', () => {
         return server
           .patch(`/v1/jobs/${jobId}/status`)
           .send({status: 'foo'})
-          .expect(HttpStatus.INTERNAL_SERVER_ERROR);
+          .expect(HttpStatus.INTERNAL_SERVER_ERROR)
+          .then(result => {
+            expect(result.body).to.exist;
+            expect(result.body).to.have.a.property('name').to.be.equal('ValidationError');
+          });
       });
   });
 
