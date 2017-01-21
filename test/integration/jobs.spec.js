@@ -1,6 +1,7 @@
 const superTest = require('supertest-as-promised');
 const HttpStatus = require('http-status-codes');
 const AppServer = require('./../../src/api/app-server');
+const JobsBL = require('./../../src/api/modules/jobs/jobs.bl');
 
 const defaultConfig = require('./../test-lib/default-config');
 
@@ -16,6 +17,10 @@ describe('INTEGRATION => JOBS', () => {
 
   after(() => {
     return appServer.stop();
+  });
+
+  beforeEach(() => {
+    return JobsBL.removeAll();
   });
 
   it('POST `/jobs` creates a new job', () => {
@@ -102,29 +107,33 @@ describe('INTEGRATION => JOBS', () => {
       .expect(HttpStatus.INTERNAL_SERVER_ERROR);
   });
 
-  it('PATCH `/jobs` => changes the status', () => {
+  it('PATCH `/jobs/:id` => patches the job', () => {
     const doc = {
       name: 'foo',
       status: 'idle'
     };
-    let id = null;
     return server
       .post('/v1/jobs')
       .send(doc)
       .expect(HttpStatus.CREATED)
       .then(result => {
         expect(result.body._id).to.exist;
-        id = result.body._id;
+        return Promise.resolve(result.body._id);
+      })
+      .then(id => {
         return server
-          .patch(`/v1/jobs/${result.body._id}`)
+          .patch(`/v1/jobs/${id}`)
           .send({status: 'running'})
           .expect(HttpStatus.OK)
           .then(() => {
-            return server
-              .get(`/v1/jobs/${id}`)
-              .then(result => {
-                expect(result.body).to.have.a.property('status').to.be.equal('running');
-              });
+            return Promise.resolve(id);
+          });
+      })
+      .then(id => {
+        return server
+          .get(`/v1/jobs/${id}`)
+          .then(result => {
+            return expect(result.body).to.have.a.property('status').to.be.equal('running');
           });
       });
   });
@@ -199,34 +208,29 @@ describe('INTEGRATION => JOBS', () => {
       });
   });
 
-  it('PATCh /jobs/:id/status updates the status', () => {
-    const docs = [{
+  it('PATCH /jobs/:id/status updates the status', () => {
+    const docs = {
       name: 'foo'
-    }];
+    };
     return server
       .post('/v1/jobs')
       .send(docs)
       .expect(HttpStatus.CREATED)
       .then(result => {
-        const jobId = result.body[0]._id;
-        console.log(jobId);
-        expect(jobId).to.exist;
+        return Promise.resolve(result.body._id);
+      })
+      .then(id => {
+        expect(id).to.exist;
+        const newStatus = {
+          status: 'running'
+        };
         return server
-          .patch(`/v1/jobs/${jobId}/status`)
-          .send({status: 'running'})
+          .patch(`/v1/jobs/${id}/status`)
+          .send(newStatus)
           .expect(HttpStatus.OK)
           .then(result => {
-            expect(result).to.exist;
             expect(result.body).to.exist;
-            console.log(result.body);
-            expect(result.body).to.have.a.property('ok').to.be.equal(1);
             expect(result.body).to.have.a.property('nModified').to.be.equal(1);
-            return server
-              .get(`/v1/jobs/${jobId}`)
-              .then(result => {
-                console.log('result', result.body);
-                expect(result.body).to.have.a.property('status').to.be.equal('running');
-              });
           });
       });
   });

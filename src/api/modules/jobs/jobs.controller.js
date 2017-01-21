@@ -45,8 +45,20 @@ class JobsController {
       });
   }
 
+  static patch(req, res) {
+    return JobsBL.patch(req.params.id, req.body)
+      .then(result => {
+        res.status(HttpStatus.OK);
+        res.json(result);
+      })
+      .catch(err => {
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        res.json(err);
+      });
+  }
+
   static patchStatus(req, res) {
-    return JobsBL.changeStatus(req.params.id, req.body.status)
+    return JobsBL.patch(req.params.id, req.body)
       .then(result => {
         res.status(HttpStatus.OK);
         res.json(result);

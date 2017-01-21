@@ -32,18 +32,20 @@ class JobsBL {
   }
 
   /**
-   * Change the job's status.
+   * Patch fields
    *
    * @description We can ignore in this case that .update is not recommended for mongoose-materialize.
    * @param jobId
-   * @param newStatus
+   * @param patchedFields
    */
-  static changeStatus(jobId, newStatus) {
+  static patch(jobId, patchedFields) {
+
+    // Todo: Verify that we are not patching any mongoose-materialize important fields
 
     return JobsModel
       .update(
         {_id: jobId},
-        {status: newStatus},
+        patchedFields,
         {runValidators: true}
       );
   }
