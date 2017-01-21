@@ -67,7 +67,7 @@ describe('INTEGRATION => GET /jobs/{status} => returns the {status} jobs', () =>
         expect(result.body).to.exist;
         expect(result.body).to.be.an.array;
         expect(result.body).to.be.of.length(15);
-      })
+      });
   });
 
   testFixtures.forEach(item => {

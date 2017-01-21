@@ -211,8 +211,6 @@ describe('INTEGRATION => JOBS', () => {
       });
   });
 
-
-
   it('PATCH /jobs/:id/status updates the status', () => {
     const docs = {
       name: 'foo'

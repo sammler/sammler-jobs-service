@@ -30,6 +30,7 @@ const schema = new Schema({
 });
 /* eslint-enable camelcase */
 
+// eslint-disable-next-line space-before-function-paren
 schema.virtual('job_id').get(function() {
   return this._id;
 });
