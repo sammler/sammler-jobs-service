@@ -59,6 +59,16 @@ class JobsController {
       .catch(err => handleError(res, err));
   }
 
+  static addChildren(req, res) {
+    return JobsBL.addChildren(req.params.id, req.body)
+      .then(result => {
+        res.status(HttpStatus.CREATED);
+        res.json(result);
+      })
+      .catch(err => handleError(res, err));
+
+  }
+
   static patch(req, res) {
     return JobsBL.patch(req.params.id, req.body)
       .then(result => {

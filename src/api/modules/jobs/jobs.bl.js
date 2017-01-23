@@ -38,6 +38,15 @@ class JobsBL {
     return docModel.save();
   }
 
+  static addChildren(parentId, job) {
+
+    return JobsModel.findById(parentId)
+      .then(doc => {
+        console.log(doc.name);
+        return doc.appendChild(job);
+      });
+  }
+
   /**
    * Patch fields
    *

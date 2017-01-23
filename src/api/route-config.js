@@ -23,6 +23,7 @@ function init(app) {
   router.get(`/${version}/jobs/:id`, JobsController.getSingle);
   router.delete(`/${version}/jobs/:id`, JobsController.delete);
   router.post(`/${version}/jobs`, JobsController.post);
+  router.post(`/${version}/jobs/:id/children`, JobsController.addChildren);
   router.post(`${version}/jobs/count`, JobsController.count);
   router.patch(`/${version}/jobs/:id`, JobsController.patch);
   router.patch(`/${version}/jobs/:id/status`, JobsController.patchStatus);

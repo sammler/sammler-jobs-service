@@ -123,8 +123,17 @@ describe('INTEGRATION => JOBS', () => {
       .expect(HttpStatus.INTERNAL_SERVER_ERROR);
   });
 
-  xit('POST `/jobs` throws an error if required params are missing', () => {
-    expect(false).to.be.true;
+  it('POST `/jobs` throws an error if required params are missing', () => {
+    const doc = {};
+
+    return server
+      .post('/v1/jobs')
+      .send(doc)
+      .expect(HttpStatus.INTERNAL_SERVER_ERROR)
+      .then(result => {
+        // Todo: Something we should take care of, the error should probably be in result.body?
+        expect(result.text).to.contain('ValidationError');
+      });
   });
 
   it('POST `/jobs` throws an error if parent is not existing', () => {
@@ -167,6 +176,37 @@ describe('INTEGRATION => JOBS', () => {
             return expect(result.body).to.have.a.property('status').to.be.equal('running');
           });
       });
+  });
+
+  it('POST `/jobs/:id/children` adds children', () => {
+
+    const doc = {
+      name: 'parent'
+    };
+    const child = {
+      name: 'child'
+    };
+
+    return server
+      .post('/v1/jobs')
+      .send(doc)
+      .expect(HttpStatus.CREATED)
+      .then(result => {
+        expect(result.body).to.have.a.property('_id').to.exist;
+        return Promise.resolve(result.body._id);
+      })
+      .then(parentId => {
+        return server
+          .post(`/v1/jobs/${parentId}/children`)
+          .send(child)
+          .expect(HttpStatus.CREATED)
+          .then(result => {
+            expect(result.body).to.have.a.property('parentId').to.be.equal(parentId);
+            expect(result.body).to.have.a.property('path').to.contain(parentId);
+            expect(result.body).to.have.a.property('_w').to.be.equal(0);
+          });
+      });
+
   });
 
   xit('PUT `/jobs/:id` updates a job', () => {
@@ -278,4 +318,5 @@ describe('INTEGRATION => JOBS', () => {
     expect(false).to.be.true;
   });
 
-});
+})
+;
