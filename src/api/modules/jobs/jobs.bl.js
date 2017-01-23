@@ -7,6 +7,8 @@ class JobsBL {
 
   /**
    * Creates a new job.
+   * @param docs
+   * @return {*}
    */
   static create(docs) {
     if (!_.isArray(docs)) {
@@ -15,6 +17,11 @@ class JobsBL {
     return Promise.map(docs, item => JobsBL.createSingle(item));
   }
 
+  /**
+   *
+   * @param job
+   * @returns {*|Promise}
+   */
   static createSingle(job) {
 
     if (!job._id) {
@@ -60,6 +67,11 @@ class JobsBL {
       .exec();
   }
 
+  /**
+   * Get a job by its id.
+   * @param id
+   * @returns {Promise}
+   */
   static getJobById(id) {
     return JobsModel
       .findById(id)

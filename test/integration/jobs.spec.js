@@ -123,7 +123,11 @@ describe('INTEGRATION => JOBS', () => {
       .expect(HttpStatus.INTERNAL_SERVER_ERROR);
   });
 
-  it('POST `/job` throws an error if parent is not existing', () => {
+  xit('POST `/jobs` throws an error if required params are missing', () => {
+    expect(false).to.be.true;
+  });
+
+  it('POST `/jobs` throws an error if parent is not existing', () => {
     const doc = {
       name: 'foo',
       parentId: 'xx'
@@ -165,7 +169,11 @@ describe('INTEGRATION => JOBS', () => {
       });
   });
 
-  it('DELETE `/job/:id` removes a job', () => {
+  xit('PUT `/jobs/:id` updates a job', () => {
+    expect(true).to.be.false;
+  });
+
+  it('DELETE `/jobs/:id` removes a job', () => {
     const doc = {
       name: 'foo'
     };
@@ -177,6 +185,10 @@ describe('INTEGRATION => JOBS', () => {
           .delete(`/v1/jobs/${result.body._id}`)
           .expect(HttpStatus.OK);
       });
+  });
+
+  xit('DELETE `/jobs/:id` returns an error if there are children', () => {
+    expect(true).to.be.false;
   });
 
   it('GET `jobs`=> returns all jobs', () => {
@@ -256,6 +268,14 @@ describe('INTEGRATION => JOBS', () => {
             expect(result.body).to.have.a.property('name').to.be.equal('ValidationError');
           });
       });
+  });
+
+  xit('creates sub-jobs', () => {
+    expect(false).to.be.true;
+  });
+
+  xit('updates the status of a child-job', () => {
+    expect(false).to.be.true;
   });
 
 });
