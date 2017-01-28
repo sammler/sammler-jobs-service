@@ -19,6 +19,7 @@ class AppServer {
   _initApp() {
     this.app = express();
     this.app.use(bodyParser.json());
+    this.app.set('json spaces', 2);
 
     // this.app.get('/*', (req, res, next) => {
     //   console.log(`${req.path}\n`);
