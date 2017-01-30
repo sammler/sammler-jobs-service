@@ -1,6 +1,6 @@
 {
   "name": "sammler-jobs-service",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Job service for sammler.",
   "keywords": [
     "sammler"
@@ -40,10 +40,9 @@
     "mongoose": "^4.7.3",
     "mongoose-materialized": "^0.1.9",
     "mongoose-timestamp": "^0.6.0",
+    "sammler-nodelib-logger": "sammler/sammler-nodelib-logger",
     "swagger-jsdoc": "^1.8.3",
-    "swagger-ui-express": "^1.0.3",
-    "winston": "^2.3.0",
-    "winston-logstash": "^0.3.0"
+    "swagger-ui-express": "^1.0.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -78,5 +77,8 @@
       "verb",
       "verb-readme-generator"
     ]
+  },
+  "winster": {
+    "configFile": "./src/config/winster-config.js"
   }
 }

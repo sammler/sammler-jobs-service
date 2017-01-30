@@ -3,7 +3,7 @@ const express = require('express');
 const _ = require('lodash');
 const Context = require('./config/context');
 
-const logger = require('./helper/logger');
+const logger = require('winster').instance();
 const routeConfig = require('./route-config');
 
 class AppServer {

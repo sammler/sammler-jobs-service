@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const bluebird = require('bluebird');
 
 let instance;
+
+// Todo (AAA): Completely rewrite the way how we connect to mongoose (see sammler-strategy-github)
 class Context {
   constructor() {
     this.db = null;
