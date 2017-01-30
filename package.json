@@ -1,6 +1,6 @@
 {
   "name": "sammler-jobs-service",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Job service for sammler.",
   "keywords": [
     "sammler"
