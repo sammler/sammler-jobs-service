@@ -5,7 +5,7 @@
   "keywords": [
     "sammler"
   ],
-  "homepage": "https://github.com/sammler/sammler-jobs-service",
+  "homepage": "https://github.com/sammler/job-service",
   "license": "MIT",
   "author": {
     "name": "Stefan Walther",
@@ -13,7 +13,7 @@
     "twitter": "waltherstefan"
   },
   "main": "src/index.js",
-  "repository": "https://github.com/sammler/sammler-jobs-service",
+  "repository": "https://github.com/sammler/job-service",
   "scripts": {
     "d-build": "docker build .",
     "dc-dev-down": "docker-compose --f=./docker-compose.dev.yml down",
@@ -55,7 +55,7 @@
     "supertest-as-promised": "^4.0.2"
   },
   "engines": {
-    "node": ">=7.2.0"
+    "node": ">=7.0.0"
   },
   "verb": {
     "run": true,
