@@ -3,6 +3,6 @@ version: "2"
 services:
 
   job-service-db:
-    image: mongo
+    image: sammlerio/mongo
     ports:
       - "27017:27017"

@@ -3,7 +3,11 @@ machine:
     version: 7.2.0
   environment:
     YARN_VERSION: 0.21.3
+    CONTAINER_NAME: sammlerio/jobs-service
+    CONTAINER_PORT: 3003
     PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+  services:
+    - docker
 
 dependencies:
   pre:
@@ -11,6 +15,7 @@ dependencies:
         if [[ ! -e ~/.yarn/bin/yarn || $(yarn --version) != "${YARN_VERSION}" ]]; then
           curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
         fi
+      - docker build --rm=false -t ${CONTAINER_NAME} .
   override:
     - yarn install
   cache_directories:
