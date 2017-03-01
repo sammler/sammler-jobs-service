@@ -585,9 +585,9 @@ escope@^3.6.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint-config-sammler@*:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/eslint-config-sammler/-/eslint-config-sammler-0.0.4.tgz#977a0e7ccdf9002e892c1d74d48f46f0cad6bf11"
+eslint-config-space-single@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/eslint-config-space-single/-/eslint-config-space-single-0.0.5.tgz#9f3cf0bce492f63a4b508ad7a9ac1b6441a3973b"
   dependencies:
     eslint-config-xo-space "^0.15.0"
 
@@ -1627,11 +1627,11 @@ qs@6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.2.0.tgz#3b7848c03c2dece69a9522b0fae8c4126d745f3b"
 
-qs@6.2.1, qs@^6.1.0:
+qs@6.2.1:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.2.1.tgz#ce03c5ff0935bc1d9d69a9f14cbd18e568d67625"
 
-qs@~6.3.0:
+qs@^6.1.0, qs@~6.3.0:
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.3.1.tgz#918c0b3bcd36679772baf135b1acb4c1651ed79d"
 

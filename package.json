@@ -28,7 +28,8 @@
     "start:dev": "nodemon -L --watch ./src/api --exec yarn run start",
     "test": "yarn run lint:src && yarn run lint:test && yarn run test:integration",
     "test:integration": "mocha --env SAMMLER_DB_JOBS_URI=mongodb://localhost:57017/jobs --env NODE_ENV=test './test/integration/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
-    "test:unit": "mocha --env NODE_ENV=test './test/unit/**/*.spec.js' --require './test/mocha.conf.js'"
+    "test:unit": "mocha --env NODE_ENV=test './test/unit/**/*.spec.js' --require './test/mocha.conf.js'",
+    "precommit": "yarn run lint --quiet"
   },
   "dependencies": {
     "bluebird": "^3.4.7",
@@ -48,7 +49,7 @@
     "chai": "^3.5.0",
     "codecov": "^1.0.1",
     "eslint": "^3.14.1",
-    "eslint-config-sammler": "*",
+    "eslint-config-space-single": "^0.0.5",
     "eslint-plugin-mocha": "^4.8.0",
     "husky": "^0.13.1",
     "istanbul": "^0.4.5",
