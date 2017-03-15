@@ -58,7 +58,7 @@
     "supertest-as-promised": "^4.0.2"
   },
   "engines": {
-    "node": ">=7.0.0"
+    "node": ">=7.2.0"
   },
   "verb": {
     "run": true,
