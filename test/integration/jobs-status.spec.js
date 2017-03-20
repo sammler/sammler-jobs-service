@@ -56,7 +56,6 @@ describe('INTEGRATION => GET /jobs/{status} => returns the {status} jobs', () =>
             expect(result).to.exist;
           });
       });
-
   });
 
   it('has now jobs', () => {

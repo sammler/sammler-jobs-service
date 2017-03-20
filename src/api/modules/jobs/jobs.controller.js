@@ -13,7 +13,6 @@ class JobsController {
       .then(result => {
         res.status(HttpStatus.OK);
         res.json(result);
-        res.setHeader('Content-Type', 'application/json');
       })
       .catch(err => handleError(res, err));
   }

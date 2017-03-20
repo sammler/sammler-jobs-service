@@ -34,7 +34,10 @@
   "dependencies": {
     "bluebird": "^3.4.7",
     "body-parser": "^1.16.0",
+    "compression": "^1.6.2",
+    "cors": "^2.8.1",
     "express": "^4.14.1",
+    "helmet": "^3.5.0",
     "http-status-codes": "^1.1.6",
     "js-yaml": "^3.7.0",
     "lodash": "^4.17.4",
@@ -42,13 +45,14 @@
     "mongoose-connection-promise": "^0.1.3",
     "mongoose-materialized": "^0.1.9",
     "mongoose-timestamp": "^0.6.0",
+    "morgan": "^1.8.1",
     "sammler-nodelib-logger": "sammler/sammler-nodelib-logger",
     "swagger-jsdoc": "^1.9.1",
     "swagger-ui-express": "^1.0.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "codecov": "^1.0.1",
+    "codecov": "^2.1.0",
     "eslint": "^3.14.1",
     "eslint-config-space-single": "^0.0.5",
     "eslint-plugin-mocha": "^4.8.0",
