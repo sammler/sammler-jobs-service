@@ -1,5 +1,5 @@
 {
-  "name": "sammler-jobs-service",
+  "name": "jobs-service",
   "version": "0.0.13",
   "description": "Job service for sammler.",
   "keywords": [
@@ -58,7 +58,6 @@
     "supertest-as-promised": "^4.0.2"
   },
   "engines": {
-    "node": ">=7.2.0"
   },
   "verb": {
     "run": true,
