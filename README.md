@@ -1,4 +1,4 @@
-# sammler-jobs-service
+# jobs-service
 
 > Job service for sammler.
 
@@ -30,5 +30,5 @@ Note: MongoDB runs on port 27117 to prevent conflicts with running the entire _s
 * [twitter/waltherstefan](http://twitter.com/waltherstefan)
 
 ## License
-Released under the MIT license.
+MIT
 
