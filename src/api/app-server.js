@@ -2,6 +2,9 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const _ = require('lodash');
 const Context = require('./config/context');
+const bluebird = require('bluebird');
+
+global.promise = bluebird;
 
 const logger = require('winster').instance();
 const routeConfig = require('./route-config');
