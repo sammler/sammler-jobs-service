@@ -54,11 +54,9 @@
     "husky": "^0.13.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
-    "supertest": "^3.0.0",
-    "supertest-as-promised": "^4.0.2"
+    "supertest": "^3.0.0"
   },
-  "engines": {
-  },
+  "engines": {},
   "verb": {
     "run": true,
     "toc": false,
