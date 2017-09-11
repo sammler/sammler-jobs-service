@@ -1,6 +1,5 @@
 const bodyParser = require('body-parser');
 const express = require('express');
-const _ = require('lodash');
 const bluebird = require('bluebird');
 const helmet = require('helmet');
 const cors = require('cors');

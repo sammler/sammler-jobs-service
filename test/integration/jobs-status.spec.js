@@ -64,7 +64,7 @@ describe('INTEGRATION => GET /jobs/{status} => returns the {status} jobs', () =>
       .expect(HttpStatus.OK)
       .then(result => {
         expect(result.body).to.exist;
-        expect(result.body).to.be.an.array;
+        expect(result.body).to.be.an('array');
         expect(result.body).to.be.of.length(15);
       });
   });
@@ -75,7 +75,7 @@ describe('INTEGRATION => GET /jobs/{status} => returns the {status} jobs', () =>
         .get(`/v1/jobs/${item.status}`)
         .expect(HttpStatus.OK)
         .then(result => {
-          expect(result.body).to.be.an.array;
+          expect(result.body).to.be.an('array');
           expect(result.body).to.have.length(item.expected);
         });
     });

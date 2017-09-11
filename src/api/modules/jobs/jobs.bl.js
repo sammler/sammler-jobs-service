@@ -57,7 +57,6 @@ class JobsBL {
   static patch(jobId, patchedFields) {
 
     // Todo: Verify that we are not patching any mongoose-materialize important fields
-
     return JobsModel
       .update(
         {_id: jobId},

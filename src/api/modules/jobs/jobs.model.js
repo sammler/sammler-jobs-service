@@ -8,13 +8,14 @@ const Schema = mongoose.Schema;
 /* eslint-disable camelcase */
 const schema = new Schema({
   _id: {
-    type: String,
+    type: Schema.Types.String,
     default: new Schema.ObjectId().toString()
   },
   name: {
-    type: String,
+    type: Schema.Types.String,
     required: true
   },
+  description: Schema.Types.String,
   status: {
     type: String,
     enum: ['aborted', 'idle', 'running', 'timeout', 'completed'],

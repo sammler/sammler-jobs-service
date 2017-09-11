@@ -58,7 +58,7 @@ describe('INTEGRATION => JOBS', () => {
       .expect(HttpStatus.CREATED)
       .then(result => {
         expect(result.body).to.exist;
-        expect(result.body).to.be.an.array;
+        expect(result.body).to.be.an('array');
         expect(result.body).to.be.of.length(2);
         expect(result.body[0]).to.have.a.property('_id').to.exist;
       })
@@ -237,7 +237,8 @@ describe('INTEGRATION => JOBS', () => {
       .expect(HttpStatus.OK)
       .then(result => {
         expect(result).to.exist;
-        expect(result).to.be.an.array;
+        expect(result.body).to.exist;
+        expect(result.body).to.be.an('array');
       });
   });
 
