@@ -8,7 +8,7 @@ const MongooseConnection = require('mongoose-connection-promise');
 const compression = require('compression');
 
 const logger = require('winster').instance();
-const routeConfig = require('./route-config');
+const routeConfig = require('./config/route-config');
 const mongooseConfig = require('./config/mongoose-config');
 const mongooseConnection = new MongooseConnection(mongooseConfig);
 

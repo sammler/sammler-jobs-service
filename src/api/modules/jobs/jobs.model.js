@@ -9,13 +9,16 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
   _id: {
     type: Schema.Types.String,
-    default: new Schema.ObjectId().toString()
+    default: mongoose.Types.ObjectId
   },
   name: {
     type: Schema.Types.String,
     required: true
   },
-  description: Schema.Types.String,
+  description: {
+    type: Schema.Types.String,
+    required: false
+  },
   status: {
     type: String,
     enum: ['aborted', 'idle', 'running', 'timeout', 'completed'],

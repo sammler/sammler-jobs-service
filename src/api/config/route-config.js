@@ -4,9 +4,9 @@ const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('js-yaml');
 
-const pkg = require('./../../package.json');
-const HealthCheckController = require('./modules/health-check/health-check.controller');
-const JobsController = require('./modules/jobs/jobs.controller');
+const pkg = require('./../../../package.json');
+const HealthCheckController = require('./../modules/health-check/health-check.controller');
+const JobsController = require('./../modules/jobs/jobs.controller');
 
 function init(app) {
   const router = express.Router(); // eslint-disable-line new-cap
@@ -30,7 +30,7 @@ function init(app) {
 
   app.use('/', router);
 
-  const swaggerDoc = yaml.safeLoad(fs.readFileSync(path.join(__dirname, './config/api-docs.yml'), 'utf8'));
+  const swaggerDoc = yaml.safeLoad(fs.readFileSync(path.join(__dirname, './api-docs.yml'), 'utf8'));
   swaggerDoc.info.version = pkg.version;
   app.use('/api-docs/', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 

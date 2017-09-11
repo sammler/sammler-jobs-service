@@ -11,11 +11,13 @@ Very simple, opinionated and re-usable service to log hierarchical jobs to Mongo
 - Update their status
 - Retrieve the current state of a job
 - Get the history of jobs
+- Have a read-only mode to serve from a given .yml file
 
 ## Configuration
 _sammler-jobs-service_ can be configured by the following environment variables:
 
 - `PORT` - The port to run the REST API (defaults to `3003`).
+- `LOAD_FROM_FILE` - All jobs will be loaded from a file, thus completely skipping MongoDB (defaults to false);
 
 ### Configuration for dependent services (in development mode)
 

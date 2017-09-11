@@ -1,4 +1,5 @@
 const JobsModel = require('./jobs.model').Model;
+const Config = require('./../../config/config');
 const _ = require('lodash');
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
@@ -90,9 +91,13 @@ class JobsBL {
    * Get all jobs.
    */
   static getJobs() {
-    return JobsModel
-      .find({})
-      .exec();
+    if (Config.LOAD_FROM_FILE) {
+      // Do something strange here ;-)
+    } else {
+      return JobsModel
+        .find({})
+        .exec();
+    }
   }
 
   static getJobsByStatus(statusFilter) {

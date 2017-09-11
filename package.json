@@ -84,6 +84,6 @@
     ]
   },
   "winster": {
-    "configFile": "./src/config/winster-config.js"
+    "configFile": "./src/api/config/winster-config.js"
   }
 }
