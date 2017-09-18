@@ -6,7 +6,6 @@ class HealthController {
     res.send({ts: new Date().toJSON()});
     next();
   }
-
 }
 
 module.exports = HealthController;

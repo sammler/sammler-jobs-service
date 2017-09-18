@@ -4,7 +4,7 @@ const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('js-yaml');
 
-const pkg = require('./../../../package.json');
+const pkg = require('./../../package.json');
 const HealthCheckController = require('./../modules/health-check/health-check.controller');
 const JobsController = require('./../modules/jobs/jobs.controller');
 

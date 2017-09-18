@@ -2,7 +2,22 @@ version: "2"
 
 services:
 
-  job-service-db:
+  mongo:
     image: sammlerio/mongo
     ports:
       - "27017:27017"
+
+  api:
+    build:
+      context: ./services/api
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=dev
+      - MONGODB_DEBUG=false
+      - MONGODB_HOST=mongo
+      - MONGODB_PORT=27017
+    volumes:
+      - "./services/api:/home/app"
+    command: ["npm", "run", "start:dev"]
+

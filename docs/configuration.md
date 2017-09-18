@@ -1,5 +1,5 @@
 
-_sammler-jobs-service_ can be configured by the following environment variables:
+_jobs-service_ can be configured by the following environment variables:
 
 - `PORT` - The port to run the REST API (defaults to `3003`).
 - `LOAD_FROM_FILE` - All jobs will be loaded from a file, thus completely skipping MongoDB (defaults to false);
