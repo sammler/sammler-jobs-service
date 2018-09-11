@@ -1,4 +1,4 @@
-FROM node:8.4.0
+FROM node:8.12.0
 
 ARG PORT=3000
 ENV PORT=$PORT
