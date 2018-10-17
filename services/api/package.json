@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "d-build": "docker build -t sammler/jobs-service .",
-    "d-run": "docker run sammler/jobs-service",
+    "d-build": "docker build -t sammlerio/jobs-service .",
+    "d-run": "docker run sammlerio/jobs-service",
     "d-build-run": "npm run d-build && npm run d-run",
     "start": "node index.js",
     "start:dev": "nodemon index.js"
