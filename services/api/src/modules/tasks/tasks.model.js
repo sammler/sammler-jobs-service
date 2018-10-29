@@ -15,8 +15,6 @@ const schema = new Schema({
     enum: ['aborted', 'idle', 'running', 'timeout', 'completed'],
     default: 'idle'
   }
-
-
 }, {
   collection: MongooseConfig.COLLECTION_PREFIX + MongooseConfig.COLLECTION_JOBS,
   strict: true

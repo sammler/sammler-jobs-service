@@ -8,7 +8,6 @@ const Schema = mongoose.Schema;
 /* eslint-disable camelcase */
 const schema = new Schema({
 
-  // Todo: don't see a need to define _id here, can't we just omit this?
   _id: {
     type: Schema.Types.String,
     default: mongoose.Types.ObjectId
