@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const mongooseMaterializedPlugin = require('mongoose-materialized');
 const mongooseTimestampsPlugin = require('mongoose-timestamp');
 
-const MongooseConfig = require('./../../config/mongoose-config');
+const MongooseConfig = require('../../config/mongoose-config');
 const Schema = mongoose.Schema;
 
 /* eslint-disable camelcase */

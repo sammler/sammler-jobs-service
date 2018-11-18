@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+
+  mongo:
+    image: sammlerio/mongo
+    ports:
+      - 27017:27017
+    logging:
+      driver: none
+
+  jobs-service-test:
+    image: sammlerio/jobs-service-test
+    environment:
+      - NODE_ENV=test
+      - PORT=3003
+      - JWT_SECRET=foo
+      - MONGODB_DEBUG=false
+      - MONGODB_HOST=mongo
+      - MONGODB_PORT=27017
+      - MONGODB_DATABASE=db
+      - ENABLE_AUDIT_LOG=false
+    volumes:
+      - ./coverage:/opt/jobs-service/coverage
+    depends_on:
+      - mongo
