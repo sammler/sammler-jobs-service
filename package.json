@@ -25,6 +25,7 @@
     "lint:test:fix": "eslint test --fix",
     "start": "node src/api/index.js",
     "start:dev": "nodemon -L --watch ./src/api --exec npm run start",
+    "test": "export JWT_SECRET='My Secret' && nyc --reporter=lcov mocha './test/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
     "test:integration": "export JWT_SECRET='My Secret' && nyc --reporter=lcov mocha './test/integration/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
     "test:unit": "nyc --reporter=lcov mocha './test/unit/**/*.spec.js' --require './test/mocha.conf.js'"
   },

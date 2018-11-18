@@ -43,8 +43,8 @@ down-test:
 	docker-compose --f=docker-compose.test.yml down -t 0
 .PHONY: down-test
 
-run-integration-tests: 		## Run integration tests
-	docker-compose --f=docker-compose.integration-tests.yml run jobs-service-test npm run test:integration
+run-integration-tests: 		## Run integration (+ unit tests) tests
+	docker-compose --f=docker-compose.integration-tests.yml run jobs-service-test npm run test
 .PHONY: run-integration-tests
 
 
