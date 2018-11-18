@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+
+  jobs-service-test:
+    image: sammlerio/jobs-service-test
+    command: npm run test:unit
+    environment:
+      - NODE_ENV=test
+      - WINSTER_SUPRESS_LOGGING='true'
+    volumes:
+      - ./coverage:/opt/jobs-service/coverage
+      - ./.nyc_output:/opt/jobs-service/.nyc_output
+

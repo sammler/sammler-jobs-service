@@ -6,6 +6,7 @@
     "sammler"
   ],
   "homepage": "https://github.com/sammler/job-service",
+  "repository": "https://github.com/sammler/job-service",
   "license": "MIT",
   "author": {
     "name": "Stefan Walther",
@@ -13,27 +14,48 @@
     "twitter": "waltherstefan"
   },
   "main": "src/index.js",
-  "repository": "https://github.com/sammler/job-service",
   "scripts": {
-    "d-build:api": "docker build ./src/api",
-    "dc-down:dev": "docker-compose --f=./docker-compose.dev.yml down",
-    "dc-up:dev": "docker-compose --f=./docker-compose.dev.yml up",
-    "dc-up:devb": "docker-compose --f=./docker-compose.dev.yml up --build",
+    "precommit": "npm run lint --quiet",
     "docs": "docker run --rm -v ${PWD}:/opt/verb stefanwalther/verb",
-    "lint": "npm run lint:src && npm run lint:test",
+    "lint": "eslint src && eslint test",
+    "lint:fix": "eslint src --fix && eslint test --fix",
     "lint:src": "eslint src",
     "lint:src:fix": "eslint src --fix",
     "lint:test": "eslint test",
     "lint:test:fix": "eslint test --fix",
     "start": "node src/api/index.js",
     "start:dev": "nodemon -L --watch ./src/api --exec npm run start",
-    "test": "npm run lint:src && npm run lint:test && npm run test:integration",
-    "test:integration": "mocha --env SAMMLER_DB_JOBS_URI=mongodb://localhost:57017/jobs --env NODE_ENV=test './test/integration/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
-    "test:unit": "mocha --env NODE_ENV=test './test/unit/**/*.spec.js' --require './test/mocha.conf.js'",
-    "precommit": "npm run lint --quiet"
+    "test": "export JWT_SECRET='My Secret' && nyc --reporter=lcov mocha './test/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
+    "test:integration": "export JWT_SECRET='My Secret' && nyc --reporter=lcov mocha './test/integration/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
+    "test:unit": "nyc --reporter=lcov mocha './test/unit/**/*.spec.js' --require './test/mocha.conf.js'"
   },
-  "dependencies": {},
-  "devDependencies": {},
+  "dependencies": {
+    "bluebird": "3.5.0",
+    "body-parser": "1.18.0",
+    "compression": "1.7.0",
+    "cors": "2.8.4",
+    "express": "4.15.4",
+    "helmet": "3.8.1",
+    "http-status-codes": "1.3.0",
+    "js-yaml": "3.10.0",
+    "lodash": "4.17.4",
+    "mongoose": "4.11.11",
+    "mongoose-connection-promise": "0.2.2",
+    "mongoose-materialized": "0.1.9",
+    "mongoose-timestamp": "0.6.0",
+    "morgan": "1.8.2",
+    "sammler-nodelib-logger": "0.2.1",
+    "swagger-jsdoc": "1.9.7",
+    "swagger-ui-express": "2.0.7"
+  },
+  "devDependencies": {
+    "chai": "4.1.2",
+    "eslint": "4.19.1",
+    "eslint-config-space-single": "0.2.0",
+    "mocha": "3.5.3",
+    "nyc": "^13.1.0",
+    "supertest": "3.0.0"
+  },
   "engines": {},
   "verb": {
     "run": true,

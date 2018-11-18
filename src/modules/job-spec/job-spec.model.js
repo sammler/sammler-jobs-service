@@ -4,7 +4,7 @@ const mongooseTimestampsPlugin = require('mongoose-timestamp');
 
 const Schema = mongoose.Schema;
 
-const MongooseConfig = require('./../../config/mongoose-config');
+const MongooseConfig = require('../../config/mongoose-config');
 const schema = new Schema({
   name: Schema.Types.String,
   description: Schema.Types.String,

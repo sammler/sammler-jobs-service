@@ -1,9 +1,9 @@
 const superTest = require('supertest');
 const HttpStatus = require('http-status-codes');
-const AppServer = require('./../../src/app-server');
-const JobsBL = require('./../../src/modules/jobs/jobs.bl');
+const AppServer = require('../../src/app-server');
+const JobsBL = require('../../src/modules/jobs/jobs.bl');
 
-const defaultConfig = require('./../test-lib/default-config');
+const defaultConfig = require('../test-lib/default-config');
 
 describe('INTEGRATION => GET /jobs/{status} => returns the {status} jobs', () => {
 
