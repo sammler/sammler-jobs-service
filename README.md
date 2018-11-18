@@ -3,6 +3,7 @@
 > Job service for sammler.
 
 [![CircleCI](https://img.shields.io/circleci/project/github/sammler/sammler-jobs-service.svg)](https://circleci.com/gh/sammler/sammler-jobs-service)
+[![Codecov](https://img.shields.io/codecov/c/github/sammler/jobs-service.svg?logo=codecov)](https://codecov.io/gh/sammler/jobs-service)
 
 ## Purpose
 Very simple, opinionated and re-usable service to log hierarchical jobs to MongoDB:
@@ -14,7 +15,7 @@ Very simple, opinionated and re-usable service to log hierarchical jobs to Mongo
 - Have a read-only mode to serve from a given .yml file
 
 ## Configuration
-_sammler-jobs-service_ can be configured by the following environment variables:
+_jobs-service_ can be configured by the following environment variables:
 
 - `PORT` - The port to run the REST API (defaults to `3003`).
 - `LOAD_FROM_FILE` - All jobs will be loaded from a file, thus completely skipping MongoDB (defaults to false);
