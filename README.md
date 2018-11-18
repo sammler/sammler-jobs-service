@@ -2,7 +2,7 @@
 
 > Job service for sammler.
 
-[![CircleCI](https://img.shields.io/circleci/project/github/sammler/sammler-jobs-service.svg)](https://circleci.com/gh/sammler/sammler-jobs-service)
+[![CircleCI](https://img.shields.io/circleci/project/github/sammler/jobs-service.svg)](https://circleci.com/gh/sammler/jobs-service)
 [![Codecov](https://img.shields.io/codecov/c/github/sammler/jobs-service.svg?logo=codecov)](https://codecov.io/gh/sammler/jobs-service)
 
 ## Purpose
