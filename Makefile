@@ -5,10 +5,18 @@ help:								## Show this help.
 	@echo ''
 .PHONY: help
 
-gen-readme:					## Generate README.md (using docker-verb)
+gen-readme:					## Generate README.md (using docker-verb).
 	docker run --rm -v ${PWD}:/opt/verb stefanwalther/verb
 .PHONY: gen-readme
 
-up-deps:
-	docker-compose --f=docker-compose.deps.yml up
+up-deps:						## Spawn required services (daemon mode).
+	docker-compose --f=docker-compose.deps.yml up -d
 .PHONY: up-deps
+
+up-deps-i:					## Spawn required services (interactive mode).
+	docker-compose --f=docker-compose.deps.yml up
+.PHONY: up-deps-i
+
+down-deps:					## Tear down the required services.
+	docker-compose --f=docker-compose.deps.yml down -t 0
+.PHONY: down-deps
