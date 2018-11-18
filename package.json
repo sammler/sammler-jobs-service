@@ -30,7 +30,7 @@
     "test:unit": "nyc --reporter=lcov mocha './test/unit/**/*.spec.js' --require './test/mocha.conf.js'"
   },
   "dependencies": {
-    "bluebird": "3.5.0",
+    "bluebird": "3.5.3",
     "body-parser": "1.18.0",
     "compression": "1.7.0",
     "cors": "2.8.4",
