@@ -2,20 +2,19 @@ const superTest = require('supertest');
 const HttpStatus = require('http-status-codes');
 const AppServer = require('../../src/app-server');
 
-const defaultConfig = require('../test-lib/default-config');
+describe('[integration] => /api-docs/', () => {
 
-describe('INTEGRATION => /api-docs/', () => {
   let server;
-  const appServer = new AppServer(defaultConfig);
-  before(() => {
-    return appServer.start()
-      .then(() => {
-        server = superTest(appServer.server);
-      });
+  let appServer;
+
+  beforeEach(async () => {
+    appServer = new AppServer();
+    await appServer.start();
+    server = superTest(appServer.server);
   });
 
-  after(() => {
-    return appServer.stop();
+  afterEach(async () => {
+    await appServer.stop();
   });
 
   it('GET /api-docs => returns redirection to /api-docs/', () => {

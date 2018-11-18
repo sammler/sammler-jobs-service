@@ -27,3 +27,5 @@ services:
       "--store", "FILE",
       "--dir", "datastore"
     ]
+    logging:
+      driver: none

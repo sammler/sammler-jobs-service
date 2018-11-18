@@ -12,6 +12,8 @@
     "no-inline-comments": "off",
     "no-undef": "off",
     "no-unused-vars": "off",
-    "no-unused-expressions": "off"
+    "no-unused-expressions": "off",
+    "new-cap": "off",
+    "max-nested-callbacks": "off"
   }
 }

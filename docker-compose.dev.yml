@@ -2,22 +2,52 @@ version: "2"
 
 services:
 
+  # --------------------------------------
+  #              Infrastructure
+  # --------------------------------------
   mongo:
-    image: sammlerio/mongo
+    image: mongo
+    container_name: mongo
     ports:
       - "27017:27017"
+    logging:
+      driver: none
 
-  api:
-    build:
-      context: ./services/api
-    depends_on:
-      - mongo
+  nats-streaming:
+    image: nats-streaming
+    ports:
+      - "4222:4222"
+      - "4223:4223"
+      - "8223:8223"
+      - "8222:8222"
+    volumes:
+      - ./.datastore:/datastore
+    command: [
+      "-m", "8222",
+      "--store", "FILE",
+      "--dir", "datastore"
+    ]
+    logging:
+      driver: none
+
+  # --------------------------------------
+  #              Services
+  # --------------------------------------
+  jobs-service:
+    image: sammlerio/jobs-service
+    container_name: jobs-service
     environment:
       - NODE_ENV=dev
+      - PORT=3003
       - MONGODB_DEBUG=false
       - MONGODB_HOST=mongo
       - MONGODB_PORT=27017
+      - MONGODB_DATABASE=db
+    ports:
+      - "3003:3003"
     volumes:
-      - "./services/api:/home/app"
-    command: ["npm", "run", "start:dev"]
+      - "./:/opt/jobs-service"
+    depends_on:
+      - mongo
+    command: ["npm", "run", "start:watch"]
 
