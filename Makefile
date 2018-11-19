@@ -35,6 +35,14 @@ up-deps-i:					## Spawn required services (interactive mode).
 	docker-compose --f=docker-compose.deps.yml up
 .PHONY: up-deps-i
 
+up-dev-i:						## Bring up the dev-environment (with watching the source)
+	docker-compose --f=docker-compose.dev.yml up
+.PHONY: up-dev-i
+
+down-dev:
+	docker-compose --f=docker-compose.deps.yml down -t 0
+.PHONY: down-dev
+
 up-test:						## Bring up the test environment (docker-compose up => docker-compose.test.yml)
 	docker-compose --f=docker-compose.test.yml up -d
 .PHONY: up-test

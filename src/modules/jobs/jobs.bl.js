@@ -1,6 +1,5 @@
 const JobsModel = require('./jobs.model').Model;
 const _ = require('lodash');
-const Promise = require('bluebird');
 const mongoose = require('mongoose');
 
 class JobsBL {
@@ -110,12 +109,6 @@ class JobsBL {
     // Todo: Add check there that no parents with children are deleted
     return JobsModel
       .remove(id)
-      .exec();
-  }
-
-  static removeAll() {
-    return JobsModel
-      .remove({})
       .exec();
   }
 

@@ -4,18 +4,19 @@ const AppServer = require('../../src/app-server');
 
 const defaultConfig = require('../test-lib/default-config');
 
-describe('INTEGRATION => GET `health-check`', () => {
+describe('[integration] => /health-check', () => {
+
   let server;
-  const appServer = new AppServer(defaultConfig);
-  before(() => {
-    return appServer.start()
-      .then(() => {
-        server = superTest(appServer.server);
-      });
+  let appServer;
+
+  beforeEach(async () => {
+    appServer = new AppServer();
+    await appServer.start();
+    server = superTest(appServer.server);
   });
 
-  after(() => {
-    return appServer.stop();
+  afterEach(async () => {
+    await appServer.stop();
   });
 
   it('returns a timestamp', () => {
