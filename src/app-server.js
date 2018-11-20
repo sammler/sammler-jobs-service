@@ -4,6 +4,7 @@ const MongooseConnectionConfig = require('mongoose-connection-config');
 const initializer = require('express-initializers');
 const path = require('path');
 const mongoose = require('mongoose');
+const AgendaWrapper = require('./modules/agenda');
 
 const defaultConfig = require('./config/server-config');
 
@@ -14,6 +15,7 @@ class AppServer {
     this.config = _.extend(_.clone(defaultConfig), config || {});
 
     this.server = null;
+    this.agendaWrapper = null;
     this.logger = require('winster').instance();
 
     this.app = express();
@@ -22,13 +24,14 @@ class AppServer {
 
   async start() {
     const mongoUri = new MongooseConnectionConfig(require('./config/mongoose-config')).getMongoUri();
-    this.logger.trace('mongoUri', mongoUri);
     await initializer(this.app, {directory: path.join(__dirname, 'initializers')});
     await mongoose.connect(mongoUri, {useNewUrlParser: true});
+    this.agendaWrapper = new AgendaWrapper();
+    await this.agendaWrapper.start();
 
     try {
       this.server = await this.app.listen(this.config.PORT);
-      this.logger.info(`Express server listening on port ${this.config.PORT} in "${this.config.env.NODE_ENV}" mode`);
+      this.logger.info(`Express server listening on port ${this.config.PORT} in "${this.config.NODE_ENV}" mode`);
     } catch (err) {
       this.logger.error('Cannot start express server', err);
     }

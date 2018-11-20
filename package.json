@@ -24,6 +24,7 @@
     "lint:src:fix": "eslint src --fix",
     "lint:test": "eslint test",
     "lint:test:fix": "eslint test --fix",
+    "start:agenda-debug": "DEBUG='agenda:*' node index.js",
     "start": "node index.js",
     "start:watch": "npm run ensure:nodemon && nodemon -L --watch . --exec npm run start",
     "test": "export JWT_SECRET='My Secret' && nyc --reporter=lcov mocha './test/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
