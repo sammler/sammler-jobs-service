@@ -23,11 +23,9 @@ class AppServer {
   }
 
   async start() {
-    const mongoUri = new MongooseConnectionConfig(require('./config/mongoose-config')).getMongoUri();
+    const MongoUri = new MongooseConnectionConfig(require('./config/mongoose-config')).getMongoUri();
     await initializer(this.app, {directory: path.join(__dirname, 'initializers')});
-    await mongoose.connect(mongoUri, {useNewUrlParser: true});
-    this.agendaWrapper = new AgendaWrapper();
-    await this.agendaWrapper.start();
+    await mongoose.connect(MongoUri, {useNewUrlParser: true});
 
     try {
       this.server = await this.app.listen(this.config.PORT);
@@ -35,9 +33,49 @@ class AppServer {
     } catch (err) {
       this.logger.error('Cannot start express server', err);
     }
+
+    try {
+      this.agendaWrapper = new AgendaWrapper();
+      await this.agendaWrapper.start();
+
+    } catch (e) {
+      this.logger.trace('Could not start Agenda', e);
+    }
+
+    const signals = {
+      SIGINT: 2,
+      SIGTERM: 15
+    };
+
+    function shutdown(signal, value) {
+      this.server.close(function () {
+        console.log('server stopped by ' + signal);
+        process.exit(128 + value);
+      });
+    }
+
+    Object.keys(signals).forEach(function (signal) {
+      process.on(signal, function () {
+        shutdown(signal, signals[signal]);
+      });
+    });
+
+    process.on('SIGTERM', this.graceful);
+    process.on('SIGINT', this.graceful);
+    process.on('SIGUSR2', this.graceful); // Nodemon
+    process.once('SIGUSR2', this.graceful); // Nodemon
+  }
+
+  graceful() {
+    console.log('graceful');
   }
 
   async stop() {
+
+    this.logger.trace('OK, we are stopping the server ...');
+
+    // Await this.agendaWrapper.stop();
+
     if (mongoose.connection) {
       try {
         await mongoose.connection.close(); // Using Moongoose >5.0.4 connection.close is preferred over mongoose.disconnect();
@@ -47,7 +85,10 @@ class AppServer {
       } catch (e) {
         this.logger.trace('Could not close mongoose connection', e);
       }
+    } else {
+      this.logger.trace('No mongoose connection to close');
     }
+
     if (this.server) {
       try {
         await this.server.close();
@@ -55,6 +96,8 @@ class AppServer {
       } catch (e) {
         this.logger.trace('Could not close server', e);
       }
+    } else {
+      this.logger.trace('No server to close');
     }
   }
 
@@ -84,25 +127,6 @@ class AppServer {
   //   if (valErrors && valErrors.length) {
   //     throw new Error('Validation errors when validation the configuration', valErrors, this.config);
   //   }
-  //
-  //   return new Promise((resolve, reject) => {
-  //     mongooseConnection.connect()
-  //       .then(connection => {
-  //         this.app.db = connection;
-  //         this.server = this.app.listen(this.config.PORT, err => {
-  //           if (err) {
-  //             this.logger.error('Cannot start express server', err);
-  //             return reject(err);
-  //           }
-  //           this.logger.debug(`Express server listening on port ${this.config.PORT} in "${process.env.NODE_ENV}" mode`);
-  //           return resolve();
-  //         });
-  //       })
-  //       .catch(err => {
-  //         this.logger.fatal('Error creating a mongoose connection', err);
-  //         throw err;
-  //       });
-  //   });
   // }
 
 }
