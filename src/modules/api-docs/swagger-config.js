@@ -16,7 +16,8 @@ const swaggerConfig = {
   apis: [
     './src/config/swagger-definitions.js',
     './src/modules/api-docs/api-docs.routes.js',
-    './src/modules/health-check/health-check.routes.js'
+    './src/modules/health-check/health-check.routes.js',
+    './src/modules/agenda/agenda.routes.js'
   ]
 };
 

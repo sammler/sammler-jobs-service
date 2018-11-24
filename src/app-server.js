@@ -1,12 +1,12 @@
 const express = require('express');
 const _ = require('lodash');
-const MongooseConnectionConfig = require('mongoose-connection-config');
 const initializer = require('express-initializers');
 const path = require('path');
 const mongoose = require('mongoose');
-const AgendaWrapper = require('./modules/agenda');
 
+const MongooseConnectionConfig = require('mongoose-connection-config');
 const defaultConfig = require('./config/server-config');
+const AgendaWrapper = require('./modules/agenda');
 
 class AppServer {
 
@@ -29,9 +29,9 @@ class AppServer {
 
     try {
       this.server = await this.app.listen(this.config.PORT);
-      this.logger.info(`Express server listening on port ${this.config.PORT} in "${this.config.NODE_ENV}" mode`);
+      this.logger.info(`[app-server] Express server listening on port ${this.config.PORT} in "${this.config.NODE_ENV}" mode`);
     } catch (err) {
-      this.logger.error('Cannot start express server', err);
+      this.logger.error('[app-server] Cannot start express server', err);
     }
 
     try {
@@ -39,65 +39,36 @@ class AppServer {
       await this.agendaWrapper.start();
 
     } catch (e) {
-      this.logger.trace('Could not start Agenda', e);
+      this.logger.trace('[app-server] Could not start Agenda', e);
     }
-
-    const signals = {
-      SIGINT: 2,
-      SIGTERM: 15
-    };
-
-    function shutdown(signal, value) {
-      this.server.close(function () {
-        console.log('server stopped by ' + signal);
-        process.exit(128 + value);
-      });
-    }
-
-    Object.keys(signals).forEach(function (signal) {
-      process.on(signal, function () {
-        shutdown(signal, signals[signal]);
-      });
-    });
-
-    process.on('SIGTERM', this.graceful);
-    process.on('SIGINT', this.graceful);
-    process.on('SIGUSR2', this.graceful); // Nodemon
-    process.once('SIGUSR2', this.graceful); // Nodemon
-  }
-
-  graceful() {
-    console.log('graceful');
   }
 
   async stop() {
 
-    this.logger.trace('OK, we are stopping the server ...');
-
-    // Await this.agendaWrapper.stop();
+    await this.agendaWrapper.stop();
 
     if (mongoose.connection) {
       try {
         await mongoose.connection.close(); // Using Moongoose >5.0.4 connection.close is preferred over mongoose.disconnect();
         mongoose.models = {};
         mongoose.modelSchemas = {};
-        this.logger.trace('Closed mongoose connection');
+        this.logger.trace('[app-server] Closed mongoose connection');
       } catch (e) {
-        this.logger.trace('Could not close mongoose connection', e);
+        this.logger.trace('[app-server] Could not close mongoose connection', e);
       }
     } else {
-      this.logger.trace('No mongoose connection to close');
+      this.logger.trace('[app-server] No mongoose connection to close');
     }
 
     if (this.server) {
       try {
         await this.server.close();
-        this.logger.trace('Server closed');
+        this.logger.info('[app-server] Server closed');
       } catch (e) {
-        this.logger.trace('Could not close server', e);
+        this.logger.error('[app-server] Could not close server', e);
       }
     } else {
-      this.logger.trace('No server to close');
+      this.logger.trace('[app-server] No server to close');
     }
   }
 

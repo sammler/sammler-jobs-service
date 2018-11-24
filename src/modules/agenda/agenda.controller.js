@@ -3,7 +3,13 @@ const AgendaWrapper = require('./index');
 
 class AgendaController {
 
-  static async getJobs(req, res) {
+  /**
+   * Get the jobs for the currently authenticated user.
+   * @param req
+   * @param res
+   * @returns {Promise<*>}
+   */
+  static async getUserJobs(req, res) {
     let agendaWrapper = await AgendaWrapper.instance();
     let jobs = await agendaWrapper.agenda.jobs();
     return expressResult.ok(res, jobs);

@@ -8,11 +8,27 @@ const AgendaController = require('./agenda.controller');
  *
  * /jobs:
  *   get:
- *     description: Return all jobs.
+ *     description: Return all jobs for the current user.
+ *     produces:
+ *       - application/json
+ *     tags:
+ *       - jobs
  *
  */
-router.get('/v1/jobs', AgendaController.getJobs);
+router.get('/v1/jobs', AgendaController.getUserJobs);
 
+/**
+ * @swagger
+ *
+ * /jobs:
+ *   post:
+ *     description: Post a job.
+ *     produces:
+ *       - application/json
+ *     tags:
+ *       - jobs
+ *
+ */
 router.post('/v1/jobs', AgendaController.postJob);
 
 module.exports = router;

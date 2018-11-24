@@ -25,8 +25,8 @@
     "lint:test": "eslint test",
     "lint:test:fix": "eslint test --fix",
     "start:agenda-debug": "DEBUG='agenda:*' node index.js",
-    "start": "DEBUG='* -agenda:* -express:* -body-parser:* -compression:*' node index.js",
-    "start:watch": "npm run ensure:nodemon && nodemon -L --interactive --watch . --exec npm run start",
+    "start": "DEBUG='* -agenda:* -express:* -body-parser:* -send:* -compression:*' node index.js",
+    "start:watch": "npm run ensure:nodemon && nodemon --signal SIGTERM -L --interactive --watch . --exec npm run start",
     "test": "export JWT_SECRET='My Secret' && nyc --reporter=lcov mocha './test/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
     "test:integration": "export JWT_SECRET='My Secret' && nyc --reporter=lcov mocha './test/integration/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
     "test:unit": "nyc --reporter=lcov mocha './test/unit/**/*.spec.js' --require './test/mocha.conf.js'"

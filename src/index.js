@@ -1,19 +1,21 @@
 const AppServer = require('./app-server');
 const serverConfig = require('./config/server-config');
+const logger = require('winster').instance();
 
 const signals = {
   SIGINT: 2,
-  SIGTERM: 15
+  SIGTERM: 15,
+  SIGUSR2: 12 // Nodemon
 };
+let server;
 
 Object.keys(signals).forEach(function (signal) {
-  console.log('Signal', signal);
-  process.on(signal, function () {
-    console.log('Signal received');
+  process.on(signal, async () => {
+    logger.trace(`[index.js] Got signal "${signal}", stopping the server ...`);
+    await server.stop();
   });
 });
 
-let server;
 (async () => {
   server = new AppServer(serverConfig);
   await server.start();

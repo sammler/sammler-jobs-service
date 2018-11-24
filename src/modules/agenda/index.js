@@ -62,14 +62,14 @@ class AgendaWrapper {
 
   _defineAgendas() {
     this.agenda.define('echo something', (job, done) => {
-      console.log('agenda: ', job.name);
+      logger.trace('[agenda| Done saving the job ', job.name);
       done();
     });
   }
 
   async _defineJobs() {
     await this.agenda.every('minute', 'echo something');
-    console.log('done defining jobs');
+    logger.trace('[agenda] Done defining jobs');
   }
 
   /**
@@ -79,13 +79,13 @@ class AgendaWrapper {
    * @private
    */
   async _graceful() {
-    console.info('gracefully shutting down agenda ...');
     try {
       if (this.agenda) {
+        logger.trace('[agenda/index.js] Gracefully shutting down agenda ...');
         await this.agenda.stop();
       }
     } catch (e) {
-      console.error('Cloud not gracefully shutdown agenda', e);
+      logger.trace.error('[agenda/index.js] Could not gracefully shutdown agenda', e);
     }
     process.exit(0);
   }
