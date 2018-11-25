@@ -43,6 +43,9 @@ class AgendaWrapper {
 
   }
 
+  /**
+   * Get an instance of the AgendaWrapper.
+   */
   static async instance() {
     if (!instance) {
       instance = new AgendaWrapper();
@@ -51,6 +54,11 @@ class AgendaWrapper {
     return instance;
   }
 
+  /**
+   * Start agenda.
+   *
+   * @async
+   */
   async start() {
 
     await this.agenda.start();
@@ -58,9 +66,15 @@ class AgendaWrapper {
     await this._defineJobs();
   }
 
+  /**
+   * Define the job definitions for agenda.
+   *
+   * @private
+   */
   _defineAgendas() {
 
-    logger.trace('------ Agenda.JobDefinitions');
+    console.log('');
+    logger.trace('------ ++ Agenda.JobDefinitions');
     let jobDefinitions = glob.sync(path.join(__dirname, './processors/**/*.processor.js'));
     jobDefinitions.forEach(item => {
       let JobDefinition = require(item);
@@ -71,32 +85,38 @@ class AgendaWrapper {
       });
     });
     logger.trace('------ // Agenda.JobDefinitions');
+    console.log('');
   }
 
+  /**
+   * Define jobs.
+   * @private
+   */
   async _defineJobs() {
     await this.agenda.every('minute', 'echo');
-    await this.agenda.every('minute', 'nats');
-    // Logger.trace('[agendaWraper._defineJobs] Done defining jobs'); // eslint-disable-line capitalized-comments
+    await this.agenda.every('minute', 'nats', {nats: {foo: 'bar'}});
   }
 
   /**
    * Gracefully shutdown agenda.
    *
-   * @returns {Promise<void>}
    * @private
    */
   async _graceful() {
     try {
       if (this.agenda) {
-        logger.trace('[agenda/echo.processor.js] Gracefully shutting down agenda ...');
+        logger.trace('[agendaWrapper] Gracefully shutting down agenda ...');
         await this.agenda.stop();
       }
     } catch (e) {
-      logger.trace.error('[agenda/echo.processor.js] Could not gracefully shutdown agenda', e);
+      logger.trace.error('[agendaWrapper] Could not gracefully shutdown agenda', e);
     }
     process.exit(0);
   }
 
+  /**
+   * Stop agenda.
+   */
   async stop() {
     await this._graceful();
   }

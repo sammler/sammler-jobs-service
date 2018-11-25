@@ -12,22 +12,23 @@ class ProcessorNats {
   }
 
   run(job, done) {
-    logger.trace(`[nats.processor]`);
+    logger.trace(`[agenda.processor.nats]`);
 
     let stan = Stan.connect(this.clusterId, this.clientId, this.server);
 
     stan.on('connect', () => {
-      logger.trace(`[nats.processor] We are connected`);
+      logger.trace(`[agenda.processor.nats] We are connected`);
 
-      stan.publish('subject', JSON.stringify(job.attrs.nats || {}), function (err, guid) {
+      logger.trace(`[agenda.processor.nats] Publishing with: ${job.attrs.data.nats}`);
+      stan.publish('subject', JSON.stringify(job.attrs.data.nats || {}), function (err, guid) {
         if (err) {
-          logger.error(`[nats.processor] Publish failed: "${err}"`);
+          logger.error(`[agenda.processor.nats] Publish failed: "${err}"`);
         } else {
-          logger.error(`[nats.processor] Publish succeeded with Guid ${guid}`);
+          logger.error(`[agenda.processor.nats] Publish succeeded with Guid ${guid}`);
         }
       });
       stan.close();
-      logger.trace(`[nats.processor] We are disconnected`);
+      logger.trace(`[agenda.processor.nats] We are disconnected`);
       done();
     });
 
