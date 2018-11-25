@@ -40,10 +40,14 @@ services:
     environment:
       - NODE_ENV=dev
       - PORT=3003
+      - JWT_SECRET=foo
       - MONGODB_DEBUG=false
       - MONGODB_HOST=mongo
       - MONGODB_PORT=27017
       - MONGODB_DATABASE=db
+      - NATS_STREAMING_HOST=nats-streaming
+      - NATS_STREAMING_PORT=4222
+      - ENABLE_AUDIT_LOG=true
     ports:
       - "3003:3003"
     volumes:

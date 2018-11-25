@@ -5,7 +5,6 @@ const AgendaController = require('./agenda.controller');
 
 /**
  * @swagger
- *
  * /jobs:
  *   get:
  *     description: Return all jobs for the current user.

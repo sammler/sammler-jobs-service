@@ -5,9 +5,6 @@ class AgendaController {
 
   /**
    * Get the jobs for the currently authenticated user.
-   * @param req
-   * @param res
-   * @returns {Promise<*>}
    */
   static async getUserJobs(req, res) {
     let agendaWrapper = await AgendaWrapper.instance();

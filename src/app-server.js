@@ -45,7 +45,11 @@ class AppServer {
 
   async stop() {
 
-    await this.agendaWrapper.stop();
+    try {
+      await this.agendaWrapper.stop();
+    } catch (e) {
+      this.logger.error(`[agenda] Cannot stop agenda ... ${e}`);
+    }
 
     if (mongoose.connection) {
       try {

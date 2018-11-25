@@ -1,16 +1,14 @@
 const Agenda = require('agenda');
 const MongooseConnectionConfig = require('mongoose-connection-config');
 const logger = require('winster').instance();
+const glob = require('glob');
+const path = require('path');
 
-let self = null;
 let instance = null;
 
 class AgendaWrapper {
 
   constructor() {
-    self = this;
-
-    this.logger = logger;
     this.mongoUri = new MongooseConnectionConfig(require('./../../config/mongoose-config')).getMongoUri();
     this.agenda = new Agenda({
       db: {
@@ -21,22 +19,22 @@ class AgendaWrapper {
     });
 
     this.agenda.on('start', job => {
-      self.logger.info(`Job starting: ${job.attrs.name}`);
-      // A logger.trace('--attrs:', job.attrs);
+      logger.trace(`[agendaWrapper] Job starting: ${job.attrs.name}`);
+      logger.trace('[agendaWrapper:attrs]', job.attrs);
     });
 
     this.agenda.on('complete', job => {
-      console.log('--');
-      console.info(`Job finished: ${job.attrs.name}`);
-      console.log(`Job: ${job}`);
+      logger.trace('[agendaWrapper] --');
+      logger.trace(`[agendaWrapper] Job finished: ${job.attrs.name}`);
+      // Logger.trace(`[agendaWrapper] Job: ${job}`);
     });
 
     this.agenda.on('success:echo something', job => {
-      console.info(`Successfully echoed: ${job.attrs.data}`);
+      logger.trace(`[agendaWrapper] Successfully echoed: ${job.attrs.data}`);
     });
 
     this.agenda.on('fail:echo something', (err, job) => {
-      console.info(`Job '${job.name}' failed with error: ${err.message}`);
+      logger.trace(`[agendaWrapper] Job '${job.name}' failed with error: ${err.message}`);
     });
 
     process.on('SIGTERM', this._graceful);
@@ -61,15 +59,24 @@ class AgendaWrapper {
   }
 
   _defineAgendas() {
-    this.agenda.define('echo something', (job, done) => {
-      logger.trace('[agenda| Done saving the job ', job.name);
-      done();
+
+    logger.trace('------ Agenda.JobDefinitions');
+    let jobDefinitions = glob.sync(path.join(__dirname, './processors/**/*.processor.js'));
+    jobDefinitions.forEach(item => {
+      let JobDefinition = require(item);
+      let jobDefinition = new JobDefinition();
+      logger.trace(`[agenda._defineAgendas] Created job-definition with name: "${jobDefinition.name}"`);
+      this.agenda.define(jobDefinition.name, (job, done) => {
+        jobDefinition.run(job, done);
+      });
     });
+    logger.trace('------ // Agenda.JobDefinitions');
   }
 
   async _defineJobs() {
-    await this.agenda.every('minute', 'echo something');
-    logger.trace('[agenda] Done defining jobs');
+    await this.agenda.every('minute', 'echo');
+    await this.agenda.every('minute', 'nats');
+    // Logger.trace('[agendaWraper._defineJobs] Done defining jobs'); // eslint-disable-line capitalized-comments
   }
 
   /**
@@ -81,11 +88,11 @@ class AgendaWrapper {
   async _graceful() {
     try {
       if (this.agenda) {
-        logger.trace('[agenda/index.js] Gracefully shutting down agenda ...');
+        logger.trace('[agenda/echo.processor.js] Gracefully shutting down agenda ...');
         await this.agenda.stop();
       }
     } catch (e) {
-      logger.trace.error('[agenda/index.js] Could not gracefully shutdown agenda', e);
+      logger.trace.error('[agenda/echo.processor.js] Could not gracefully shutdown agenda', e);
     }
     process.exit(0);
   }
