@@ -24,12 +24,12 @@ class ProcessorNats {
         if (err) {
           logger.error(`[agenda.processor.nats] Publish failed: "${err}"`);
         } else {
-          logger.error(`[agenda.processor.nats] Publish succeeded with Guid ${guid}`);
+          logger.trace(`[agenda.processor.nats] Publish succeeded with Guid ${guid}`);
         }
+        stan.close();
+        done();
+        logger.trace(`[agenda.processor.nats] We are disconnected`);
       });
-      stan.close();
-      logger.trace(`[agenda.processor.nats] We are disconnected`);
-      done();
     });
 
   }
