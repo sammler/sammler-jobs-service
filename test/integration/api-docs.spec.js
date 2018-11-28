@@ -2,7 +2,7 @@ const superTest = require('supertest');
 const HttpStatus = require('http-status-codes');
 const AppServer = require('../../src/app-server');
 
-describe('[integration] => /api-docs/', () => {
+xdescribe('[integration] => /api-docs/', () => {
 
   let server;
   let appServer;

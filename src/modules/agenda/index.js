@@ -111,7 +111,8 @@ class AgendaWrapper {
     } catch (e) {
       logger.trace.error('[agendaWrapper] Could not gracefully shutdown agenda', e);
     }
-    process.exit(0);
+    // Don't exit the entire process here!!!
+    // process.exit(0);
   }
 
   /**
