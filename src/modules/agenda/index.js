@@ -93,8 +93,8 @@ class AgendaWrapper {
    * @private
    */
   async _defineJobs() {
-    await this.agenda.every('minute', 'echo');
-    await this.agenda.every('minute', 'nats', {nats: {foo: 'bar'}});
+    // Await this.agenda.every('minute', 'echo');
+    // await this.agenda.every('minute', 'nats', {nats: {foo: 'bar'}});
   }
 
   /**

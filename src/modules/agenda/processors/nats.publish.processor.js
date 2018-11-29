@@ -5,7 +5,7 @@ const config = require('./../../../config/server-config');
 
 class ProcessorNats {
   constructor() {
-    this.name = 'nats';
+    this.name = 'nats.publish';
     this.clusterId = 'test-cluster';
     this.clientId = `jobs-service-${process.pid}`;
     this.server = config.NATS_STREAMING_SERVER;
