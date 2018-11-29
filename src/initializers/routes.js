@@ -1,12 +1,21 @@
 const express = require('express');
-const swaggerUi = require('swagger-ui-express');
+const glob = require('glob');
+const logger = require('winster').instance();
+const path = require('path');
 
-const ApiDocsController = require('./../modules/api-docs/api-docs.controller');
 const router = express.Router(); // eslint-disable-line new-cap
 
-router.use('/', require('./../modules/health-check/health-check.routes'));
-router.use('/', require('./../modules/api-docs/api-docs.routes'));
-router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(ApiDocsController.getDocs()));
+// Load routes based on the pattern './../modules/**/*.routes.js
+let routes = glob.sync(path.join(__dirname, './../modules/**/*.routes.js'));
+
+logger.trace('');
+logger.trace('------ ++ Routes');
+routes.forEach(r => {
+  logger.trace('Registering route', r);
+  router.use('/', require(r));
+});
+logger.trace('----- // Routes');
+logger.trace('');
 
 module.exports = {
   configure: app => {

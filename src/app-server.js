@@ -1,11 +1,12 @@
 const express = require('express');
 const _ = require('lodash');
-const MongooseConnectionConfig = require('mongoose-connection-config');
 const initializer = require('express-initializers');
 const path = require('path');
 const mongoose = require('mongoose');
 
+const MongooseConnectionConfig = require('mongoose-connection-config');
 const defaultConfig = require('./config/server-config');
+const AgendaWrapper = require('./modules/agenda');
 
 class AppServer {
 
@@ -14,6 +15,7 @@ class AppServer {
     this.config = _.extend(_.clone(defaultConfig), config || {});
 
     this.server = null;
+    this.agendaWrapper = null;
     this.logger = require('winster').instance();
 
     this.app = express();
@@ -21,37 +23,56 @@ class AppServer {
   }
 
   async start() {
-    const mongoUri = new MongooseConnectionConfig(require('./config/mongoose-config')).getMongoUri();
-    this.logger.trace('mongoUri', mongoUri);
+    const MongoUri = new MongooseConnectionConfig(require('./config/mongoose-config')).getMongoUri();
     await initializer(this.app, {directory: path.join(__dirname, 'initializers')});
-    await mongoose.connect(mongoUri, {useNewUrlParser: true});
+    await mongoose.connect(MongoUri, {useNewUrlParser: true});
 
     try {
       this.server = await this.app.listen(this.config.PORT);
-      this.logger.info(`Express server listening on port ${this.config.PORT} in "${this.config.env.NODE_ENV}" mode`);
+      this.logger.info(`[app-server] Express server listening on port ${this.config.PORT} in "${this.config.NODE_ENV}" mode`);
     } catch (err) {
-      this.logger.error('Cannot start express server', err);
+      this.logger.error('[app-server] Cannot start express server', err);
+    }
+
+    try {
+      this.agendaWrapper = new AgendaWrapper();
+      await this.agendaWrapper.start();
+
+    } catch (e) {
+      this.logger.trace('[app-server] Could not start Agenda', e);
     }
   }
 
   async stop() {
+
+    try {
+      await this.agendaWrapper.stop();
+    } catch (e) {
+      this.logger.error(`[agenda] Cannot stop agenda ... ${e}`);
+    }
+
     if (mongoose.connection) {
       try {
         await mongoose.connection.close(); // Using Moongoose >5.0.4 connection.close is preferred over mongoose.disconnect();
         mongoose.models = {};
         mongoose.modelSchemas = {};
-        this.logger.trace('Closed mongoose connection');
+        this.logger.trace('[app-server] Closed mongoose connection');
       } catch (e) {
-        this.logger.trace('Could not close mongoose connection', e);
+        this.logger.trace('[app-server] Could not close mongoose connection', e);
       }
+    } else {
+      this.logger.trace('[app-server] No mongoose connection to close');
     }
+
     if (this.server) {
       try {
         await this.server.close();
-        this.logger.trace('Server closed');
+        this.logger.info('[app-server] Server closed');
       } catch (e) {
-        this.logger.trace('Could not close server', e);
+        this.logger.error('[app-server] Could not close server', e);
       }
+    } else {
+      this.logger.trace('[app-server] No server to close');
     }
   }
 
@@ -81,25 +102,6 @@ class AppServer {
   //   if (valErrors && valErrors.length) {
   //     throw new Error('Validation errors when validation the configuration', valErrors, this.config);
   //   }
-  //
-  //   return new Promise((resolve, reject) => {
-  //     mongooseConnection.connect()
-  //       .then(connection => {
-  //         this.app.db = connection;
-  //         this.server = this.app.listen(this.config.PORT, err => {
-  //           if (err) {
-  //             this.logger.error('Cannot start express server', err);
-  //             return reject(err);
-  //           }
-  //           this.logger.debug(`Express server listening on port ${this.config.PORT} in "${process.env.NODE_ENV}" mode`);
-  //           return resolve();
-  //         });
-  //       })
-  //       .catch(err => {
-  //         this.logger.fatal('Error creating a mongoose connection', err);
-  //         throw err;
-  //       });
-  //   });
   // }
 
 }

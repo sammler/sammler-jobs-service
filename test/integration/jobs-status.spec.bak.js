@@ -5,7 +5,7 @@ const JobsBL = require('../../src/modules/jobs/jobs.bl');
 
 const defaultConfig = require('../test-lib/default-config');
 
-xdescribe('INTEGRATION => GET /jobs/{status} => returns the {status} jobs', () => {
+xdescribe('[integration] => GET /jobs/{status} => returns the {status} jobs', () => {
 
   let server;
   let appServer;

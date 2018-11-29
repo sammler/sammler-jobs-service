@@ -1,4 +1,5 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
 const router = express.Router(); // eslint-disable-line new-cap
 const ApiDocsController = require('./api-docs.controller');
 
@@ -16,5 +17,6 @@ const ApiDocsController = require('./api-docs.controller');
  *         description: Json formatted api-docs.
  */
 router.get('/api-docs/raw', ApiDocsController.getRaw);
+router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(ApiDocsController.getDocs()));
 
 module.exports = router;

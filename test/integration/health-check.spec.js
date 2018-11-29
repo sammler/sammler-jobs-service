@@ -2,7 +2,7 @@ const superTest = require('supertest');
 const HttpStatus = require('http-status-codes');
 const AppServer = require('../../src/app-server');
 
-const defaultConfig = require('../test-lib/default-config');
+// Const defaultConfig = require('../test-lib/default-config');
 
 describe('[integration] => /health-check', () => {
 

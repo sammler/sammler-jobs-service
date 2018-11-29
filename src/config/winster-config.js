@@ -1,3 +1,1 @@
-const sammlerLogger = require('sammler-nodelib-logger');
-
-module.exports = sammlerLogger.WINSTER_CONFIG;
+module.export = require('sammler-nodelib-logger').WINSTER_CONFIG;
