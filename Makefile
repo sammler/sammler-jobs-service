@@ -51,8 +51,12 @@ down-test:
 	docker-compose --f=docker-compose.test.yml down -t 0
 .PHONY: down-test
 
-run-integration-tests: 		## Run integration (+ unit tests) tests
+run-tests: 					## Run tests (+ unit tests) tests
 	docker-compose --f=docker-compose.integration-tests.yml run jobs-service-test npm run test
+	docker-compose --f=docker-compose.integration-tests.yml down -t 0
 .PHONY: run-integration-tests
+
+circleci: build build-test run-tests	## Simulate the CircleCI tests
+.PHONY: circleci
 
 

@@ -17,8 +17,10 @@ describe('[integration] => agenda (jobs)', () => {
   });
 
   afterEach(async () => {
-    await appServer.stop();
+    testLib.sleep(1000);
     await AgendaController.removeAll();
+    testLib.sleep(1000);
+    await appServer.stop();
   });
 
   describe('General', () => {
@@ -53,7 +55,6 @@ describe('[integration] => agenda (jobs)', () => {
         .set('x-access-token', testLib.getToken(tokenPayLoad))
         .expect(HttpStatus.CREATED)
         .then(result => {
-          console.log(result.body);
           expect(result).to.exist;
           expect(result.body).to.exist;
           expect(result.body).to.have.a.property('job_id');

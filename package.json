@@ -27,8 +27,8 @@
     "start:agenda-debug": "DEBUG='agenda:*' node index.js",
     "start": "DEBUG='* -agenda:* -express:* -body-parser:* -send:* -compression:*' node index.js",
     "start:watch": "npm run ensure:nodemon && nodemon --signal SIGTERM -L --interactive --watch . --exec npm run start",
-    "test": "npm run test:set-env && nyc --reporter=lcov mocha './test/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
-    "test:set-env": "cross-env foo=bar",
+    "test": "npm run test:set-env && nyc --reporter=lcov mocha './test/**/*.spec.js' --full-trace --require './test/mocha.conf.js' --timeout 6000 --exit",
+    "test:set-env": "cross-env",
     "test:integration": "npm run test:set-env && nyc --reporter=lcov mocha './test/integration/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
     "test:unit": "nyc --reporter=lcov mocha './test/unit/**/*.spec.js' --require './test/mocha.conf.js'"
   },
