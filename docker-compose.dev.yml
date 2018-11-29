@@ -6,7 +6,7 @@ services:
   #              Infrastructure
   # --------------------------------------
   mongo:
-    image: mongo
+    image: sammlerio/mongo
     container_name: mongo
     ports:
       - "27017:27017"
