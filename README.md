@@ -6,13 +6,9 @@
 [![Codecov](https://img.shields.io/codecov/c/github/sammler/jobs-service.svg?logo=codecov)](https://codecov.io/gh/sammler/jobs-service)
 
 ## Purpose
-Very simple, opinionated and re-usable service to log hierarchical jobs to MongoDB:
+Very simple, opinionated and re-usable service to get scheduled jobs into your stack.
 
-- Save the state of jobs & sub-jobs to MongoDB
-- Update their status
-- Retrieve the current state of a job
-- Get the history of jobs
-- Have a read-only mode to serve from a given .yml file
+On purpose this service wraps for now [agenda](https://github.com/agenda/agenda), but the interface of the service is generic enough to potentially move to another job-scheduler in the future.
 
 ## Configuration
 _jobs-service_ can be configured by the following environment variables:
