@@ -38,8 +38,12 @@ class AgendaController {
       'data.tenant_id': mappedBody.tenant_id,
       'data.subject': mappedBody.subject
     });
-    let newJob = await jobRequest.save();
-    return expressResult.created(res, AgendaController._mapJobOutput(newJob));
+    try {
+      let newJob = await jobRequest.save();
+      return expressResult.created(res, AgendaController._mapJobOutput(newJob));
+    } catch (err) {
+      return expressResult.error(res, err);
+    }
   }
 
   static async deleteJob(req, res) {
