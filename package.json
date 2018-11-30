@@ -25,7 +25,7 @@
     "lint:test": "eslint test",
     "lint:test:fix": "eslint test --fix",
     "start:agenda-debug": "DEBUG='agenda:*' node index.js",
-    "start": "DEBUG='* -agenda:* -express:* -body-parser:* -send:* -compression:*' node index.js",
+    "start": "DEBUG='* -agenda:* -express:* -body-parser:* -send:* -compression:* -helmet:* -cors:* -favicon:*' node index.js",
     "start:watch": "npm run ensure:nodemon && nodemon --signal SIGTERM -L --interactive --watch . --exec npm run start",
     "test": "npm run test:set-env && nyc --reporter=lcov mocha './test/**/*.spec.js' --full-trace --require './test/mocha.conf.js' --timeout 6000 --exit",
     "test:set-env": "cross-env",

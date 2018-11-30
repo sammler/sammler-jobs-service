@@ -27,8 +27,8 @@ class ProcessorNats {
           logger.trace(`[agenda.processor.nats] Publish succeeded with Guid ${guid}`);
         }
         stan.close();
-        done();
         logger.trace(`[agenda.processor.nats] We are disconnected`);
+        done();
       });
     });
 
