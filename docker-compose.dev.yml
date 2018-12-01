@@ -37,8 +37,9 @@ services:
   jobs-service:
     image: sammlerio/jobs-service
     container_name: jobs-service
+    restart: always
     environment:
-      - NODE_ENV=dev
+      - NODE_ENV=development
       - PORT=3003
       - JWT_SECRET=foo
       - MONGODB_DEBUG=false
@@ -56,4 +57,24 @@ services:
       - mongo
       - nats-streaming
     command: ["npm", "run", "start:watch"]
+
+  auth-service:
+    image: sammlerio/auth-service
+    container_name: auth-service
+    ports:
+      - "3010:3010"
+    environment:
+      - NODE_ENV=development
+      - PORT=3010
+      - JWT_SECRET=foo
+      - MONGODB_DEBUG=false
+      - MONGODB_HOST=mongo
+      - MONGODB_PORT=27017
+      - MONGODB_DATABASE=db
+      - NATS_STREAMING_HOST=nats-streaming
+      - NATS_STREAMING_PORT=4222
+      - ENABLE_AUDIT_LOG=true
+    depends_on:
+      - mongo
+      - nats-streaming
 

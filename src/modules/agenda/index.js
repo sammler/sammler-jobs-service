@@ -24,8 +24,7 @@ class AgendaWrapper {
     });
 
     this.agenda.on('complete', job => {
-      logger.trace('[agendaWrapper] --');
-      logger.trace(`[agendaWrapper] Job finished: ${job.attrs.name}`);
+      logger.trace(`[agendaWrapper] Job finished: '${job.attrs.name} - ${job.attrs.data.subject}'`);
       // Logger.trace(`[agendaWrapper] Job: ${job}`);
     });
 

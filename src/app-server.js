@@ -5,14 +5,14 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 const MongooseConnectionConfig = require('mongoose-connection-config');
-const defaultConfig = require('./config/server-config');
 const AgendaWrapper = require('./modules/agenda');
+const natsClient = require('./nats-client').instance();
 
 class AppServer {
 
   constructor(config) {
 
-    this.config = _.extend(_.clone(defaultConfig), config || {});
+    this.config = _.extend(_.clone(config), config || {});
 
     this.server = null;
     this.agendaWrapper = null;
@@ -24,8 +24,21 @@ class AppServer {
 
   async start() {
     const MongoUri = new MongooseConnectionConfig(require('./config/mongoose-config')).getMongoUri();
+
     await initializer(this.app, {directory: path.join(__dirname, 'initializers')});
-    await mongoose.connect(MongoUri, {useNewUrlParser: true});
+
+    try {
+      await mongoose.connect(MongoUri, {useNewUrlParser: true});
+      this.logger.trace(`Successfully connected to mongo`);
+    } catch (err) {
+      this.logger.error(`Could not connect to mongo`, err);
+    }
+
+    try {
+      await natsClient.connect();
+    } catch (err) {
+      this.logger.error(`[stan] Cannot connect to stan: ${err}`);
+    }
 
     try {
       this.server = await this.app.listen(this.config.PORT);
@@ -51,6 +64,12 @@ class AppServer {
       this.logger.error(`[agenda] Cannot stop agenda ... ${e}`);
     }
 
+    try {
+      await natsClient.disconnect();
+    } catch (err) {
+      this.logger.error(`[stan] Cannot disconnect from stan ... ${err}`);
+    }
+
     if (mongoose.connection) {
       try {
         await mongoose.connection.close(); // Using Moongoose >5.0.4 connection.close is preferred over mongoose.disconnect();
@@ -58,7 +77,7 @@ class AppServer {
         mongoose.modelSchemas = {};
         this.logger.trace('[app-server] Closed mongoose connection');
       } catch (e) {
-        this.logger.trace('[app-server] Could not close mongoose connection', e);
+        this.logger.error('[app-server] Could not close mongoose connection', e);
       }
     } else {
       this.logger.trace('[app-server] No mongoose connection to close');
