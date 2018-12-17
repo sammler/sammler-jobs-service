@@ -67,14 +67,18 @@ describe('[integration] => agenda (jobs)', () => {
         });
 
     });
+
     it('throws an error if the user is not authenticated', async () => {
       await server
         .post('/v1/jobs')
         .send({})
         .expect(HttpStatus.UNAUTHORIZED);
     });
+
     it('throws an error if the user does not have the role `user`');
+
     it('updates a job for the given processor/subject/user_id');
+
     it('throws an error if `user_id`, `tenant_id`, `processor`, `subject` or `repeatPattern` is not provided', async () => {
 
       const tokenPayLoad = {
@@ -97,20 +101,44 @@ describe('[integration] => agenda (jobs)', () => {
 
     });
   });
+
   describe('GET /v1/jobs', () => {
     it('returns the jobs for the currently authenticated user');
+
     it('returns `Unauthorized` if there is no user', async () => {
       await server
         .get('/v1/jobs')
         .expect(HttpStatus.UNAUTHORIZED);
     });
+
+    it('returns only the jobs for the currently authenticated user');
+
+    it('returns an empty array if there are no jobs', async () => {
+
+      const tokenPayLoad = {
+        user_id: 'foo'
+      };
+
+      await server
+        .get('/v1/jobs')
+        .set('x-access-token', testLib.getToken(tokenPayLoad))
+        .expect(HttpStatus.OK)
+        .then(result => {
+          expect(result.body).to.exist;
+          expect(result.body).to.be.an('array');
+        });
+    });
   });
-  describe('DELETE /v1/jobs/:id', () => {
+
+  describe('DELETE /v1/jobs', () => {
+
     it('deletes a job for the currently authenticated user');
+
     it('throws `Unauthorized` if there is no valid user', async () => {
       await server
         .delete('/v1/jobs')
         .expect(HttpStatus.UNAUTHORIZED);
     });
   });
+
 });

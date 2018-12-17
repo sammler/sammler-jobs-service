@@ -50,8 +50,44 @@ class AgendaController {
     return expressResult.ok(res);
   }
 
+  /**
+   * Deletes all jobs for the given user.
+   * @param req
+   * @param res
+   * @returns {Promise<*>}
+   */
   static async deleteByUser(req, res) {
+
     return expressResult.ok(res);
+  }
+
+  /**
+   * Delete a job by:
+   * - tenant_id - xxx
+   * - user_id - xxx
+   * - processor - e.g. nats.publish
+   * - subject - e.g. strategy-hearbeat_every_week
+   */
+  static async deleteBy(req /* , res */) {
+
+    // Todo: Test if the user is legitimated to delete this record
+
+    let name = req.body.processor;
+    let user_id = req.user.user_id;
+    let tenant_id = req.user.tenant_id;
+    let subject = req.body.subject;
+
+    let agendaWrapper = await AgendaWrapper.instance();
+    let agenda = agendaWrapper.agenda;
+
+    agenda.cancel(
+      {
+        name: name,
+        'data.user_id': user_id,
+        'data.tenant_id': tenant_id,
+        'data.subject': subject
+      }
+    );
   }
 
   static async removeAll() {

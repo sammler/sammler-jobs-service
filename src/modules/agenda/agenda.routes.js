@@ -69,4 +69,6 @@ router.post('/v1/jobs', verifyJwtToken, AgendaController.postJob);
  */
 router.delete('/v1/jobs', verifyJwtToken, AgendaController.deleteByUser);
 
+router.delete('/v1/jobs/', verifyJwtToken, AgendaController.deleteBy);
+
 module.exports = router;
