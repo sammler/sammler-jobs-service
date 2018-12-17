@@ -88,8 +88,10 @@ class AgendaController {
         'data.subject': subject
       }
     );
+    // Todo: missing result here
   }
 
+  // Todo: authentication + check
   static async removeAll() {
     let agendaWrapper = await AgendaWrapper.instance();
     let agenda = agendaWrapper.agenda;

@@ -54,10 +54,10 @@ class NatsStream {
     return new Promise((resolve, reject) => {
       stan.publish(channel, JSON.stringify(message), (err, guid) => {
         if (err) {
-          logger.error('Publishing failed', err);
+          logger.error('[nats-client] Publishing failed', err);
           reject(new Error('Publish failed: ' + err));
         } else {
-          logger.trace('Message published: ' + guid);
+          logger.trace('[nats-client] Message published: ' + guid);
           resolve('Message published: ' + guid);
         }
       });
