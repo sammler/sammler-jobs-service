@@ -17,7 +17,7 @@ _jobs-service_ can be configured by the following environment variables:
 **NATS-Streaming:**
 
 - `NATS_STREAMING_HOST` - The NATS-Streaming host, defaults to `localhost`.
-- `NATS_STREAMING_PORT` - The NATS-Streaming port, defaults to `4222'.
+- `NATS_STREAMING_PORT` - The NATS-Streaming port, defaults to `4222`.
 
 **Behavior:**
 
