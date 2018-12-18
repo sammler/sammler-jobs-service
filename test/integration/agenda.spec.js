@@ -103,7 +103,23 @@ describe('[integration] => agenda (jobs)', () => {
   });
 
   describe('GET /v1/jobs', () => {
-    it('returns the jobs for the currently authenticated user');
+
+    it('returns the jobs for the currently authenticated user', async () => {
+
+      const tokenPayLoad = {
+        user_id: 'foo'
+      };
+
+      await server
+        .get('/v1/jobs')
+        .set('x-access-token', testLib.getToken(tokenPayLoad))
+        .expect(HttpStatus.OK)
+        .then(result => {
+          expect(result.body).to.exist;
+          expect(result.body).to.be.an('array');
+        });
+
+    });
 
     it('returns `Unauthorized` if there is no user', async () => {
       await server
@@ -111,7 +127,75 @@ describe('[integration] => agenda (jobs)', () => {
         .expect(HttpStatus.UNAUTHORIZED);
     });
 
-    it('returns only the jobs for the currently authenticated user');
+    it('returns only the jobs for the currently authenticated user', async () => {
+
+      // Setup
+      let tokenUser1 = {
+        tenant_id: 'bar1',
+        user_id: 'foo1'
+      };
+      let tokenUser2 = {
+        tenant_id: 'bar2',
+        user_id: 'foo2'
+      };
+
+      // First save some jobs for
+      // - user1
+      // - user2
+      for (let i = 0; i < 3; i++) {
+
+        const job = {
+          tenant_id: tokenUser1.tenant_id,
+          user_id: tokenUser1.user_id,
+          processor: 'nats.publish',
+          subject: `nats - do whatever ${i}`,
+          repeatPattern: '* * * * *',
+          nats: {
+            foo: 'bar',
+            bar: 'baz'
+          }
+        };
+
+        // eslint-disable-next-line no-await-in-loop
+        await server
+          .post('/v1/jobs')
+          .set('x-access-token', testLib.getToken(tokenUser1))
+          .send(job)
+          .expect(HttpStatus.CREATED);
+      }
+
+      for (let i = 0; i < 4; i++) {
+        const job = {
+          tenant_id: tokenUser2.tenant_id,
+          user_id: tokenUser2.user_id,
+          processor: 'nats.publish',
+          subject: `nats - do whatever ${i}`,
+          repeatPattern: '* * * * *',
+          nats: {
+            foo: 'bar',
+            bar: 'baz'
+          }
+        };
+
+        // eslint-disable-next-line no-await-in-loop
+        await server
+          .post('/v1/jobs')
+          .set('x-access-token', testLib.getToken(tokenUser1))
+          .send(job)
+          .expect(HttpStatus.CREATED);
+      }
+
+      // Then fetch only the jobs for user2 (3 jobs)
+      await server
+        .get('/v1/jobs')
+        .set('x-access-token', testLib.getToken(tokenUser2))
+        .expect(HttpStatus.OK)
+        .then(result => {
+          expect(result.body).to.exist;
+          expect(result.body).to.be.an('array').of.length(4);
+        });
+
+    });
 
     it('returns only jobs for authenticated users of role `user`');
 

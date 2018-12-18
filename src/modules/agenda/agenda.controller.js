@@ -10,7 +10,8 @@ class AgendaController {
    */
   static async getUserJobs(req, res) {
     let agendaWrapper = await AgendaWrapper.instance();
-    let jobs = await agendaWrapper.agenda.jobs();
+    let user_id = req.user.user_id;
+    let jobs = await agendaWrapper.agenda.jobs({'data.user_id': user_id});
     return expressResult.ok(res, jobs);
   }
 
