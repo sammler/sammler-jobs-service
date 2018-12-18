@@ -199,6 +199,7 @@ describe('[integration] => agenda (jobs)', () => {
 
     it('returns only jobs for authenticated users of role `user`');
 
+
     it('returns an empty array if there are no jobs', async () => {
 
       const tokenPayLoad = {
