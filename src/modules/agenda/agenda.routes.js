@@ -71,4 +71,6 @@ router.delete('/v1/jobs', verifyJwtToken, AgendaController.deleteByUser);
 
 router.delete('/v1/jobs/', verifyJwtToken, AgendaController.deleteBy);
 
+router.delete('/v1/jobs/all', verifyJwtToken, AgendaController.deleteAll);
+
 module.exports = router;

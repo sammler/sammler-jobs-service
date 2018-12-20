@@ -18,14 +18,14 @@ describe('[integration] => agenda (jobs)', () => {
 
   afterEach(async () => {
     testLib.sleep(1000);
-    await AgendaController.removeAll();
+    await AgendaController._removeAll();
     testLib.sleep(1000);
     await appServer.stop();
   });
 
   describe('General', () => {
     it('we should have zero jobs, everything is cleaned when running the tests', async () => {
-      let count = await AgendaController.count();
+      let count = await AgendaController._count();
       expect(count).to.be.equal(0);
     });
   });
@@ -199,7 +199,6 @@ describe('[integration] => agenda (jobs)', () => {
 
     it('returns only jobs for authenticated users of role `user`');
 
-
     it('returns an empty array if there are no jobs', async () => {
 
       const tokenPayLoad = {
@@ -228,4 +227,23 @@ describe('[integration] => agenda (jobs)', () => {
     });
   });
 
+  describe('DELETE /v1/jobs/all', () => {
+    it('can only be performed with role `system`', async () => {
+      await server
+        .delete('/v1/jobs/all')
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+    it('deletes all jobs', async () => {
+      const tokenPayLoad = {
+        user_id: 'foo',
+        roles: [
+          'system'
+        ]
+      };
+      await server
+        .delete('/v1/jobs/all')
+        .set('x-access-token', testLib.getToken(tokenPayLoad))
+        .expect(HttpStatus.OK);
+    });
+  });
 });

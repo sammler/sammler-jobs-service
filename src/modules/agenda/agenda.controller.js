@@ -92,8 +92,24 @@ class AgendaController {
     // Todo: missing result here
   }
 
-  // Todo: authentication + check
-  static async removeAll() {
+  static async deleteAll(req, res) {
+
+    // Todo: implement proper RBAC here ...
+    // For now we just check the role
+    if (!req.user || !req.user.roles || req.user.roles.indexOf('system') === -1) {
+      return expressResult.unauthorized(res, {message: 'Can only be performed by users with the role `system`.'});
+    }
+
+    try {
+      await AgendaController._removeAll();
+    } catch (e) {
+      expressResult.error(res, e);
+    }
+    expressResult.ok(res);
+  }
+
+  static async _removeAll() {
+
     let agendaWrapper = await AgendaWrapper.instance();
     let agenda = agendaWrapper.agenda;
     const jobs = await agenda.jobs();
@@ -110,7 +126,7 @@ class AgendaController {
   /**
    * Just an overall count of all jobs being stored.
    */
-  static async count() {
+  static async _count() {
     let agendaWrapper = await AgendaWrapper.instance();
     let agenda = agendaWrapper.agenda;
     const jobs = await agenda.jobs();
