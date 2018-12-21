@@ -177,24 +177,19 @@ class AgendaController {
   static _validateJob(job) {
 
     let errors = [];
-
-    if (!job.user_id) {
-      errors.push(`Argument 'user_id' cannot be null or empty.`);
-    }
-    if (!job.tenant_id) {
-      errors.push(`Argument 'tenant_id' cannot be null or empty.`);
-    }
-    if (!job.subject) {
-      errors.push(`Argument 'subject' cannot be null or empty.`);
-    }
-    if (!job.processor) {
-      errors.push(`Argument 'processor' cannot be null or empty.`);
-    }
-    if (!job.repeatPattern) {
-      errors.push(`Argument 'repeatPattern' cannot be null or empty.`);
-    }
+    let requiredArgs = [
+      'user_id',
+      'tenant_id',
+      'subject',
+      'processor',
+      'repeatPattern'
+    ];
+    requiredArgs.forEach(arg => {
+      if (!job[arg]) {
+        errors.push(`Argument '${arg}' cannot be null or empty.`);
+      }
+    });
     return errors;
-
   }
 
   /**
