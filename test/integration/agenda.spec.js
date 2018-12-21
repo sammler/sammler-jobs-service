@@ -259,7 +259,7 @@ describe('[integration] => agenda (jobs)', () => {
         user_id: 'foo2'
       };
 
-      let job_id;
+      let job_id = null;
       await server
         .post('/v1/jobs')
         .send(job)

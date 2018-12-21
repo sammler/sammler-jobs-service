@@ -53,14 +53,20 @@ class AgendaController {
 
     if (req.query.job_id) {
       try {
-        return AgendaController._deleteByJobId(req, res);
+        await AgendaController._deleteByJobId(req, res);
       } catch (err) {
         return expressResult.error(res, err);
       }
+      return expressResult.ok(res);
     }
 
     if (req.query.all === 'true') {
-      await AgendaController._deleteAll(req, res);
+      try {
+        await AgendaController._deleteAll(req, res);
+      } catch (err) {
+        return expressResult.error(res, err);
+      }
+      return expressResult.ok(res);
     }
 
     if (req.query.current_user === 'true') {
