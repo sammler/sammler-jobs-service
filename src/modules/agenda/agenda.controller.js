@@ -2,6 +2,7 @@ const expressResult = require('express-result');
 const AgendaWrapper = require('./index');
 // Todo: Needs to be fixed in the long run ...
 const _ = require('lodash'); // eslint-disable-line no-unused-vars
+const debug = require('debug')('jobs-service:AgendaController');
 
 class AgendaController {
 
@@ -47,8 +48,28 @@ class AgendaController {
     }
   }
 
-  static async deleteJob(req, res) {
-    return expressResult.ok(res);
+  static async delete(req, res) {
+    debug('delete:params', req.params);
+    debug('delete:query', req.query);
+
+    if (req.query.job_id) {
+      debug('delete:_deleteByJobId', req.params.job_id);
+      await AgendaController._deleteByJobId(req, res);
+    }
+
+    if (req.query.all === 'true') {
+      debug('delete:_deleteAll');
+      await AgendaController._deleteAll(req, res);
+    }
+
+    if (req.query.current_user === 'true') {
+      debug('delete:_current_user');
+    }
+  }
+
+  static async _deleteByJobId(/* req, res */) {
+    throw new Error('Not implemented');
+    // Return expressResult.ok(res);
   }
 
   /**
@@ -58,7 +79,7 @@ class AgendaController {
    * @returns {Promise<*>}
    */
   static async deleteByUser(req, res) {
-
+    // Throw new Error('Not implemented');
     return expressResult.ok(res);
   }
 
@@ -92,7 +113,7 @@ class AgendaController {
     // Todo: missing result here
   }
 
-  static async deleteAll(req, res) {
+  static async _deleteAll(req, res) {
 
     // Todo: implement proper RBAC here ...
     // For now we just check the role

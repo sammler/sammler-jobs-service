@@ -2,6 +2,8 @@ const superTest = require('supertest');
 const HttpStatus = require('http-status-codes');
 const AgendaController = require('./../../src/modules/agenda/agenda.controller');
 
+const debug = require('debug')('jobs-service:tests');
+
 const AppServer = require('../../src/app-server');
 const testLib = require('./../test-lib');
 
@@ -227,12 +229,26 @@ describe('[integration] => agenda (jobs)', () => {
     });
   });
 
-  describe('DELETE /v1/jobs/all', () => {
+  describe('DELETE /v1/jobs:job_id', () => {
+
+    it('can only be performed if the user is authenticated');
+    it('returns unauthorized if the user does not own this job');
+    it('deletes a give job');
+
+  });
+
+  describe('DELETE /v1/jobs/?all=true', () => {
+
     it('can only be performed with role `system`', async () => {
       await server
-        .delete('/v1/jobs/all')
-        .expect(HttpStatus.UNAUTHORIZED);
+        .delete('/v1/jobs/by')
+        .query({all: true})
+        .then(result => {
+          expect(result.status).to.be.equal(HttpStatus.UNAUTHORIZED);
+          expect(result.body).to.have.property('ValidationErrors').to.be.an('array');
+        });
     });
+
     it('deletes all jobs', async () => {
       const tokenPayLoad = {
         user_id: 'foo',
@@ -241,9 +257,12 @@ describe('[integration] => agenda (jobs)', () => {
         ]
       };
       await server
-        .delete('/v1/jobs/all')
+        .delete('/v1/jobs/by')
+        .query({all: true})
         .set('x-access-token', testLib.getToken(tokenPayLoad))
-        .expect(HttpStatus.OK);
+        .then(result => {
+          console.log(result.body);
+        });
     });
   });
 });
