@@ -1,5 +1,6 @@
 const expressResult = require('express-result');
 const AgendaWrapper = require('./index');
+const mongodb = require('mongodb');
 // Todo: Needs to be fixed in the long run ...
 const _ = require('lodash'); // eslint-disable-line no-unused-vars
 const debug = require('debug')('jobs-service:AgendaController');
@@ -49,16 +50,16 @@ class AgendaController {
   }
 
   static async delete(req, res) {
-    debug('delete:params', req.params);
-    debug('delete:query', req.query);
 
     if (req.query.job_id) {
-      debug('delete:_deleteByJobId', req.params.job_id);
-      await AgendaController._deleteByJobId(req, res);
+      try {
+        return AgendaController._deleteByJobId(req, res);
+      } catch (err) {
+        return expressResult.error(res, err);
+      }
     }
 
     if (req.query.all === 'true') {
-      debug('delete:_deleteAll');
       await AgendaController._deleteAll(req, res);
     }
 
@@ -67,9 +68,22 @@ class AgendaController {
     }
   }
 
-  static async _deleteByJobId(/* req, res */) {
-    throw new Error('Not implemented');
-    // Return expressResult.ok(res);
+  static async _deleteByJobId(req, res) {
+    let agendaWrapper = await AgendaWrapper.instance();
+    let agenda = agendaWrapper.agenda;
+    let jobs = await agenda.jobs({_id: mongodb.ObjectID(req.query.job_id)}); // eslint-disable-line new-cap
+    if (!jobs || jobs.length === 0) {
+      return expressResult.error(res, 'Job not found');
+    }
+    if (jobs.length > 1) {
+      return expressResult.error(res, 'More than one job found');
+    }
+    let job = jobs[0];
+    if (job.attrs.data.user_id !== req.user.user_id) {
+      return expressResult.unauthorized(res, 'Current user is not allowed to perform this action');
+    }
+    await job.remove();
+    return expressResult.ok(res, 'Successfully deleted');
   }
 
   /**

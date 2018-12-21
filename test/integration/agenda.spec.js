@@ -2,7 +2,7 @@ const superTest = require('supertest');
 const HttpStatus = require('http-status-codes');
 const AgendaController = require('./../../src/modules/agenda/agenda.controller');
 
-const debug = require('debug')('jobs-service:tests');
+const debug = require('debug')('jobs-service:test:agenda');
 
 const AppServer = require('../../src/app-server');
 const testLib = require('./../test-lib');
@@ -16,12 +16,10 @@ describe('[integration] => agenda (jobs)', () => {
     appServer = new AppServer();
     await appServer.start();
     server = superTest(appServer.server);
+    await AgendaController._removeAll();
   });
 
   afterEach(async () => {
-    testLib.sleep(1000);
-    await AgendaController._removeAll();
-    testLib.sleep(1000);
     await appServer.stop();
   });
 
@@ -220,20 +218,101 @@ describe('[integration] => agenda (jobs)', () => {
 
   describe('DELETE /v1/jobs', () => {
 
-    it('deletes a job for the currently authenticated user');
-
     it('throws `Unauthorized` if there is no valid user', async () => {
       await server
         .delete('/v1/jobs')
         .expect(HttpStatus.UNAUTHORIZED);
     });
+
+    it('deletes a job for the currently authenticated user');
+
   });
 
   describe('DELETE /v1/jobs:job_id', () => {
 
-    it('can only be performed if the user is authenticated');
-    it('returns unauthorized if the user does not own this job');
-    it('deletes a give job');
+    it('can only be performed if the user is authenticated', async () => {
+      await server
+        .delete('/v1/jobs/by')
+        .query({job_id: 'foo'})
+        .expect(HttpStatus.UNAUTHORIZED);
+
+    });
+
+    it('returns unauthorized if the user does not own this job', async () => {
+
+      const job = {
+        tenant_id: 'foo',
+        user_id: 'foo',
+        processor: 'nats.publish',
+        subject: 'nats - do whatever',
+        repeatPattern: '* * * * *',
+        nats: {
+          foo: 'bar',
+          bar: 'baz'
+        }
+      };
+
+      const user1 = {
+        user_id: 'foo'
+      };
+      const user2 = {
+        user_id: 'foo2'
+      };
+
+      let job_id;
+      await server
+        .post('/v1/jobs')
+        .send(job)
+        .set('x-access-token', testLib.getToken(user1))
+        .expect(HttpStatus.CREATED)
+        .then(result => {
+          expect(result.body).to.have.property('job_id');
+          job_id = result.body.job_id;
+          debug('job_id', job_id);
+        });
+
+      await server
+        .delete(`/v1/jobs/by`)
+        .query({job_id: job_id})
+        .set('x-access-token', testLib.getToken(user2))
+        .expect(HttpStatus.UNAUTHORIZED);
+
+    });
+
+    it('deletes a given job', async () => {
+      const job = {
+        tenant_id: 'foo',
+        user_id: 'foo',
+        processor: 'nats.publish',
+        subject: 'nats - do whatever',
+        repeatPattern: '* * * * *',
+        nats: {
+          foo: 'bar',
+          bar: 'baz'
+        }
+      };
+
+      const user1 = {
+        user_id: 'foo'
+      };
+
+      let job_id = null;
+      await server
+        .post('/v1/jobs')
+        .send(job)
+        .set('x-access-token', testLib.getToken(user1))
+        .expect(HttpStatus.CREATED)
+        .then(result => {
+          expect(result.body).to.have.property('job_id');
+          job_id = result.body.job_id;
+        });
+
+      await server
+        .delete(`/v1/jobs/by`)
+        .query({job_id})
+        .set('x-access-token', testLib.getToken(user1))
+        .expect(HttpStatus.OK);
+    });
 
   });
 
