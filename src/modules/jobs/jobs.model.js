@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const mongooseMaterializedPlugin = require('mongoose-materialized');
-const mongooseTimestampsPlugin = require('mongoose-timestamp');
+const mongooseTimestampsPlugin = require('mongoose-timestamp'); // Todo: Remove the timestamp plugin
 
 const MongooseConfig = require('../../config/mongoose-config');
 const Schema = mongoose.Schema;
