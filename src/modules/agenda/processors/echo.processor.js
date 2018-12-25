@@ -7,7 +7,7 @@ class ProcessorEcho {
   }
 
   run(job, done) {
-    logger.trace(`[agenda.processor.echo] ${job}`);
+    logger.trace(`[agenda.processor.echo]`, job.attrs.data);
     done();
   }
 }

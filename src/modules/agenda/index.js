@@ -1,11 +1,12 @@
 const Agenda = require('agenda');
 const MongooseConnectionConfig = require('mongoose-connection-config');
-const logger = require('winster').instance();
 const glob = require('glob');
 const path = require('path');
+const logger = require('winster').instance();
 
 let instance = null;
 
+// Todo (AAA): This is a big mess, especially in terms of logging ...
 class AgendaWrapper {
 
   constructor() {
@@ -19,21 +20,20 @@ class AgendaWrapper {
     });
 
     this.agenda.on('start', job => {
-      logger.trace(`[agendaWrapper] Job starting: ${job.attrs.name}`);
-      logger.trace('[agendaWrapper:attrs]', job.attrs);
+      logger.trace(`[AgendaWrapper:on:start] Job starting: ${job.attrs.name}`);
+      logger.trace('[AgendaWrapper:on:start:job.attrs.data]', job.attrs.data);
     });
 
     this.agenda.on('complete', job => {
-      logger.trace(`[agendaWrapper] Job finished: '${job.attrs.name} - ${job.attrs.data.subject}'`);
-      // Logger.trace(`[agendaWrapper] Job: ${job}`);
+      logger.trace(`[AgendaWrapper:on:complete] Job finished: '${job.attrs.name} - ${job.attrs.data.job_identifier}'`);
     });
 
-    this.agenda.on('success:echo something', job => {
-      logger.trace(`[agendaWrapper] Successfully echoed: ${job.attrs.data}`);
+    this.agenda.on('success', job => {
+      logger.trace(`[AgendaWrapper:on:success] Successfully echoed: ${job.attrs.data.job_identifier}`);
     });
 
-    this.agenda.on('fail:echo something', (err, job) => {
-      logger.trace(`[agendaWrapper] Job '${job.name}' failed with error: ${err.message}`);
+    this.agenda.on('fail', (err, job) => {
+      logger.trace(`[AgendaWrapper:on:fail] Job '${job.name}' failed with error: ${err.message}`);
     });
 
     process.on('SIGTERM', this._graceful);
@@ -62,7 +62,6 @@ class AgendaWrapper {
 
     await this.agenda.start();
     this._defineAgendas();
-    await this._defineJobs();
   }
 
   /**
@@ -88,15 +87,6 @@ class AgendaWrapper {
   }
 
   /**
-   * Define jobs.
-   * @private
-   */
-  async _defineJobs() {
-    // Await this.agenda.every('minute', 'echo');
-    // await this.agenda.every('minute', 'nats', {nats: {foo: 'bar'}});
-  }
-
-  /**
    * Gracefully shutdown agenda.
    *
    * @private
@@ -107,8 +97,9 @@ class AgendaWrapper {
         logger.trace('[agendaWrapper] Gracefully shutting down agenda ...');
         await this.agenda.stop();
       }
-    } catch (e) {
-      logger.trace.error('[agendaWrapper] Could not gracefully shutdown agenda', e);
+    } catch (err) {
+      logger.error('[agendaWrapper] Could not gracefully shutdown agenda', err);
+      throw err;
     }
     // Don't exit the entire process here!!!
     // process.exit(0);

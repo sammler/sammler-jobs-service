@@ -8,6 +8,11 @@ services:
   mongo:
     image: sammlerio/mongo
     container_name: mongo
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./.data/db:/data/db
     ports:
       - "27017:27017"
     logging:
@@ -30,6 +35,25 @@ services:
     ]
     logging:
       driver: none
+
+  natsboard:
+    image: urashidmalik/natsboard
+    container_name: natsboard
+    ports:
+      - "4000:3000"
+      - "4001:3001"
+    environment:
+      - NATS_MONITOR_URL=http://nats-streaming:8222
+
+  nats-streaming-console:
+    image: mozgoo/nats-streaming-console #https://github.com/KualiCo/nats-streaming-console/issues/7
+    container_name: nats-streaming-console
+    environment:
+      - STAN_URL=nats://nats-streaming:4222
+      - STAN_MONITOR_URL=http://nats-streaming:8222
+    ports:
+      - "8282:8282"
+
 
   # --------------------------------------
   #              Services

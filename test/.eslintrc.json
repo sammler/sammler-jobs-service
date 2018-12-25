@@ -8,6 +8,7 @@
     "mocha"
   ],
   "rules": {
+    "capitalized-comments": "off",
     "mocha/no-exclusive-tests": "error",
     "no-inline-comments": "off",
     "no-undef": "off",

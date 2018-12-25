@@ -38,7 +38,9 @@ class NatsStream {
   disconnect() {
     return new Promise((resolve, reject) => {
 
-      stan.close();
+      if (stan) {
+        stan.close();
+      }
 
       stan.on('close', () => {
         resolve();

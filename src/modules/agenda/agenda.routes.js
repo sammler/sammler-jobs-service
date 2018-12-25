@@ -15,7 +15,7 @@ const verifyJwtToken = require('./../../middleware/verifyJwtToken');
  *     tenant_id:
  *     user_id:
  *     processor:
- *     subject:
+ *     job_identifier:
  *     repeatPattern:
  */
 
@@ -42,6 +42,10 @@ router.get('/v1/jobs', verifyJwtToken, AgendaController.getUserJobs);
  * /jobs:
  *   post:
  *     description: Post a job.
+ *     Each job has the following three constraints:
+ *       - tenant_id
+ *       - user_id
+ *       - job_identifier
  *     produces:
  *       - application/json
  *     tags:

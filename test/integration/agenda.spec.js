@@ -37,7 +37,7 @@ describe('[integration] => agenda (jobs)', () => {
         tenant_id: 'foo',
         user_id: 'foo',
         processor: 'nats.publish',
-        subject: 'nats - do whatever',
+        job_identifier: 'nats - do whatever',
         repeatPattern: '* * * * *',
         nats: {
           foo: 'bar',
@@ -61,7 +61,7 @@ describe('[integration] => agenda (jobs)', () => {
           expect(result.body).to.have.a.property('processor', job.processor);
           expect(result.body).to.have.a.property('user_id', job.user_id);
           expect(result.body).to.have.a.property('tenant_id', job.tenant_id);
-          expect(result.body).to.have.a.property('subject', job.subject);
+          expect(result.body).to.have.a.property('job_identifier', job.job_identifier);
           expect(result.body).to.have.a.property('repeatPattern', job.repeatPattern);
           expect(result.body).to.have.a.property('data').to.have.a.property('nats').to.deep.equal(job.nats);
         });
@@ -79,7 +79,7 @@ describe('[integration] => agenda (jobs)', () => {
 
     it('updates a job for the given processor/subject/user_id');
 
-    it('throws an error if `user_id`, `tenant_id`, `processor`, `subject` or `repeatPattern` is not provided', async () => {
+    it('throws an error if `user_id`, `tenant_id`, `processor`, `job_identifier` or `repeatPattern` is not provided', async () => {
 
       const tokenPayLoad = {
         user_id: 'foo'
@@ -94,8 +94,8 @@ describe('[integration] => agenda (jobs)', () => {
           expect(result.body).to.have.property('message').to.contain('Invalid input');
           expect(result.body.validationErrors).to.be.an('array').to.contain(`Argument 'user_id' cannot be null or empty.`);
           expect(result.body.validationErrors).to.be.an('array').to.contain(`Argument 'tenant_id' cannot be null or empty.`);
+          expect(result.body.validationErrors).to.be.an('array').to.contain(`Argument 'job_identifier' cannot be null or empty.`);
           expect(result.body.validationErrors).to.be.an('array').to.contain(`Argument 'processor' cannot be null or empty.`);
-          expect(result.body.validationErrors).to.be.an('array').to.contain(`Argument 'subject' cannot be null or empty.`);
           expect(result.body.validationErrors).to.be.an('array').to.contain(`Argument 'repeatPattern' cannot be null or empty.`);
         });
 
@@ -148,7 +148,7 @@ describe('[integration] => agenda (jobs)', () => {
           tenant_id: tokenUser1.tenant_id,
           user_id: tokenUser1.user_id,
           processor: 'nats.publish',
-          subject: `nats - do whatever ${i}`,
+          job_identifier: `nats - do whatever ${i}`,
           repeatPattern: '* * * * *',
           nats: {
             foo: 'bar',
@@ -169,7 +169,7 @@ describe('[integration] => agenda (jobs)', () => {
           tenant_id: tokenUser2.tenant_id,
           user_id: tokenUser2.user_id,
           processor: 'nats.publish',
-          subject: `nats - do whatever ${i}`,
+          job_identifier: `nats - do whatever ${i}`,
           repeatPattern: '* * * * *',
           nats: {
             foo: 'bar',
@@ -244,7 +244,7 @@ describe('[integration] => agenda (jobs)', () => {
         tenant_id: 'foo',
         user_id: 'foo',
         processor: 'nats.publish',
-        subject: 'nats - do whatever',
+        job_identifier: 'nats - do whatever',
         repeatPattern: '* * * * *',
         nats: {
           foo: 'bar',
@@ -268,7 +268,6 @@ describe('[integration] => agenda (jobs)', () => {
         .then(result => {
           expect(result.body).to.have.property('job_id');
           job_id = result.body.job_id;
-          debug('job_id', job_id);
         });
 
       await server
@@ -284,7 +283,7 @@ describe('[integration] => agenda (jobs)', () => {
         tenant_id: 'foo',
         user_id: 'foo',
         processor: 'nats.publish',
-        subject: 'nats - do whatever',
+        job_identifier: 'nats - do whatever',
         repeatPattern: '* * * * *',
         nats: {
           foo: 'bar',

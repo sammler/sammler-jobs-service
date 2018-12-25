@@ -18,11 +18,11 @@ class AgendaController {
   }
 
   // Todo: validation:
-  //  - job.name is required => maps to the processor
-  //  - repeatInterval is required
+  //  - job.name is required => processor maps to job.name
   //  - user_id is required
   //  - tenant_id is required
-  //  - job.subject => really the subject of this jobs
+  //  - job_identifier is required
+  //  - repeatInterval is required
   static async postJob(req, res) {
     let jobDataRaw = req.body;
     let agendaWrapper = await AgendaWrapper.instance();
@@ -30,7 +30,7 @@ class AgendaController {
 
     let validationErrors = AgendaController._validateJob(mappedBody);
     if (validationErrors.length > 0) {
-      return expressResult.error(res, {message: 'Invalid input, see `validationErrors', validationErrors});
+      return expressResult.error(res, {message: '[agenda.controller:postJob] Invalid input, see `validationErrors', validationErrors});
     }
 
     let jobRequest = await agendaWrapper.agenda.create(mappedBody.processor, mappedBody);
@@ -39,7 +39,7 @@ class AgendaController {
       // Note: mappedBody.processor is automatically added to be a unique criteria
       'data.user_id': mappedBody.user_id,
       'data.tenant_id': mappedBody.tenant_id,
-      'data.subject': mappedBody.subject
+      'data.job_identifier': mappedBody.job_identifier
     });
     try {
       let newJob = await jobRequest.save();
@@ -108,7 +108,7 @@ class AgendaController {
    * - tenant_id - xxx
    * - user_id - xxx
    * - processor - e.g. nats.publish
-   * - subject - e.g. strategy-hearbeat_every_week
+   * - job_identifier - e.g. strategy-hearbeat_every_week
    */
   static async deleteBy(req /* , res */) {
 
@@ -117,7 +117,7 @@ class AgendaController {
     let name = req.body.processor;
     let user_id = req.user.user_id;
     let tenant_id = req.user.tenant_id;
-    let subject = req.body.subject;
+    let job_identifier = req.body.job_identifier;
 
     let agendaWrapper = await AgendaWrapper.instance();
     let agenda = agendaWrapper.agenda;
@@ -127,7 +127,7 @@ class AgendaController {
         name: name,
         'data.user_id': user_id,
         'data.tenant_id': tenant_id,
-        'data.subject': subject
+        'data.job_identifier': job_identifier
       }
     );
     // Todo: missing result here
@@ -180,7 +180,7 @@ class AgendaController {
     let requiredArgs = [
       'user_id',
       'tenant_id',
-      'subject',
+      'job_identifier',
       'processor',
       'repeatPattern'
     ];
@@ -206,7 +206,7 @@ class AgendaController {
     //   'processor',
     //   'user_id',
     //   'tenant_id',
-    //   'subject'
+    //   'job_identifier'
     // ]);
   }
 
@@ -216,14 +216,14 @@ class AgendaController {
     // console.log('_mapJobOutput:job', job);
 
     return {
-      raw: job, // Todo: probably to removed
+      // raw: job, // Todo: probably to removed
       job_id: job.attrs._id,
-      processor: job.attrs.name,
-      user_id: job.attrs.data.user_id,
       tenant_id: job.attrs.data.tenant_id,
-      subject: job.attrs.data.subject,
+      user_id: job.attrs.data.user_id,
+      processor: job.attrs.name,
+      job_identifier: job.attrs.data.job_identifier,
       repeatPattern: job.attrs.data.repeatPattern,
-      data: _.omit(job.attrs.data, ['processor', 'user_id', 'tenant_id', 'subject']) // Do not expose the object already being rolled up ...
+      data: _.omit(job.attrs.data, ['processor', 'user_id', 'tenant_id', 'job_identifier']) // Do not expose the object already being rolled up ...
     };
   }
 

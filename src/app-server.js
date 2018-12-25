@@ -3,6 +3,7 @@ const _ = require('lodash');
 const initializer = require('express-initializers');
 const path = require('path');
 const mongoose = require('mongoose');
+const logger = require('winster').instance();
 
 const MongooseConnectionConfig = require('mongoose-connection-config');
 const AgendaWrapper = require('./modules/agenda');
@@ -16,7 +17,6 @@ class AppServer {
 
     this.server = null;
     this.agendaWrapper = null;
-    this.logger = require('winster').instance();
 
     this.app = express();
 
@@ -29,30 +29,34 @@ class AppServer {
 
     try {
       await mongoose.connect(MongoUri, {useNewUrlParser: true});
-      this.logger.trace(`Successfully connected to mongo`);
+      logger.info(`Successfully connected to mongo`);
     } catch (err) {
-      this.logger.error(`Could not connect to mongo`, err);
+      logger.error(`Could not connect to mongo`, err);
+      throw err;
     }
 
     try {
       await natsClient.connect();
     } catch (err) {
-      this.logger.error(`[stan] Cannot connect to stan: ${err}`);
+      logger.error(`[stan] Cannot connect to stan: ${err}`);
+      throw err;
     }
 
     try {
       this.server = await this.app.listen(this.config.PORT);
-      this.logger.info(`[app-server] Express server listening on port ${this.config.PORT} in "${this.config.NODE_ENV}" mode`);
+      logger.info(`[app-server] Express server listening on port ${this.config.PORT} in "${this.config.NODE_ENV}" mode`);
     } catch (err) {
-      this.logger.error('[app-server] Cannot start express server', err);
+      logger.error('[app-server] Cannot start express server', err);
+      throw err;
     }
 
     try {
       this.agendaWrapper = new AgendaWrapper();
       await this.agendaWrapper.start();
 
-    } catch (e) {
-      this.logger.trace('[app-server] Could not start Agenda', e);
+    } catch (err) {
+      logger.error('[app-server] Could not start Agenda', err);
+      throw err;
     }
   }
 
@@ -60,14 +64,16 @@ class AppServer {
 
     try {
       await this.agendaWrapper.stop();
-    } catch (e) {
-      this.logger.error(`[agenda] Cannot stop agenda ... ${e}`);
+    } catch (err) {
+      logger.error(`[agenda] Cannot stop agenda ... ${err}`);
+      throw err;
     }
 
     try {
       await natsClient.disconnect();
     } catch (err) {
-      this.logger.error(`[stan] Cannot disconnect from stan ... ${err}`);
+      logger.error(`[stan] Cannot disconnect from stan ... ${err}`);
+      throw err;
     }
 
     if (mongoose.connection) {
@@ -75,23 +81,25 @@ class AppServer {
         await mongoose.connection.close(); // Using Moongoose >5.0.4 connection.close is preferred over mongoose.disconnect();
         mongoose.models = {};
         mongoose.modelSchemas = {};
-        this.logger.trace('[app-server] Closed mongoose connection');
-      } catch (e) {
-        this.logger.error('[app-server] Could not close mongoose connection', e);
+        logger.info('[app-server] Closed mongoose connection');
+      } catch (err) {
+        logger.error('[app-server] Could not close mongoose connection', err);
+        throw err;
       }
     } else {
-      this.logger.trace('[app-server] No mongoose connection to close');
+      logger.trace('[app-server] No mongoose connection to close');
     }
 
     if (this.server) {
       try {
         await this.server.close();
-        this.logger.info('[app-server] Server closed');
-      } catch (e) {
-        this.logger.error('[app-server] Could not close server', e);
+        logger.info('[app-server] Server closed');
+      } catch (err) {
+        logger.error('[app-server] Could not close server', err);
+        throw err;
       }
     } else {
-      this.logger.trace('[app-server] No server to close');
+      logger.trace('[app-server] No server to close');
     }
   }
 
