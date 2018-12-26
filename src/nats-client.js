@@ -3,33 +3,34 @@ const logger = require('winster').instance();
 
 const config = require('./config/server-config');
 
-let stan = null;
+const CLIENT_ID_PREFIX = 'jobs-service';
 
 class NatsStream {
 
   constructor() {
     this.cluster = 'test-cluster';
-    this.clientId = `jobs-service_${process.pid}`;
+    this.clientId = `${CLIENT_ID_PREFIX}_${process.pid}`;
     this.server = config.NATS_STREAMING_SERVER;
+    this.stan = null;
   }
 
   static instance() {
-    if (!stan) {
-      stan = new NatsStream();
+    if (!this.stan) {
+      this.stan = new NatsStream();
     }
-    return stan;
+    return this.stan;
   }
 
   connect() {
     logger.trace(`[nats-client] Connect to cluster: ${this.cluster}, clientId: ${this.clientId}, server: ${this.server}`);
     return new Promise((resolve, reject) => {
-      stan = NatsStreaming.connect(this.cluster, this.clientId, this.server);
+      this.stan = NatsStreaming.connect(this.cluster, this.clientId, this.server);
 
-      stan.on('connect', () => {
+      this.stan.on('connect', () => {
         resolve();
       });
 
-      stan.on('error', err => {
+      this.stan.on('error', err => {
         reject(err);
       });
     });
@@ -38,15 +39,15 @@ class NatsStream {
   disconnect() {
     return new Promise((resolve, reject) => {
 
-      if (stan) {
-        stan.close();
+      if (this.stan) {
+        this.stan.close();
       }
 
-      stan.on('close', () => {
+      this.stan.on('close', () => {
         resolve();
       });
 
-      stan.on('error', err => {
+      this.stan.on('error', err => {
         reject(err);
       });
     });
@@ -54,7 +55,7 @@ class NatsStream {
 
   publish(channel, message) {
     return new Promise((resolve, reject) => {
-      stan.publish(channel, JSON.stringify(message), (err, guid) => {
+      this.stan.publish(channel, JSON.stringify(message), (err, guid) => {
         if (err) {
           logger.error('[nats-client] Publishing failed', err);
           reject(new Error('Publish failed: ' + err));

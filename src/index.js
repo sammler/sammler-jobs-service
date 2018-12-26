@@ -5,7 +5,7 @@ const logger = require('winster').instance();
 const signals = {
   SIGINT: 2,
   SIGTERM: 15,
-  SIGUSR2: 12 // Nodemon
+  SIGUSR2: 12 // nodemon
 };
 let server;
 

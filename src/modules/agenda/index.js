@@ -72,7 +72,7 @@ class AgendaWrapper {
   _defineAgendas() {
 
     logger.trace('');
-    logger.trace('------ ++ Agenda.JobDefinitions');
+    logger.trace('[AgendaWrapper] ------ ++ Agenda.JobDefinitions');
     let jobDefinitions = glob.sync(path.join(__dirname, './processors/**/*.processor.js'));
     jobDefinitions.forEach(item => {
       let JobDefinition = require(item);
@@ -82,7 +82,7 @@ class AgendaWrapper {
         jobDefinition.run(job, done);
       });
     });
-    logger.trace('------ // Agenda.JobDefinitions');
+    logger.trace('[AgendaWrapper] ------ // Agenda.JobDefinitions');
     logger.trace('');
   }
 
