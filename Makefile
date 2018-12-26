@@ -47,9 +47,14 @@ up-test:						## Bring up the test environment (docker-compose up => docker-comp
 	docker-compose --f=docker-compose.test.yml up -d
 .PHONY: up-test
 
+reset-storage: reset-nats reset-mongo
+
 reset-nats:					## Delete the nats-streaming datasource
 	rm -rf ./.datastore
 .PHONY: reset-nats
+
+reset-mongo:
+.PHONY: reset-mongo
 
 down-test:
 	docker-compose --f=docker-compose.test.yml down -t 0

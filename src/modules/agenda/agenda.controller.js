@@ -1,7 +1,6 @@
 const expressResult = require('express-result');
 const AgendaWrapper = require('./index');
 const mongodb = require('mongodb');
-// Todo: Needs to be fixed in the long run ...
 const _ = require('lodash'); // eslint-disable-line no-unused-vars
 const debug = require('debug')('jobs-service:AgendaController');
 
@@ -130,7 +129,7 @@ class AgendaController {
         'data.job_identifier': job_identifier
       }
     );
-    // Todo: missing result here
+    // Todo(AAA): missing result here
   }
 
   static async _deleteAll(req, res) {

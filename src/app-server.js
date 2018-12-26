@@ -4,8 +4,8 @@ const initializer = require('express-initializers');
 const path = require('path');
 const mongoose = require('mongoose');
 const logger = require('winster').instance();
-
 const MongooseConnectionConfig = require('mongoose-connection-config');
+
 const AgendaWrapper = require('./modules/agenda');
 const natsClient = require('./nats-client').instance();
 
