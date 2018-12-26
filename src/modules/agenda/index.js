@@ -77,7 +77,7 @@ class AgendaWrapper {
     jobDefinitions.forEach(item => {
       let JobDefinition = require(item);
       let jobDefinition = new JobDefinition();
-      logger.trace(`[agenda._defineAgendas] Created job-definition with name: "${jobDefinition.name}"`);
+      logger.trace(`[AgendaWrapper] Created job-definition with name: "${jobDefinition.name}"`);
       this.agenda.define(jobDefinition.name, (job, done) => {
         jobDefinition.run(job, done);
       });
@@ -94,11 +94,11 @@ class AgendaWrapper {
   async _graceful() {
     try {
       if (this.agenda) {
-        logger.trace('[agendaWrapper] Gracefully shutting down agenda ...');
+        logger.trace('[AgendaWrapper] Gracefully shutting down agenda ...');
         await this.agenda.stop();
       }
     } catch (err) {
-      logger.error('[agendaWrapper] Could not gracefully shutdown agenda', err);
+      logger.error('[AgendaWrapper] Could not gracefully shutdown agenda', err);
       throw err;
     }
     // Don't exit the entire process here!!!

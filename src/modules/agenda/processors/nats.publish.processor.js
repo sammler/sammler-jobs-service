@@ -13,6 +13,9 @@ class ProcessorNats {
     let natsChannel = job.attrs.data.nats.channel;
     let natsData = job.attrs.data.nats.data;
 
+    // Add the `publishedAt` timestamp
+    natsData.publishedAt = Date.now();
+
     natsClient.publish(natsChannel, JSON.stringify(natsData || {}), function (err, guid) {
       if (err) {
         logger.error(`[agenda.processor.nats.publish] Publish failed: `, err);
