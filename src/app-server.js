@@ -29,16 +29,16 @@ class AppServer {
 
     try {
       await mongoose.connect(MongoUri, {useNewUrlParser: true});
-      logger.info(`Successfully connected to mongo`);
+      logger.info(`[app-server] Successfully connected to mongo`);
     } catch (err) {
-      logger.error(`Could not connect to mongo`, err);
+      logger.fatal(`[app-server] Could not connect to mongo`, err);
       throw err;
     }
 
     try {
       await natsClient.connect();
     } catch (err) {
-      logger.error(`[stan] Cannot connect to stan: ${err}`);
+      logger.fatal(`[app-server] Cannot connect to stan: ${err}`);
       throw err;
     }
 
@@ -46,7 +46,7 @@ class AppServer {
       this.server = await this.app.listen(this.config.PORT);
       logger.info(`[app-server] Express server listening on port ${this.config.PORT} in "${this.config.NODE_ENV}" mode`);
     } catch (err) {
-      logger.error('[app-server] Cannot start express server', err);
+      logger.fatal('[app-server] Cannot start express server', err);
       throw err;
     }
 
@@ -55,7 +55,7 @@ class AppServer {
       await this.agendaWrapper.start();
 
     } catch (err) {
-      logger.error('[app-server] Could not start Agenda', err);
+      logger.fatal('[app-server] Could not start Agenda', err);
       throw err;
     }
   }
