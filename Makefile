@@ -47,13 +47,15 @@ up-test:						## Bring up the test environment (docker-compose up => docker-comp
 	docker-compose --f=docker-compose.test.yml up -d
 .PHONY: up-test
 
-reset-storage: reset-nats reset-mongo
+reset-storage: reset-nats reset-mongo		## Delete storage of all services being involved (nats-streaming, mongo, etc.)
+.PHONY: reset-storage
 
-reset-nats:					## Delete the nats-streaming datasource
+reset-nats:					## Delete the storage of nats-streaming
 	rm -rf ./.datastore
 .PHONY: reset-nats
 
-reset-mongo:
+reset-mongo:				## Delete the storage of mongo
+	rm -rf ./.data
 .PHONY: reset-mongo
 
 down-test:

@@ -11,5 +11,6 @@ module.exports = {
   FIELD_UPDATED_AT: 'updated_at',
 
   COLLECTION_JOBS: 'jobs',
+  COLLECTION_JOBS_HISTORY: 'jobs-history',
   COLLECTION_JOB_SPECS: 'job-specs'
 };
