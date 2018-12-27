@@ -25,4 +25,3 @@ _jobs-service_ can be configured by the following environment variables:
 
 **Deprecated:**
 - `LOAD_FROM_FILE` - All jobs will be loaded from a file, thus completely skipping MongoDB (defaults to false);
-- `SAMMLER_DB_JOBS_URI` - URI for the MongoDB Jobs database. Defaults to `mongodb://localhost:27117/jobs`

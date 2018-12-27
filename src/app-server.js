@@ -14,10 +14,8 @@ class AppServer {
   constructor(config) {
 
     this.config = _.extend(_.clone(config), config || {});
-
     this.server = null;
     this.agendaWrapper = null;
-
     this.app = express();
 
   }
@@ -103,6 +101,7 @@ class AppServer {
     }
   }
 
+  // Todo(AAA): Check what we need from here, then just get rid of it ...
   // _initApp() {
   //   this.app = express();
   //
