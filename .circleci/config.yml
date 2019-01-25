@@ -23,6 +23,7 @@ jobs:
             NODE_VER=$(cat ./version.txt)
             docker pull sammlerio/mongo
             docker pull "node:${NODE_VER}-alpine"
+            docker pull nats-streaming
       - run:
           name: Upgrade Docker Compose
           command: |
