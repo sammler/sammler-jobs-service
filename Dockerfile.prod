@@ -1,6 +1,5 @@
 ARG NODE_VER="10.13.0"
 
-
 FROM node:${NODE_VER}-alpine as RELEASE
 
 ENV HOME_DIR "opt/jobs-service"
