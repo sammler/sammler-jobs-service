@@ -18,7 +18,7 @@
     "precommit": "npm run lint:fix --quiet",
     "ensure:nodemon": "(npm list nodemon -g || npm install nodemon -g)",
     "docs": "docker run --rm -v ${PWD}:/opt/verb stefanwalther/verb",
-    "lint": "eslint src && eslint test",
+    "lint": "eslint src --quiet && eslint test --quiet",
     "lint:fix": "eslint src --fix --quiet && eslint test --fix --quiet",
     "lint:src": "eslint src --quiet",
     "lint:src:fix": "eslint src --fix --quiet",
