@@ -21,6 +21,8 @@ jobs:
           background: true
           command: |
             docker pull sammlerio/mongo
+            NODE_VER=$(cat ./version.txt)
+            docker pull node:${NODE_VER}-alpine
       - run:
           name: Upgrade Docker Compose
           command: |
