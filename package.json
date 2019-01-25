@@ -29,8 +29,8 @@
     "start:watch": "npm run ensure:nodemon && nodemon --signal SIGTERM -L --interactive --watch . --exec npm run start",
     "test": "npm run test:set-env && nyc --reporter=lcov mocha './test/**/*.spec.js' --full-trace --require './test/mocha.conf.js' --timeout 6000 --exit",
     "test:set-env": "cross-env",
-    "test:integration": "npm run test:set-env && nyc --reporter=lcov mocha './test/integration/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000",
-    "test:unit": "nyc --reporter=lcov mocha './test/unit/**/*.spec.js' --require './test/mocha.conf.js'"
+    "test:integration": "npm run test:set-env && nyc --reporter=lcov mocha './test/integration/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000 --exit",
+    "test:unit": "nyc --reporter=lcov mocha './test/unit/**/*.spec.js' --require './test/mocha.conf.js' --exit"
   },
   "dependencies": {
     "agenda": "^2.0.2",
