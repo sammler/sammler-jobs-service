@@ -21,8 +21,8 @@ jobs:
           background: true
           command: |
             NODE_VER=$(cat ./.nvmrc)
-            docker pull sammlerio/mongo
             docker pull "node:${NODE_VER}-alpine"
+            docker pull sammlerio/mongo
             docker pull nats-streaming
       - run:
           name: Upgrade Docker Compose
