@@ -53,11 +53,17 @@ jobs:
           name: Lint
           command: docker-compose --f=docker-compose.unit-tests.yml run jobs-service-test npm run lint
       - run:
-          name: Run all tests (unit + integration)
-          command: make run-tests
+          name: Run unit tests
+          command: make run-tests-unit
+      - run:
+          name: CodeCov (upload unit tests)
+          command: bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN -c -F unit
+      - run:
+          name: Run integration tests
+          command: make run-tests-integration
       - run:
           name: CodeCov (upload integration tests)
-          command: bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
+          command: bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN -c -F integration
       - add_ssh_keys
       - run:
           name: Login to Docker

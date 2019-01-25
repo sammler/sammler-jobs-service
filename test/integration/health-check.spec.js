@@ -30,5 +30,4 @@ describe('[integration] => /health-check', () => {
       });
   });
 
-
 });
