@@ -4,6 +4,8 @@ const glob = require('glob');
 const path = require('path');
 const logger = require('winster').instance();
 
+const JobsHistoryModel = require('./../jobs-history/jobs-history.model').Model;
+
 let instance = null;
 
 // Todo (AAA): This is a big mess, especially in terms of logging ...
@@ -20,26 +22,49 @@ class AgendaWrapper {
     });
 
     this.agenda.on('start', job => {
-      logger.trace(`[AgendaWrapper:on:start] Job starting: ${job.attrs.name}`);
+      logger.trace('');
+      logger.trace('--- ++');
+      logger.trace(`[AgendaWrapper:on:start] Job starting: ${job.attrs.name} - ${job.attrs.data.job_identifier}`);
       logger.trace('[AgendaWrapper:on:start:job.attrs.data]', job.attrs.data);
+      logger.trace('--- //');
+      logger.trace('');
     });
 
-    this.agenda.on('complete', job => {
-      logger.trace(`[AgendaWrapper:on:complete] Job finished: '${job.attrs.name} - ${job.attrs.data.job_identifier}'`);
+    this.agenda.on('success', async job => {
+      logger.trace(`[AgendaWrapper:on:success] '${job.attrs.name} - ${job.attrs.data.job_identifier}'`);
+      await AgendaWrapper._saveJobHistory(job, true);
     });
 
-    this.agenda.on('success', job => {
-      logger.trace(`[AgendaWrapper:on:success] Successfully echoed: ${job.attrs.data.job_identifier}`);
-    });
+    this.agenda.on('fail', async (err, job) => {
+      logger.trace(`[AgendaWrapper:on:fail] '${job.attrs.name} - ${job.attrs.data.job_identifier}' failed with error: ${err.message}`);
+      await AgendaWrapper._saveJobHistory(job, false, err);
 
-    this.agenda.on('fail', (err, job) => {
-      logger.trace(`[AgendaWrapper:on:fail] Job '${job.name}' failed with error: ${err.message}`);
+    });
+    this.agenda.on('complete', async job => {
+      logger.trace(`[AgendaWrapper:on:complete] Completed: '${job.attrs.name} - ${job.attrs.data.job_identifier}'`);
+      // logger.trace(`[AgendaWrapper:on:complete:job]:`, job);
     });
 
     process.on('SIGTERM', this._graceful);
     process.on('SIGINT', this._graceful);
     process.on('SIGUSR2', this._graceful); // Nodemon's signal for restart.
+  }
 
+  static async _saveJobHistory(job, hasSucceeded, error) {
+
+    let result = {
+      jobs_id: job.attrs._id,
+      tenant_id: job.attrs.data.tenant_id,
+      user_id: job.attrs.data.user_id,
+      processor: job.attrs.data.processor,
+      job_identifier: job.attrs.data.job_identifier,
+      succeeded: hasSucceeded,
+      failed_error: error || {}, // Todo: fetch the right value
+      executed_at: Date.now(),
+      data: {} // Todo: fetch the right value
+    };
+    let model = new JobsHistoryModel(result);
+    await model.save();
   }
 
   /**
