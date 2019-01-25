@@ -16,11 +16,11 @@ jobs:
             set -e
             curl -sSL $DOCKER_URL | sudo tar -xz --strip-components=1 -C /usr/bin/
             sudo service docker restart
-#      - run:
-#          name: Pull public docker images in the background
-#          background: true
-#          command: |
-#            docker pull node:8.9.4-alpine
+      - run:
+          name: Pull public docker images in the background
+          background: true
+          command: |
+            docker pull sammlerio/mongo
       - run:
           name: Upgrade Docker Compose
           command: |
