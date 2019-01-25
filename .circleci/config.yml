@@ -20,7 +20,7 @@ jobs:
           name: Pull public docker images in the background
           background: true
           command: |
-            NODE_VER=$(cat ./version.txt)
+            NODE_VER=$(cat ./.nvmrc)
             docker pull sammlerio/mongo
             docker pull "node:${NODE_VER}-alpine"
             docker pull nats-streaming
