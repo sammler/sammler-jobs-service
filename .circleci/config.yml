@@ -49,9 +49,9 @@ jobs:
       - run:
           name: Build test image
           command: make build-test
-      - run:
-          name: Setting up test environment
-          command: make up-test
+#      - run:
+#          name: Setting up test environment
+#          command: make up-test
       - run:
           name: Lint
           command: docker-compose --f=docker-compose.unit-tests.yml run jobs-service-test npm run lint
