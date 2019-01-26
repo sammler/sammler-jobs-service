@@ -64,16 +64,13 @@ down-test:
 
 run-tests: 					## Run tests (+ unit tests) tests
 	docker-compose --f=docker-compose.integration-tests.yml run jobs-service-test npm run test
-	docker-compose --f=docker-compose.integration-tests.yml down -t 0
 .PHONY: run-test
 
 run-unit-tests:
 	docker-compose --f=docker-compose.integration-tests.yml run ${SERVICE}-test npm run test:unit
-	docker-compose --f=docker-compose.integration-tests.yml down -t 0
 
 run-integration-tests:
 	docker-compose --f=docker-compose.integration-tests.yml run ${SERVICE}-test npm run test:integration
-	docker-compose --f=docker-compose.integration-tests.yml down -t 0
 
 circleci:						## Simulate CircleCI tests
 	$(MAKE) build

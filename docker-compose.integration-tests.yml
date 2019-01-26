@@ -42,8 +42,8 @@ services:
       - NODE_ENV=test
       - WINSTER_SUPRESS_LOGGING='true'
       - ENABLE_AUDIT_LOG='false'
+    volumes:
+      - ./coverage:/opt/jobs-service/coverage
     depends_on:
       - mongo
       - nats-streaming
-    volumes:
-      - ./coverage:/opt/jobs-service/coverage
