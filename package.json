@@ -13,7 +13,7 @@
     "url": "https://github.com/stefanwalther",
     "twitter": "waltherstefan"
   },
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "precommit": "npm run lint:fix --quiet",
     "ensure:nodemon": "(npm list nodemon -g || npm install nodemon -g)",
