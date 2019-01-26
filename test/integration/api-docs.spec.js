@@ -28,4 +28,11 @@ describe('[integration] => /api-docs/', () => {
       .get('/api-docs/')
       .expect(HttpStatus.OK);
   });
+
+  it('GET /api-docs/raw => returns the raw object', () => {
+    return server
+      .get('/api-docs/raw')
+      .expect(HttpStatus.OK);
+  });
+
 });
