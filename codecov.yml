@@ -1,2 +1,2 @@
 fixes:
-  - "/opt/jobs-service/src/::src/"
+  - "/opt/jobs-service/src::src"

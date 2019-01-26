@@ -1,7 +1,11 @@
 # =========================
 # Project specific
 # =========================
-
+.data
+.datastore
+.nyc_output
+coverage
+.circleci
 
 # =========================
 # General

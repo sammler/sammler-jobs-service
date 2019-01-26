@@ -16,21 +16,22 @@
   "main": "index.js",
   "scripts": {
     "precommit": "npm run lint:fix --quiet",
-    "ensure:nodemon": "(npm list nodemon -g || npm install nodemon -g)",
     "docs": "docker run --rm -v ${PWD}:/opt/verb stefanwalther/verb",
+    "ensure:nodemon": "(npm list nodemon -g || npm install nodemon -g)",
     "lint": "eslint src --quiet && eslint test --quiet",
     "lint:fix": "eslint src --fix --quiet && eslint test --fix --quiet",
     "lint:src": "eslint src --quiet",
     "lint:src:fix": "eslint src --fix --quiet",
     "lint:test": "eslint test --quiet",
     "lint:test:fix": "eslint test --fix --quiet",
-    "start:agenda-debug": "DEBUG='agenda:*' node index.js",
     "start": "node index.js",
+    "start:agenda-debug": "DEBUG='agenda:*' node index.js",
     "start:watch": "npm run ensure:nodemon && nodemon --signal SIGTERM -L --interactive --watch . --exec npm run start",
     "test": "npm run test:set-env && nyc --reporter=lcov mocha './test/**/*.spec.js' --full-trace --require './test/mocha.conf.js' --timeout 6000 --exit",
-    "test:set-env": "cross-env",
     "test:integration": "npm run test:set-env && nyc --reporter=lcov mocha './test/integration/**/*.spec.js' --require './test/mocha.conf.js' --timeout 6000 --exit",
-    "test:unit": "nyc --reporter=lcov mocha './test/unit/**/*.spec.js' --require './test/mocha.conf.js' --exit"
+    "test:set-env": "cross-env",
+    "test:unit": "nyc --reporter=lcov mocha './test/unit/**/*.spec.js' --require './test/mocha.conf.js' --exit",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov"
   },
   "dependencies": {
     "agenda": "^2.0.2",
@@ -63,6 +64,7 @@
   },
   "devDependencies": {
     "chai": "4.2.0",
+    "codecov": "^3.1.0",
     "cross-env": "5.2.0",
     "eslint": "5.12.1",
     "eslint-config-space-single": "0.3.10",
