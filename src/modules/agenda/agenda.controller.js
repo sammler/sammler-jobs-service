@@ -2,14 +2,13 @@ const expressResult = require('express-result');
 const AgendaWrapper = require('./index');
 const mongodb = require('mongodb');
 const _ = require('lodash'); // eslint-disable-line no-unused-vars
-const debug = require('debug')('jobs-service:AgendaController');
 
 class AgendaController {
 
   /**
    * Get the jobs for the currently authenticated user.
    */
-  static async getUserJobs(req, res) {
+  static async getMine(req, res) {
     let agendaWrapper = await AgendaWrapper.instance();
     let user_id = req.user.user_id;
     let jobs = await agendaWrapper.agenda.jobs({'data.user_id': user_id});
@@ -29,7 +28,10 @@ class AgendaController {
 
     let validationErrors = AgendaController._validateJob(mappedBody);
     if (validationErrors.length > 0) {
-      return expressResult.error(res, {message: '[agenda.controller:postJob] Invalid input, see `validationErrors', validationErrors});
+      return expressResult.error(res, {
+        message: '[agenda.controller:postJob] Invalid input, see `validationErrors',
+        validationErrors
+      });
     }
 
     let jobRequest = await agendaWrapper.agenda.create(mappedBody.processor, mappedBody);
@@ -48,35 +50,18 @@ class AgendaController {
     }
   }
 
-  static async delete(req, res) {
+  /**
+   * Delete all jobs by the given `job_id`.
+   * @param req
+   * @param res
+   *
+   * @todo Needs authorization ...
+   */
+  static async deleteByJobId(req, res) {
 
-    if (req.query.job_id) {
-      try {
-        await AgendaController._deleteByJobId(req, res);
-      } catch (err) {
-        return expressResult.error(res, err);
-      }
-      return expressResult.ok(res);
-    }
-
-    if (req.query.all === 'true') {
-      try {
-        await AgendaController._deleteAll(req, res);
-      } catch (err) {
-        return expressResult.error(res, err);
-      }
-      return expressResult.ok(res);
-    }
-
-    if (req.query.current_user === 'true') {
-      debug('delete:_current_user');
-    }
-  }
-
-  static async _deleteByJobId(req, res) {
     let agendaWrapper = await AgendaWrapper.instance();
     let agenda = agendaWrapper.agenda;
-    let jobs = await agenda.jobs({_id: mongodb.ObjectID(req.query.job_id)}); // eslint-disable-line new-cap
+    let jobs = await agenda.jobs({_id: mongodb.ObjectID(req.params.id)}); // eslint-disable-line new-cap
     if (!jobs || jobs.length === 0) {
       return expressResult.error(res, 'Job not found');
     }
@@ -89,6 +74,56 @@ class AgendaController {
     }
     await job.remove();
     return expressResult.ok(res, 'Successfully deleted');
+
+  }
+
+  static async deleteByTenantId(req, res) {
+
+    let {tenant_id} = req.params;
+
+    if (tenant_id !== req.user.tenant_id) {
+      return expressResult.unauthorized(res, 'Current user is not allowed to perform this action (`tenant_id` not matching).');
+    }
+
+    let agendaWrapper = await AgendaWrapper.instance();
+    let agenda = agendaWrapper.agenda;
+
+    await agenda.cancel(
+      {
+        'data.tenant_id': tenant_id
+      }
+    );
+    return expressResult.ok(res);
+
+  }
+
+  /**
+   * Delete a job by:
+   * - tenant_id - xxx
+   * - user_id - xxx
+   * - processor - e.g. nats.publish
+   * - job_identifier - e.g. strategy-heartbeat_every_week
+   **/
+  static async deleteByUserAndJobIdentifier(req /* , res */) {
+
+    // Todo: Test if the user is legitimated to delete this record
+
+    let name = req.body.processor;
+    let user_id = req.user.user_id;
+    // let tenant_id = req.user.tenant_id;
+    let job_identifier = req.body.job_identifier;
+
+    let agendaWrapper = await AgendaWrapper.instance();
+    let agenda = agendaWrapper.agenda;
+
+    await agenda.cancel(
+      {
+        name: name,
+        'data.user_id': user_id,
+        'data.job_identifier': job_identifier
+      }
+    );
+    // Todo(AAA): missing result here
   }
 
   /**
@@ -97,39 +132,18 @@ class AgendaController {
    * @param res
    * @returns {Promise<*>}
    */
-  static async deleteByUser(req, res) {
-    // Throw new Error('Not implemented');
-    return expressResult.ok(res);
-  }
-
-  /**
-   * Delete a job by:
-   * - tenant_id - xxx
-   * - user_id - xxx
-   * - processor - e.g. nats.publish
-   * - job_identifier - e.g. strategy-hearbeat_every_week
-   */
-  static async deleteBy(req /* , res */) {
-
-    // Todo: Test if the user is legitimated to delete this record
-
-    let name = req.body.processor;
-    let user_id = req.user.user_id;
-    let tenant_id = req.user.tenant_id;
-    let job_identifier = req.body.job_identifier;
+  static async deleteMine(req, res) {
+    let {user_id} = req.user;
 
     let agendaWrapper = await AgendaWrapper.instance();
     let agenda = agendaWrapper.agenda;
 
-    agenda.cancel(
+    await agenda.cancel(
       {
-        name: name,
-        'data.user_id': user_id,
-        'data.tenant_id': tenant_id,
-        'data.job_identifier': job_identifier
+        'data.user_id': user_id
       }
     );
-    // Todo(AAA): missing result here
+    return expressResult.ok(res);
   }
 
   static async _deleteAll(req, res) {
@@ -161,6 +175,20 @@ class AgendaController {
         console.error('Error deleting a job', e);
       }
     }));
+  }
+
+  static async countMine(req, res) {
+    let {user_id, tenant_id} = req.user;
+
+    let agendaWrapper = await AgendaWrapper.instance();
+    let agenda = agendaWrapper.agenda;
+    const jobs = await agenda.jobs({'data.tenant_id': tenant_id, 'data.user_id': user_id});
+
+    return expressResult.ok(res, {
+      tenant_id,
+      user_id,
+      count: jobs.length
+    });
   }
 
   /**

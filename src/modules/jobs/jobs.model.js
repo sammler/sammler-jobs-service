@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const mongooseMaterializedPlugin = require('mongoose-materialized');
-const mongooseTimestampsPlugin = require('mongoose-timestamp'); // Todo: Remove the timestamp plugin
 
 const MongooseConfig = require('../../config/mongoose-config');
 const Schema = mongoose.Schema;
@@ -43,7 +42,8 @@ const schema = new Schema({
 
 }, {
   collection: MongooseConfig.COLLECTION_PREFIX + MongooseConfig.COLLECTION_JOBS,
-  strict: true
+  strict: true,
+  timestamps: {createdAt: MongooseConfig.FIELD_CREATED_AT, updatedAt: MongooseConfig.FIELD_UPDATED_AT}
 });
 /* eslint-enable camelcase */
 
@@ -53,7 +53,6 @@ const schema = new Schema({
 // });
 
 schema.plugin(mongooseMaterializedPlugin);
-schema.plugin(mongooseTimestampsPlugin, {createdAt: MongooseConfig.FIELD_CREATED_AT, updatedAt: MongooseConfig.FIELD_UPDATED_AT});
 
 /**
  * Methods
