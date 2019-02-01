@@ -1,7 +1,7 @@
 const expressResult = require('express-result');
-const AgendaWrapper = require('./index');
-const mongodb = require('mongodb');
 const _ = require('lodash'); // eslint-disable-line no-unused-vars
+
+const AgendaWrapper = require('./index');
 
 class AgendaController {
 
@@ -61,7 +61,7 @@ class AgendaController {
 
     let agendaWrapper = await AgendaWrapper.instance();
     let agenda = agendaWrapper.agenda;
-    let jobs = await agenda.jobs({_id: mongodb.ObjectID(req.params.id)}); // eslint-disable-line new-cap
+    let jobs = await agenda.jobs({_id: req.params.job_id}); // eslint-disable-line new-cap
     if (!jobs || jobs.length === 0) {
       return expressResult.error(res, 'Job not found');
     }
@@ -126,6 +126,25 @@ class AgendaController {
     // Todo(AAA): missing result here
   }
 
+  static async deleteAll(req, res) {
+
+    let {roles} = req.user;
+    if (!roles || roles.indexOf('system') === -1) {
+      return expressResult.unauthorized(res, {message: 'Can only be performed by users with the role `system`.'});
+    }
+
+    let agendaWrapper = await AgendaWrapper.instance();
+    let agenda = agendaWrapper.agenda;
+    let result;
+    try {
+      result = await agenda.cancel();
+    } catch (err) {
+      return expressResult.error(res, err);
+    }
+    return expressResult.ok(res, {numRemoved: result.numRemoved});
+
+  }
+
   /**
    * Deletes all jobs for the given user.
    * @param req
@@ -148,8 +167,6 @@ class AgendaController {
 
   static async _deleteAll(req, res) {
 
-    // Todo: implement proper RBAC here ...
-    // For now we just check the role
     if (!req.user || !req.user.roles || req.user.roles.indexOf('system') === -1) {
       return expressResult.unauthorized(res, {message: 'Can only be performed by users with the role `system`.'});
     }

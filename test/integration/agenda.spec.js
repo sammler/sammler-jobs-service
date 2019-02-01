@@ -308,6 +308,70 @@ describe('[integration] => agenda (jobs)', () => {
 
   });
 
+  describe('DELETE /v1/jobs/all', () => {
+
+    it('throws `Unauthorized` if there is no valid user', async () => {
+      await server
+        .delete('/v1/jobs/all')
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('throws `Unauthorized` if the user is not assigned to role `system`', async () => {
+
+      await server
+        .delete('/v1/jobs/all')
+        .set('x-access-token', testLib.getToken(testLib.getTokenPayload_User()))
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('deletes all jobs', async () => {
+
+      const user1 = testLib.getTokenPayload_User();
+      const user2 = testLib.getTokenPayload_User();
+      const systemUser = testLib.getTokenPayload_User(undefined, undefined, [
+        'system'
+      ]);
+
+      const jobUser1 = {
+        tenant_id: user1.tenant_id,
+        user_id: user1.user_id,
+        processor: 'nats.publish',
+        job_identifier: 'nats - do whatever',
+        repeatPattern: '* * * * *'
+      };
+
+      const jobUser2 = {
+        tenant_id: user2.tenant_id,
+        user_id: user2.user_id,
+        processor: 'nats.publish',
+        job_identifier: 'nats - do whatever',
+        repeatPattern: '* * * * *'
+      };
+
+      await server
+        .post('/v1/jobs')
+        .send(jobUser1)
+        .set('x-access-token', testLib.getToken(user1))
+        .expect(HttpStatus.CREATED);
+
+      await server
+        .post('/v1/jobs')
+        .send(jobUser2)
+        .set('x-access-token', testLib.getToken(user2))
+        .expect(HttpStatus.CREATED);
+      expect(await AgendaController._count()).to.be.equal(2);
+
+      await server
+        .delete('/v1/jobs/all')
+        .set('x-access-token', testLib.getToken(systemUser))
+        .expect(HttpStatus.OK);
+
+      expect(await AgendaController._count()).to.be.equal(0);
+
+    });
+
+  });
+
   describe('DELETE /v1/jobs/:id', () => {
 
     it('returns `unauthorized` if there is no current user', async () => {

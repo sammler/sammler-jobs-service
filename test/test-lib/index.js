@@ -8,11 +8,11 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function getTokenPayload_User(user_id, tenant_id) {
+function getTokenPayload_User(user_id, tenant_id, roles) {
   return {
     user_id: user_id || mongoose.Types.ObjectId().toString(),
     tenant_id: tenant_id || mongoose.Types.ObjectId().toString(),
-    roles: [
+    roles: roles || [
       'user'
     ]
   };

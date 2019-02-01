@@ -93,6 +93,22 @@ router.delete('/v1/jobs', verifyJwtToken, AgendaController.deleteMine);
 /**
  * @swagger
  *
+ * /jobs/all:
+ *   delete:
+ *     description: Delete all jobs. Only valid for users assigned to role `system`.
+ *     produces:
+ *       - application/json
+ *     tags:
+ *       - jobs
+ *     responses:
+ *       200:
+ *         description: All jobs for the user deleted successfully.
+ */
+router.delete('/v1/jobs/all', verifyJwtToken, AgendaController.deleteAll);
+
+/**
+ * @swagger
+ *
  * /jobs:
  *   delete:
  *     description: Delete a job by a given id.
@@ -104,7 +120,7 @@ router.delete('/v1/jobs', verifyJwtToken, AgendaController.deleteMine);
  *       200:
  *         description: All jobs for the user deleted successfully.
  */
-router.delete('/v1/jobs/:id', verifyJwtToken, AgendaController.deleteByJobId);
+router.delete('/v1/jobs/:job_id', verifyJwtToken, AgendaController.deleteByJobId);
 
 /**
  * /v1/jobs/by
