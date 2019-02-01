@@ -34,7 +34,24 @@ const verifyJwtToken = require('./../../middleware/verifyJwtToken');
  *         description: Returns the jobs.
  *
  */
-router.get('/v1/jobs', verifyJwtToken, AgendaController.getUserJobs);
+router.get('/v1/jobs', verifyJwtToken, AgendaController.getMine);
+
+/**
+ * @swagger
+ *
+ * /jobs:
+ *   get:
+ *     description: Return a count of all jobs for the currently authenticated user.
+ *     produces:
+ *       - application/json
+ *     tags:
+ *       - jobs
+ *     responses:
+ *       200:
+ *         description: Returns the jobs.
+ *
+ */
+router.get('/v1/jobs/count', verifyJwtToken, AgendaController.countMine);
 
 /**
  * @swagger
@@ -71,8 +88,46 @@ router.post('/v1/jobs', verifyJwtToken, AgendaController.postJob);
  *       200:
  *         description: All jobs for the user deleted successfully.
  */
-router.delete('/v1/jobs', verifyJwtToken, AgendaController.deleteByUser);
+router.delete('/v1/jobs', verifyJwtToken, AgendaController.deleteMine);
 
-router.delete('/v1/jobs/by', verifyJwtToken, AgendaController.delete);
+/**
+ * @swagger
+ *
+ * /jobs:
+ *   delete:
+ *     description: Delete a job by a given id.
+ *     produces:
+ *       - application/json
+ *     tags:
+ *       - jobs
+ *     responses:
+ *       200:
+ *         description: All jobs for the user deleted successfully.
+ */
+router.delete('/v1/jobs/:id', verifyJwtToken, AgendaController.deleteByJobId);
+
+/**
+ * /v1/jobs/by
+ * Query param type=:
+ * - tenant
+ * - user_and_job_identifier
+ */
+// router.delete('/v1/jobs/by', verifyJwtToken, AgendaController.deleteBy);
+
+/**
+ * @swagger
+ *
+ * /jobs/tenant/:tenant_id:
+ *   delete:
+ *     description: Delete all jobs of the given tenant.
+ *     produces:
+ *       - application/json
+ *     tags:
+ *       - jobs
+ *     responses:
+ *       200:
+ *         description: All jobs for the user deleted successfully.
+ */
+router.delete('/v1/jobs/tenant/:tenant_id', verifyJwtToken, AgendaController.deleteByTenantId);
 
 module.exports = router;
