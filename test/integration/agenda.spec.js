@@ -506,7 +506,7 @@ describe('[integration] => agenda (jobs)', () => {
     });
   });
 
-  describe('DELETE v1/jobs/job_identifier/:job_identifer', () => {
+  describe('DELETE /v1/jobs/job_identifier/:job_identifer', () => {
     it('throws `Unauthorized` if there is no valid user', async () => {
       await server
         .delete('/v1/jobs')
@@ -601,5 +601,42 @@ describe('[integration] => agenda (jobs)', () => {
     it('doesn\'t delete other users items', async () => {
 
     });
+  });
+
+  describe('DELETE /v1/jobs/nats/channel/:channel', () => {
+    it('throws `Unauthorized` if there is no valid user', async () => {
+      await server
+        .delete('/v1/jobs')
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('deletes by the given nats-channel', async () => {
+      let user1 = testLib.getTokenPayload_User();
+      const job = {
+        tenant_id: user1.tenant_id,
+        user_id: user1.user_id,
+        processor: 'nats.publish',
+        job_identifier: 'this-is-the-job-identifier',
+        repeatPattern: '* * * * *',
+        nats: {
+          channel: 'foo'
+        }
+      };
+      await server
+        .post('/v1/jobs')
+        .send(job)
+        .set('x-access-token', testLib.getToken(user1))
+        .expect(HttpStatus.CREATED);
+      expect(await AgendaController._count()).to.be.equal(1);
+      await server
+        .delete(`/v1/jobs/nats/channel/foo`)
+        .set('x-access-token', testLib.getToken(user1))
+        .expect(HttpStatus.OK)
+        .then(result => {
+          expect(result.body).to.have.a.property('numRemoved').to.equal(1);
+        });
+      expect(await AgendaController._count()).to.be.equal(0);
+    });
+
   });
 });

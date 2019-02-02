@@ -141,6 +141,22 @@ router.delete('/v1/jobs/job_identifier/:job_identifier', verifyJwtToken, AgendaC
 /**
  * @swagger
  *
+ * /jobs:
+ *   delete:
+ *     description: Delete all jobs by data.nats.channel for the currently authenticated user.
+ *     produces:
+ *       - application/json
+ *     tags:
+ *       - jobs
+ *     responses:
+ *       200:
+ *         description: All jobs for the user deleted successfully.
+ */
+router.delete('/v1/jobs/nats/channel/:channel', verifyJwtToken, AgendaController.deleteMineByNatsChannel);
+
+/**
+ * @swagger
+ *
  * /jobs/tenant/:tenant_id:
  *   delete:
  *     description: Delete all jobs of the given tenant.
