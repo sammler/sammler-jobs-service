@@ -505,4 +505,101 @@ describe('[integration] => agenda (jobs)', () => {
       expect(await AgendaController._count()).to.be.equal(1);
     });
   });
+
+  describe('DELETE v1/jobs/job_identifier/:job_identifer', () => {
+    it('throws `Unauthorized` if there is no valid user', async () => {
+      await server
+        .delete('/v1/jobs')
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('deletes by the given job_identifier', async () => {
+      let user1 = testLib.getTokenPayload_User();
+      const job = {
+        tenant_id: user1.tenant_id,
+        user_id: user1.user_id,
+        processor: 'nats.publish',
+        job_identifier: 'this-is-the-job-identifier',
+        repeatPattern: '* * * * *'
+      };
+      await server
+        .post('/v1/jobs')
+        .send(job)
+        .set('x-access-token', testLib.getToken(user1))
+        .expect(HttpStatus.CREATED);
+      expect(await AgendaController._count()).to.be.equal(1);
+      await server
+        .delete(`/v1/jobs/job_identifier/${job.job_identifier}`)
+        .set('x-access-token', testLib.getToken(user1))
+        .expect(HttpStatus.OK)
+        .then(result => {
+          expect(result.body).to.have.a.property('numRemoved').to.equal(1);
+        });
+      expect(await AgendaController._count()).to.be.equal(0);
+
+    });
+
+    it('returns the proper `numRemoved` and does not delete other user\'s jobs', async () => {
+
+      let user1 = testLib.getTokenPayload_User();
+      let user2 = testLib.getTokenPayload_User();
+
+      const jobUser1_1 = {
+        tenant_id: user1.tenant_id,
+        user_id: user1.user_id,
+        processor: 'nats.publish',
+        job_identifier: 'this-is-the-job-identifier-1',
+        repeatPattern: '* * * * *'
+      };
+      const jobUser1_2 = {
+        tenant_id: user1.tenant_id,
+        user_id: user1.user_id,
+        processor: 'nats.publish',
+        job_identifier: 'this-is-the-job-identifier-2',
+        repeatPattern: '* * * * *'
+      };
+
+      const jobUser2_1 = {
+        tenant_id: user2.tenant_id,
+        user_id: user2.user_id,
+        processor: 'nats.publish',
+        job_identifier: 'this-is-the-job-identifier-1',
+        repeatPattern: '* * * * *'
+      };
+
+      // Post jobs for user1
+      await server
+        .post('/v1/jobs')
+        .send(jobUser1_1)
+        .set('x-access-token', testLib.getToken(user1))
+        .expect(HttpStatus.CREATED);
+      await server
+        .post('/v1/jobs')
+        .send(jobUser1_2)
+        .set('x-access-token', testLib.getToken(user1))
+        .expect(HttpStatus.CREATED);
+      expect(await AgendaController._count()).to.be.equal(2);
+
+      // Post jobs for user2
+      await server
+        .post('/v1/jobs')
+        .send(jobUser2_1)
+        .set('x-access-token', testLib.getToken(user2))
+        .expect(HttpStatus.CREATED);
+
+      await server
+        .delete(`/v1/jobs/job_identifier/${jobUser1_1.job_identifier}`)
+        .set('x-access-token', testLib.getToken(user1))
+        .expect(HttpStatus.OK)
+        .then(result => {
+          expect(result.body.numRemoved).to.be.equal(1);
+        });
+      expect(await AgendaController._count()).to.be.equal(2);
+
+    });
+
+    it('doesn\'t delete other users items', async () => {
+
+    });
+  });
 });
