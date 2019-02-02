@@ -130,6 +130,28 @@ class AgendaController {
     return expressResult.ok(res, {numRemoved: result});
   }
 
+  static async deleteMineByNatsChannel(req, res) {
+    let {user_id} = req.user;
+    let {channel} = req.params;
+
+    let agendaWrapper = await AgendaWrapper.instance();
+    let agenda = agendaWrapper.agenda;
+
+    let result;
+    try {
+      result = await agenda.cancel(
+        {
+          'data.user_id': user_id,
+          'data.nats.channel': channel
+        }
+      );
+    } catch (err) {
+      return expressResult.error(res, err);
+    }
+    return expressResult.ok(res, {numRemoved: result});
+
+  }
+
   static async deleteAll(req, res) {
 
     let {roles} = req.user;
