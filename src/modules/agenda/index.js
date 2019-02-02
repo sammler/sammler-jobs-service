@@ -53,7 +53,7 @@ class AgendaWrapper {
   static async _saveJobHistory(job, hasSucceeded, error) {
 
     let result = {
-      jobs_id: job.attrs._id,
+      job_id: job.attrs._id,
       tenant_id: job.attrs.data.tenant_id,
       user_id: job.attrs.data.user_id,
       processor: job.attrs.data.processor,
