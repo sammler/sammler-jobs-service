@@ -1,5 +1,6 @@
 const expressResult = require('express-result');
 const _ = require('lodash'); // eslint-disable-line no-unused-vars
+const mongoose = require('mongoose');
 
 const AgendaWrapper = require('./index');
 
@@ -54,26 +55,33 @@ class AgendaController {
    * Delete all jobs by the given `job_id`.
    * @param req
    * @param res
-   *
-   * @todo Needs authorization ...
    */
   static async deleteByJobId(req, res) {
 
+    let {job_id} = req.params;
+
     let agendaWrapper = await AgendaWrapper.instance();
     let agenda = agendaWrapper.agenda;
-    let jobs = await agenda.jobs({_id: req.params.job_id}); // eslint-disable-line new-cap
+    let jobs = await agenda.jobs({_id: mongoose.Types.ObjectId(job_id)}); // eslint-disable-line new-cap
     if (!jobs || jobs.length === 0) {
-      return expressResult.error(res, 'Job not found');
+      return expressResult.error(res, 'Job not found, cannot delete any job.');
     }
     if (jobs.length > 1) {
-      return expressResult.error(res, 'More than one job found');
+      return expressResult.error(res, 'More than one job found.');
     }
     let job = jobs[0];
     if (job.attrs.data.user_id !== req.user.user_id) {
-      return expressResult.unauthorized(res, 'Current user is not allowed to perform this action');
+      return expressResult.unauthorized(res, 'Current user is not allowed to perform this action.');
     }
-    await job.remove();
-    return expressResult.ok(res, 'Successfully deleted');
+
+    let numRemoved;
+    try {
+      numRemoved = await job.remove();
+    } catch (err) {
+      return expressResult.error(res, err);
+    }
+
+    return expressResult.ok(res, {numRemoved});
 
   }
 

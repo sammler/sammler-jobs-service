@@ -390,14 +390,10 @@ describe('[integration] => agenda (jobs)', () => {
         user_id: user1.user_id,
         processor: 'nats.publish',
         job_identifier: 'nats - do whatever',
-        repeatPattern: '* * * * *',
-        nats: {
-          foo: 'bar',
-          bar: 'baz'
-        }
+        repeatPattern: '* * * * *'
       };
 
-      let job_id = null;
+      let job_id;
 
       // Post job as user1
       await server
@@ -406,19 +402,18 @@ describe('[integration] => agenda (jobs)', () => {
         .set('x-access-token', testLib.getToken(user1))
         .expect(HttpStatus.CREATED)
         .then(result => {
-          expect(result.body).to.have.property('job_id');
+          expect(result.body).to.have.property('job_id').to.not.be.empty;
           job_id = result.body.job_id;
-        })
-        .catch(err => {
-          console.error(err);
-          expect(err).to.not.exist;
         });
 
       // Try to delete job as user2
       await server
         .delete(`/v1/jobs/${job_id}`)
         .set('x-access-token', testLib.getToken(user2))
-        .expect(HttpStatus.UNAUTHORIZED);
+        .expect(HttpStatus.UNAUTHORIZED)
+        .then(result => {
+          expect(result.body).to.contain('Current user is not allowed to perform this action.');
+        });
 
     });
 

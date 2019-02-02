@@ -5,7 +5,7 @@ const MongooseConfig = require('./../../config/mongoose-config');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-  jobs_id: {
+  job_id: {
     type: Schema.Types.ObjectId,
     required: true
   },
