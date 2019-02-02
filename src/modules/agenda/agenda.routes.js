@@ -123,12 +123,20 @@ router.delete('/v1/jobs/all', verifyJwtToken, AgendaController.deleteAll);
 router.delete('/v1/jobs/:job_id', verifyJwtToken, AgendaController.deleteByJobId);
 
 /**
- * /v1/jobs/by
- * Query param type=:
- * - tenant
- * - user_and_job_identifier
+ * @swagger
+ *
+ * /jobs:
+ *   delete:
+ *     description: Delete a job by a job_identifier for the currently authenticated user.
+ *     produces:
+ *       - application/json
+ *     tags:
+ *       - jobs
+ *     responses:
+ *       200:
+ *         description: All jobs for the user deleted successfully.
  */
-// router.delete('/v1/jobs/by', verifyJwtToken, AgendaController.deleteBy);
+router.delete('/v1/jobs/job_identifier/:job_identifier', verifyJwtToken, AgendaController.deleteMineByJobIdentifier);
 
 /**
  * @swagger

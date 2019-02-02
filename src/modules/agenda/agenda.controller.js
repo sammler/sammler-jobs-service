@@ -106,32 +106,28 @@ class AgendaController {
   }
 
   /**
-   * Delete a job by:
-   * - tenant_id - xxx
-   * - user_id - xxx
-   * - processor - e.g. nats.publish
-   * - job_identifier - e.g. strategy-heartbeat_every_week
+   * Delete a job by a given job_identifier for the currently authenticated user.
    **/
-  static async deleteByUserAndJobIdentifier(req /* , res */) {
+  static async deleteMineByJobIdentifier(req, res) {
 
-    // Todo: Test if the user is legitimated to delete this record
-
-    let name = req.body.processor;
-    let user_id = req.user.user_id;
-    // let tenant_id = req.user.tenant_id;
-    let job_identifier = req.body.job_identifier;
+    let {user_id} = req.user;
+    let {job_identifier} = req.params;
 
     let agendaWrapper = await AgendaWrapper.instance();
     let agenda = agendaWrapper.agenda;
 
-    await agenda.cancel(
-      {
-        name: name,
-        'data.user_id': user_id,
-        'data.job_identifier': job_identifier
-      }
-    );
-    // Todo(AAA): missing result here
+    let result;
+    try {
+      result = await agenda.cancel(
+        {
+          'data.user_id': user_id,
+          'data.job_identifier': job_identifier
+        }
+      );
+    } catch (err) {
+      return expressResult.error(res, err);
+    }
+    return expressResult.ok(res, {numRemoved: result});
   }
 
   static async deleteAll(req, res) {
