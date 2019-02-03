@@ -1,6 +1,7 @@
 const expressResult = require('express-result');
 const _ = require('lodash'); // eslint-disable-line no-unused-vars
 const mongoose = require('mongoose');
+const logger = require('winster').instance();
 
 const AgendaWrapper = require('./index');
 
@@ -125,6 +126,7 @@ class AgendaController {
         }
       );
     } catch (err) {
+      logger.error('[deleteMineByJobIdentifier] Error cancelling job', err);
       return expressResult.error(res, err);
     }
     return expressResult.ok(res, {numRemoved: result});

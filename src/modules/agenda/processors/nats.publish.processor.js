@@ -16,14 +16,15 @@ class ProcessorNats {
     // Add the `publishedAt` timestamp
     natsData.publishedAt = Date.now();
 
-    natsClient.publish(natsChannel, JSON.stringify(natsData || {}), function (err, guid) {
-      if (err) {
+    natsClient.publish(natsChannel, JSON.stringify(natsData || {}))
+      .then(result => {
+        logger.trace(`[agenda.processor.nats.publish] Publish succeeded with Guid: ${result}`);
+        done();
+      })
+      .catch(err => {
         logger.error(`[agenda.processor.nats.publish] Publish failed: `, err);
-      } else {
-        logger.trace(`[agenda.processor.nats.publish] Publish succeeded with Guid: ${guid}`);
-      }
-      done();
-    });
+        done(err);
+      });
   }
 }
 
