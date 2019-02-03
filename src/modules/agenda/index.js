@@ -37,12 +37,11 @@ class AgendaWrapper {
 
     this.agenda.on('fail', async (err, job) => {
       logger.trace(`[AgendaWrapper:on:fail] '${job.attrs.name} - ${job.attrs.data.job_identifier}' failed with error: ${err.message}`);
-      // await AgendaWrapper._saveJobHistory(job, false, err);
+      await AgendaWrapper._saveJobHistory(job, false, err);
 
     });
     this.agenda.on('complete', async job => {
       logger.trace(`[AgendaWrapper:on:complete] Completed: '${job.attrs.name} - ${job.attrs.data.job_identifier}'`);
-      // logger.trace(`[AgendaWrapper:on:complete:job]:`, job);
     });
 
     process.on('SIGTERM', this._graceful);
@@ -64,7 +63,12 @@ class AgendaWrapper {
       data: {} // Todo: fetch the right value
     };
     let model = new JobsHistoryModel(result);
-    await model.save();
+    try {
+      await model.save();
+    } catch (err) {
+      logger.error('[_saveJobHistory]', err);
+    }
+
   }
 
   /**
