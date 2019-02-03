@@ -32,12 +32,12 @@ class AgendaWrapper {
 
     this.agenda.on('success', async job => {
       logger.trace(`[AgendaWrapper:on:success] '${job.attrs.name} - ${job.attrs.data.job_identifier}'`);
-      await AgendaWrapper._saveJobHistory(job, true);
+      // await AgendaWrapper._saveJobHistory(job, true);
     });
 
     this.agenda.on('fail', async (err, job) => {
       logger.trace(`[AgendaWrapper:on:fail] '${job.attrs.name} - ${job.attrs.data.job_identifier}' failed with error: ${err.message}`);
-      await AgendaWrapper._saveJobHistory(job, false, err);
+      // await AgendaWrapper._saveJobHistory(job, false, err);
 
     });
     this.agenda.on('complete', async job => {

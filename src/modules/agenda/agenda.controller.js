@@ -36,7 +36,7 @@ class AgendaController {
     }
 
     let jobRequest = await agendaWrapper.agenda.create(mappedBody.processor, mappedBody);
-    jobRequest.repeatEvery(mappedBody.repeatPattern);
+    jobRequest.repeatEvery(mappedBody.repeatPattern, {skipImmediate: true});
     jobRequest.unique({
       // Note: mappedBody.processor is automatically added to be a unique criteria
       'data.user_id': mappedBody.user_id,
