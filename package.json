@@ -55,7 +55,7 @@
     "mongoose-materialized": "0.2.0",
     "mongoose-timestamp": "0.6.0",
     "node-nats-streaming": "0.0.51",
-    "read-pkg-up": "^4.0.0",
+    "read-pkg-up": "^5.0.0",
     "sammler-nodelib-logger": "0.2.4",
     "serve-favicon": "^2.5.0",
     "swagger-jsdoc": "1.9.7",
