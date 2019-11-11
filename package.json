@@ -68,7 +68,7 @@
     "eslint": "5.13.0",
     "eslint-config-space-single": "0.3.11",
     "eslint-plugin-mocha": "5.2.1",
-    "mocha": "5.2.0",
+    "mocha": "6.2.2",
     "nyc": "13.1.0",
     "supertest": "3.4.2"
   },
